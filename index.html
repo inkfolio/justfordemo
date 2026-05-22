@@ -94,7 +94,7 @@ function ProductImage({ src, alt, height="100%", style={} }) {
   return (
     <img src={src} alt={alt}
       onError={() => setErrored(true)}
-      style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"top", display:"block", ...style }}
+      style={{ width:"100%", height:"100%", objectFit:"contain", objectPosition:"center", display:"block", ...style }}
     />
   );
 }
@@ -444,7 +444,7 @@ function ProductCard({ product, addToCart }) {
   const isMystery = product.category === "mystery";
   return (
     <div className="card-hover" style={{background:"#fffaf4", borderRadius:16, border:"1px solid #e0c9a8", overflow:"hidden", display:"flex", flexDirection:"column"}}>
-      <div style={{background: isMystery ? "linear-gradient(135deg,#2d1a3e,#4a2860)" : "#f5e6d0", aspectRatio:"3/4", overflow:"hidden", width:"100%"}}>
+      <div style={{background: isMystery ? "linear-gradient(135deg,#2d1a3e,#4a2860)" : "#f0e4cc", aspectRatio:"2/3", overflow:"hidden", width:"100%", display:"flex", alignItems:"center", justifyContent:"center"}}>
         <ProductImage src={product.image} alt={product.name} height="100%" />
       </div>
       <div style={{padding:"16px 18px 20px", flex:1, display:"flex", flexDirection:"column"}}>
