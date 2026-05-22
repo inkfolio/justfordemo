@@ -1,56 +1,560 @@
-[
-  {
-    "id": 1,
-    "name": "The Midnight Library",
-    "author": "Matt Haig",
-    "price": 349,
-    "image": "images/1.jpg",
-    "desc": "A dazzling novel about all the lives we could have lived.",
-    "badge": "Bestseller"
-  },
-  {
-    "id": 2,
-    "name": "Lessons in Chemistry",
-    "author": "Bonnie Garmus",
-    "price": 399,
-    "image": "images/2.jpg",
-    "desc": "A woman chemist in the 1960s becomes an unlikely cooking show host.",
-    "badge": "Staff Pick"
-  },
-  {
-    "id": 3,
-    "name": "The Atlas Six",
-    "author": "Olivie Blake",
-    "price": 449,
-    "image": "images/3.jpg",
-    "desc": "Dark academia fantasy with six magical scholars and deadly stakes.",
-    "badge": "New Arrival"
-  },
-  {
-    "id": 4,
-    "name": "Tomorrow & Tomorrow",
-    "author": "Gabriel Zevin",
-    "price": 379,
-    "image": "images/4.jpg",
-    "desc": "A sweeping love story set in the world of video games.",
-    "badge": ""
-  },
-  {
-    "id": 5,
-    "name": "Piranesi",
-    "author": "Susanna Clarke",
-    "price": 299,
-    "image": "images/5.jpg",
-    "desc": "A mysterious man living in a house with infinite halls and tides.",
-    "badge": "Award Winner"
-  },
-  {
-    "id": 6,
-    "name": "Sea of Tranquility",
-    "author": "Emily St. John Mandel",
-    "price": 349,
-    "image": "images/6.jpg",
-    "desc": "Time travel across centuries connects five extraordinary lives.",
-    "badge": ""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Spines & Scribbles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init("J7eCJErFp1sj9gxEa");</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #fdf6ee; font-family: 'Crimson Pro', Georgia, serif; color: #3d2b1f; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #f0e6d3; }
+  ::-webkit-scrollbar-thumb { background: #b08060; border-radius: 3px; }
+  .hero-fade { opacity: 0; transform: translateY(24px); transition: opacity 0.9s cubic-bezier(.22,1,.36,1), transform 0.9s cubic-bezier(.22,1,.36,1); }
+  .hero-fade.in { opacity: 1; transform: none; }
+  .card-hover { transition: transform 0.22s ease, box-shadow 0.22s ease; }
+  .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(100,60,20,0.13); }
+  .btn-primary { background: #7c4e2a; color: #fdf6ee; border: none; padding: 12px 28px; border-radius: 30px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.18s, transform 0.1s; letter-spacing: 0.03em; }
+  .btn-primary:hover { background: #5c3618; transform: scale(1.02); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .btn-ghost { background: transparent; color: #7c4e2a; border: 1.5px solid #c9a07a; padding: 10px 22px; border-radius: 30px; font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; transition: all 0.18s; }
+  .btn-ghost:hover { background: #f0dfc8; }
+  .input-field { width: 100%; padding: 12px 16px; border: 1.5px solid #d4b896; border-radius: 10px; font-family: 'Crimson Pro', serif; font-size: 16px; background: #fffaf4; color: #3d2b1f; outline: none; transition: border 0.18s; }
+  .input-field:focus { border-color: #7c4e2a; }
+  .input-field.err { border-color: #c0392b; }
+  .nav-link { font-family: 'DM Sans', sans-serif; font-size: 14px; color: #7c4e2a; cursor: pointer; padding: 6px 12px; border-radius: 20px; transition: background 0.15s; letter-spacing: 0.04em; background: none; border: none; }
+  .nav-link:hover { background: #f0dfc8; }
+  .cat-pill { padding: 8px 20px; border-radius: 20px; border: 1.5px solid #d4b896; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; color: #6b4226; transition: all 0.18s; }
+  .cat-pill.active { background: #7c4e2a; color: #fdf6ee; border-color: #7c4e2a; }
+  .cat-pill:hover:not(.active) { background: #f0dfc8; }
+  .overlay { position: fixed; inset: 0; background: rgba(30,15,5,0.45); z-index: 100; backdrop-filter: blur(2px); }
+  .cart-panel { position: fixed; right: 0; top: 0; bottom: 0; width: 380px; background: #fdf6ee; z-index: 101; box-shadow: -8px 0 32px rgba(80,40,10,0.18); overflow-y: auto; display: flex; flex-direction: column; }
+  .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%); background: #3d2b1f; color: #fdf6ee; padding: 12px 28px; border-radius: 30px; font-family: 'DM Sans', sans-serif; font-size: 14px; z-index: 200; white-space: nowrap; animation: toastIn 0.3s ease; }
+  @keyframes toastIn { from { opacity:0; transform:translateX(-50%) translateY(12px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(26px,4vw,36px); font-weight: 700; color: #3d2b1f; line-height: 1.2; }
+  .divider { width: 48px; height: 3px; background: #c9a07a; border-radius: 2px; margin: 8px 0 24px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+  .spinner { width:40px; height:40px; border:3px solid #e0c9a8; border-top-color:#7c4e2a; border-radius:50%; animation:spin 0.8s linear infinite; margin:80px auto; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (max-width: 700px) {
+    .cart-panel { width: 100%; }
+    .checkout-grid { grid-template-columns: 1fr !important; }
+    .nav-links { display: none; }
+    .hero-pad { padding: 56px 20px 48px !important; }
+    .section-pad { padding: 40px 20px 0 !important; }
+    .mystery-banner { margin: 40px 20px 0 !important; padding: 36px 24px !important; flex-direction: column !important; }
+    .footer-inner { flex-direction: column !important; gap: 24px !important; }
   }
-]
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+// ── CONFIG ────────────────────────────────────────────────
+const OWNER_EMAIL = "spinesnscribbles@gmail.com"; // change this
+
+const BADGE_COLORS = {
+  "Bestseller":   "#7c5c3e",
+  "Staff Pick":   "#3e6b3e",
+  "New Arrival":  "#3e5c7c",
+  "Award Winner": "#7c3e5c",
+  "New":          "#3e7c6c",
+  "Handmade":     "#7c6c3e",
+  "✨ Mystery":   "#5c3e7c",
+};
+
+const CATEGORIES = [
+  { key:"all",       label:"All"            },
+  { key:"books",     label:"Books"          },
+  { key:"bookmarks", label:"Bookmarks"      },
+  { key:"diaries",   label:"Diaries"        },
+  { key:"misc",      label:"Misc"           },
+  { key:"mystery",   label:"Mystery Box ✨" },
+];
+
+// ── PRODUCT IMAGE HELPER ──────────────────────────────────
+function ProductImage({ src, alt, style={} }) {
+  const [errored, setErrored] = useState(false);
+  if (errored) return (
+    <div style={{ width:"100%", height:160, display:"flex", alignItems:"center", justifyContent:"center", background:"#f5e6d0", fontSize:52 }}>📚</div>
+  );
+  return (
+    <img src={src} alt={alt}
+      onError={() => setErrored(true)}
+      style={{ width:"100%", height:"auto", display:"block", ...style }}
+    />
+  );
+}
+
+// ── ROOT APP ──────────────────────────────────────────────
+function App() {
+  const [products, setProducts]     = useState([]);
+  const [loading, setLoading]       = useState(true);
+  const [page, setPage]             = useState("home");
+  const [category, setCategory]     = useState("all");
+  const [cart, setCart]             = useState([]);
+  const [cartOpen, setCartOpen]     = useState(false);
+  const [order, setOrder]           = useState(null);
+  const [form, setForm]             = useState({ name:"", email:"", phone:"", address:"", notes:"" });
+  const [errors, setErrors]         = useState({});
+  const [submitting, setSubmitting] = useState(false);
+  const [toast, setToast]           = useState(null);
+  const [heroIn, setHeroIn]         = useState(false);
+
+  // Load products from JSON files; falls back to embedded data when running locally (file://)
+  const EMBEDDED_PRODUCTS = [{"id": 1, "name": "The Midnight Library", "author": "Matt Haig", "price": 349, "image": "images/1.jpg", "desc": "A dazzling novel about all the lives we could have lived.", "badge": "Bestseller", "category": "books"}, {"id": 2, "name": "Lessons in Chemistry", "author": "Bonnie Garmus", "price": 399, "image": "images/2.jpg", "desc": "A woman chemist in the 1960s becomes an unlikely cooking show host.", "badge": "Staff Pick", "category": "books"}, {"id": 3, "name": "The Atlas Six", "author": "Olivie Blake", "price": 449, "image": "images/3.jpg", "desc": "Dark academia fantasy with six magical scholars and deadly stakes.", "badge": "New Arrival", "category": "books"}, {"id": 4, "name": "Tomorrow & Tomorrow", "author": "Gabriel Zevin", "price": 379, "image": "images/4.jpg", "desc": "A sweeping love story set in the world of video games.", "badge": "", "category": "books"}, {"id": 5, "name": "Piranesi", "author": "Susanna Clarke", "price": 299, "image": "images/5.jpg", "desc": "A mysterious man living in a house with infinite halls and tides.", "badge": "Award Winner", "category": "books"}, {"id": 6, "name": "Sea of Tranquility", "author": "Emily St. John Mandel", "price": 349, "image": "images/6.jpg", "desc": "Time travel across centuries connects five extraordinary lives.", "badge": "", "category": "books"}, {"id": 7, "name": "Pressed Flower Bookmark", "price": 89, "image": "images/7.jpg", "desc": "Handcrafted with real dried flowers preserved under clear resin.", "badge": "Handmade", "category": "bookmarks", "author": ""}, {"id": 8, "name": "Leather Tassel Bookmark", "price": 129, "image": "images/8.jpg", "desc": "Genuine leather with a gold tassel. Rich aged caramel tone.", "badge": "Bestseller", "category": "bookmarks", "author": ""}, {"id": 9, "name": "Watercolour Set of 3", "price": 149, "image": "images/9.jpg", "desc": "Three bookmarks printed with original watercolour artwork.", "badge": "", "category": "bookmarks", "author": ""}, {"id": 10, "name": "Brass Clip Bookmark", "price": 99, "image": "images/10.jpg", "desc": "Elegant brass page clip with a delicate leaf detail.", "badge": "New", "category": "bookmarks", "author": ""}, {"id": 11, "name": "The Muted Sage Diary", "price": 499, "image": "images/11.jpg", "desc": "A5 dotted journal, 200 cream pages, sage green linen cover.", "badge": "New Arrival", "category": "diaries", "author": ""}, {"id": 12, "name": "Vintage Leather Journal", "price": 699, "image": "images/12.jpg", "desc": "Genuine leather-bound and refillable, with 192 ruled pages.", "badge": "Staff Pick", "category": "diaries", "author": ""}, {"id": 13, "name": "Floral Weekly Planner", "price": 399, "image": "images/13.jpg", "desc": "Undated weekly planner with original botanical illustrations.", "badge": "", "category": "diaries", "author": ""}, {"id": 14, "name": "Moonchild Night Journal", "price": 549, "image": "images/14.jpg", "desc": "Celestial art cover, cream pages, and a satin ribbon marker.", "badge": "Bestseller", "category": "diaries", "author": ""}, {"id": 15, "name": "Bookish Washi Tape Set", "price": 199, "image": "images/15.jpg", "desc": "Set of 5 literary-themed washi tapes for journaling & crafts.", "badge": "", "category": "misc", "author": ""}, {"id": 16, "name": "Reader's Tote Bag", "price": 449, "image": "images/16.jpg", "desc": "Cotton canvas tote with 'One more chapter' screen print.", "badge": "Bestseller", "category": "misc", "author": ""}, {"id": 17, "name": "Book Lovers Candle", "price": 299, "image": "images/17.jpg", "desc": "Soy wax candle scented with old books, vanilla & sandalwood.", "badge": "New", "category": "misc", "author": ""}, {"id": 18, "name": "Quill & Ink Pen Set", "price": 349, "image": "images/18.jpg", "desc": "Dip pen with three nibs and a pot of rich walnut ink.", "badge": "Staff Pick", "category": "misc", "author": ""}, {"id": 19, "name": "The Wanderer's Mystery Box", "price": 999, "image": "images/19.jpg", "desc": "A curated mystery box for the avid reader. Every box is unique \u2014 books, bookmarks, stationery, and surprises!", "badge": "\u2728 Mystery", "category": "mystery", "author": ""}, {"id": 20, "name": "Mini Mystery Parcel", "price": 599, "image": "images/20.jpg", "desc": "A smaller mystery parcel \u2014 perfect as a gift or self-treat. 2\u20133 mystery items curated with love.", "badge": "\u2728 Mystery", "category": "mystery", "author": ""}];
+
+  useEffect(() => {
+    const sources = [
+      { file:"books.json",     category:"books"     },
+      { file:"bookmarks.json", category:"bookmarks" },
+      { file:"diaries.json",   category:"diaries"   },
+      { file:"misc.json",      category:"misc"      },
+      { file:"mystery.json",   category:"mystery"   },
+    ];
+    // file:// protocol blocks fetch — detect and use embedded data instead
+    if (window.location.protocol === "file:") {
+      setProducts(EMBEDDED_PRODUCTS);
+      setLoading(false);
+      return;
+    }
+    Promise.all(
+      sources.map(s =>
+        fetch(s.file)
+          .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+          .then(items => items.map(item => ({ ...item, author: item.author || "", category: s.category })))
+          .catch(() => [])
+      )
+    ).then(results => {
+      const loaded = results.flat();
+      setProducts(loaded.length > 0 ? loaded : EMBEDDED_PRODUCTS);
+      setLoading(false);
+    });
+  }, []);
+
+  useEffect(() => { setTimeout(() => setHeroIn(true), 80); }, []);
+
+  const showToast = msg => { setToast(msg); setTimeout(() => setToast(null), 2600); };
+
+  const addToCart = product => {
+    setCart(prev => {
+      const ex = prev.find(i => i.id === product.id);
+      return ex ? prev.map(i => i.id === product.id ? { ...i, qty: i.qty+1 } : i)
+                : [...prev, { ...product, qty:1 }];
+    });
+    showToast(`${product.name} added to cart`);
+  };
+
+  const removeFromCart = id => setCart(prev => prev.filter(i => i.id !== id));
+  const updateQty      = (id, d) => setCart(prev =>
+    prev.map(i => i.id === id ? { ...i, qty: Math.max(1, i.qty+d) } : i)
+  );
+
+  const cartTotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const cartCount = cart.reduce((s, i) => s + i.qty, 0);
+  const filtered  = category === "all" ? products : products.filter(p => p.category === category);
+
+  const validate = () => {
+    const e = {};
+    if (!form.name.trim())                           e.name    = "Name is required";
+    if (!form.email.match(/^[^@]+@[^@]+\.[^@]+$/))  e.email   = "Valid email required";
+    if (!form.phone.match(/^\+?[\d\s\-]{7,15}$/))   e.phone   = "Valid phone number required";
+    if (!form.address.trim())                        e.address = "Delivery address is required";
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
+
+  const handleCheckout = async () => {
+    if (!validate() || cart.length === 0) return;
+    setSubmitting(true);
+    const orderId  = "SS" + Date.now().toString().slice(-6);
+    const lines    = cart.map(i => `${i.name} x${i.qty}  -  Rs.${(i.price*i.qty).toLocaleString()}`).join("\n");
+    const ownerMsg = `New order!\n\nOrder ID: ${orderId}\nName: ${form.name}\nPhone: ${form.phone}\nEmail: ${form.email}\nAddress: ${form.address}\nNotes: ${form.notes||"-"}\n\nItems:\n${lines}\n\nTotal: Rs.${cartTotal.toLocaleString()}`;
+    const custMsg  = `Dear ${form.name},\n\nThank you for your order!\n\nOrder ID: ${orderId}\n\nItems:\n${lines}\n\nTotal: Rs.${cartTotal.toLocaleString()}\n\nWe will contact you on ${form.phone} to confirm and arrange delivery.\n\nWith love,\nSpines and Scribbles`;
+    try {
+      await emailjs.send("service_knwomjq", "template_rol1gs8", { to_name:"Spines and Scribbles", to_email:OWNER_EMAIL, from_name:form.name, from_email:form.email, reply_to:form.email, subject:`New Order ${orderId} from ${form.name}`, message:ownerMsg });
+      await emailjs.send("service_knwomjq", "template_rol1gs8", { to_name:form.name, to_email:form.email, from_name:"Spines and Scribbles", from_email:OWNER_EMAIL, reply_to:OWNER_EMAIL, subject:`Your Order Confirmation - Spines and Scribbles`, message:custMsg });
+      setOrder({ id:orderId, name:form.name, total:cartTotal, items:[...cart] });
+      setCart([]);
+      setForm({ name:"", email:"", phone:"", address:"", notes:"" });
+      navTo("confirmation");
+    } catch(err) {
+      console.error("EmailJS error:", err);
+      alert("Something went wrong. Please try again or contact us at " + OWNER_EMAIL);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const navTo = p => { setPage(p); window.scrollTo(0,0); };
+
+  if (loading) return (
+    <div style={{minHeight:"100vh", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", background:"#fdf6ee"}}>
+      <div style={{fontFamily:"'Playfair Display',serif", fontSize:28, marginBottom:24}}>📚 Spines &amp; Scribbles</div>
+      <div className="spinner" />
+    </div>
+  );
+
+  return (
+    <div>
+      {/* NAV */}
+      <nav style={{background:"#f5e6d0", borderBottom:"1px solid #e0c9a8", padding:"0 32px", display:"flex", alignItems:"center", justifyContent:"space-between", height:64, position:"sticky", top:0, zIndex:50}}>
+        <div style={{display:"flex", alignItems:"center", gap:10, cursor:"pointer"}} onClick={() => navTo("home")}>
+          <span style={{fontSize:22}}>📚</span>
+          <span style={{fontFamily:"'Playfair Display',serif", fontSize:20, fontWeight:800, color:"#3d2b1f", letterSpacing:"-0.02em"}}>Spines &amp; Scribbles</span>
+        </div>
+        <div className="nav-links" style={{display:"flex", alignItems:"center", gap:4}}>
+          <button className="nav-link" onClick={() => navTo("home")}>Home</button>
+          <button className="nav-link" onClick={() => navTo("shop")}>Shop</button>
+          <button className="nav-link" onClick={() => navTo("mystery")}>Mystery Box ✨</button>
+          <button className="btn-ghost" style={{marginLeft:8, position:"relative"}} onClick={() => setCartOpen(true)}>
+            Cart
+            {cartCount > 0 && <span style={{position:"absolute", top:-6, right:-6, background:"#7c4e2a", color:"#fff", borderRadius:"50%", fontSize:11, padding:"2px 6px", lineHeight:1}}>{cartCount}</span>}
+          </button>
+        </div>
+      </nav>
+
+      {/* PAGES */}
+      {page === "home"         && <HomePage         products={products} setPage={navTo} heroIn={heroIn} addToCart={addToCart} />}
+      {page === "shop"         && <ShopPage         filtered={filtered} category={category} setCategory={setCategory} addToCart={addToCart} />}
+      {page === "mystery"      && <MysteryPage      products={products} addToCart={addToCart} />}
+      {page === "cart"         && <CartPage         cart={cart} cartTotal={cartTotal} updateQty={updateQty} removeFromCart={removeFromCart} setPage={navTo} form={form} setForm={setForm} handleCheckout={handleCheckout} submitting={submitting} errors={errors} />}
+      {page === "confirmation" && <ConfirmationPage order={order} setPage={navTo} />}
+
+      {/* CART SIDEBAR */}
+      {cartOpen && (
+        <>
+          <div className="overlay" onClick={() => setCartOpen(false)} />
+          <div className="cart-panel">
+            <div style={{padding:"22px 24px 14px", borderBottom:"1px solid #e0c9a8", display:"flex", justifyContent:"space-between", alignItems:"center"}}>
+              <span style={{fontFamily:"'Playfair Display',serif", fontSize:22, fontWeight:700}}>Your Cart</span>
+              <button style={{background:"none", border:"none", fontSize:18, cursor:"pointer", color:"#7c4e2a"}} onClick={() => setCartOpen(false)}>✕</button>
+            </div>
+            <div style={{flex:1, overflowY:"auto", padding:16}}>
+              {cart.length === 0 ? (
+                <div style={{textAlign:"center", padding:"60px 0", color:"#a08060"}}>
+                  <div style={{fontSize:44, marginBottom:12}}>🌿</div>
+                  <p style={{fontFamily:"'DM Sans',sans-serif"}}>Your cart is empty</p>
+                </div>
+              ) : cart.map(item => (
+                <div key={item.id} style={{display:"flex", gap:12, padding:"14px 0", borderBottom:"1px solid #f0dfc8"}}>
+                  <div style={{width:48, height:64, borderRadius:8, overflow:"hidden", flexShrink:0}}>
+                    <ProductImage src={item.image} alt={item.name} />
+                  </div>
+                  <div style={{flex:1}}>
+                    <p style={{fontSize:15, fontWeight:600}}>{item.name}</p>
+                    <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#a08060"}}>Rs.{item.price.toLocaleString()}</p>
+                    <div style={{display:"flex", alignItems:"center", gap:8, marginTop:6}}>
+                      <button onClick={() => updateQty(item.id,-1)} style={{background:"#f0dfc8", border:"none", borderRadius:"50%", width:26, height:26, cursor:"pointer", fontSize:15, lineHeight:1}}>-</button>
+                      <span style={{fontFamily:"'DM Sans',sans-serif", fontSize:14}}>{item.qty}</span>
+                      <button onClick={() => updateQty(item.id,1)}  style={{background:"#f0dfc8", border:"none", borderRadius:"50%", width:26, height:26, cursor:"pointer", fontSize:15, lineHeight:1}}>+</button>
+                      <button onClick={() => removeFromCart(item.id)} style={{marginLeft:"auto", background:"none", border:"none", color:"#c0392b", cursor:"pointer", fontSize:12, fontFamily:"'DM Sans',sans-serif"}}>Remove</button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {cart.length > 0 && (
+              <div style={{padding:"16px 24px 28px", borderTop:"1px solid #e0c9a8"}}>
+                <div style={{display:"flex", justifyContent:"space-between", marginBottom:16, fontFamily:"'Playfair Display',serif", fontSize:18}}>
+                  <span>Total</span><span>Rs.{cartTotal.toLocaleString()}</span>
+                </div>
+                <button className="btn-primary" style={{width:"100%"}} onClick={() => { setCartOpen(false); navTo("cart"); }}>Proceed to Checkout</button>
+              </div>
+            )}
+          </div>
+        </>
+      )}
+
+      {toast && <div className="toast">{toast}</div>}
+
+      {/* FOOTER */}
+      <footer style={{background:"#3d2b1f", color:"#d4b896", padding:"44px 48px 24px", marginTop:80}}>
+        <div className="footer-inner" style={{display:"flex", justifyContent:"space-between", flexWrap:"wrap", gap:32, marginBottom:32}}>
+          <div>
+            <div style={{fontFamily:"'Playfair Display',serif", fontSize:20, fontWeight:800, color:"#fdf6ee", marginBottom:8}}>📚 Spines &amp; Scribbles</div>
+            <p style={{fontSize:14, fontFamily:"'DM Sans',sans-serif", maxWidth:240, lineHeight:1.7, opacity:0.8}}>For readers, dreamers, and collectors of beautiful things.</p>
+          </div>
+          <div style={{fontFamily:"'DM Sans',sans-serif", fontSize:14}}>
+            <p style={{color:"#fdf6ee", fontWeight:500, marginBottom:10}}>Shop</p>
+            {["Books","Bookmarks","Diaries","Misc","Mystery Box"].map(l => <p key={l} style={{marginBottom:6, opacity:0.7}}>{l}</p>)}
+          </div>
+          <div style={{fontFamily:"'DM Sans',sans-serif", fontSize:14}}>
+            <p style={{color:"#fdf6ee", fontWeight:500, marginBottom:10}}>Contact</p>
+            <p style={{opacity:0.7}}>{OWNER_EMAIL}</p>
+            <p style={{opacity:0.7, marginTop:6}}>Orders confirmed via email &amp; phone</p>
+          </div>
+        </div>
+        <div style={{borderTop:"1px solid rgba(212,184,150,0.2)", paddingTop:20, textAlign:"center", fontSize:13, fontFamily:"'DM Sans',sans-serif", opacity:0.6}}>
+          2025 Spines &amp; Scribbles - Made with love &amp; good books
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+// ── HOME ──────────────────────────────────────────────────
+function HomePage({ products, setPage, heroIn, addToCart }) {
+  const bestsellers = products.filter(p => p.badge === "Bestseller").slice(0,3);
+  return (
+    <div>
+      <div className="hero-pad" style={{background:"linear-gradient(135deg,#f0dfc8 0%,#e8d0b0 60%,#f5e6d0 100%)", padding:"84px 48px 72px", textAlign:"center", position:"relative", overflow:"hidden"}}>
+        <div style={{position:"absolute", top:16, left:"4%", fontSize:56, opacity:0.07, transform:"rotate(-15deg)", pointerEvents:"none"}}>📚</div>
+        <div style={{position:"absolute", bottom:16, right:"7%", fontSize:44, opacity:0.07, transform:"rotate(10deg)", pointerEvents:"none"}}>✒️</div>
+        <div className={`hero-fade ${heroIn ? "in" : ""}`} style={{position:"relative", zIndex:1}}>
+          <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.16em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:16}}>a little shop for book lovers</p>
+          <h1 style={{fontFamily:"'Playfair Display',serif", fontSize:"clamp(38px,7vw,70px)", fontWeight:800, color:"#3d2b1f", lineHeight:1.1, marginBottom:20}}>
+            Books &amp; Beautiful<br/><em style={{color:"#7c4e2a"}}>little things.</em>
+          </h1>
+          <p style={{fontSize:18, color:"#6b4a2e", maxWidth:480, margin:"0 auto 36px", lineHeight:1.7}}>Handpicked books, handmade bookmarks, thoughtful diaries &amp; mystery boxes full of bookish joy.</p>
+          <div style={{display:"flex", gap:14, justifyContent:"center", flexWrap:"wrap"}}>
+            <button className="btn-primary" style={{fontSize:16, padding:"14px 36px"}} onClick={() => setPage("shop")}>Browse the Shop</button>
+            <button className="btn-ghost"   style={{fontSize:16, padding:"14px 36px"}} onClick={() => setPage("mystery")}>Mystery Box ✨</button>
+          </div>
+        </div>
+      </div>
+
+      <div className="section-pad" style={{padding:"64px 48px 0", maxWidth:1100, margin:"0 auto"}}>
+        <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.15em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:8}}>What we carry</p>
+        <h2 className="section-title">Shop by Category</h2>
+        <div className="divider" />
+        <div className="grid-4">
+          {[
+            {emoji:"📚", label:"Books",        desc:"Fiction, non-fiction & more"},
+            {emoji:"🌸", label:"Bookmarks",    desc:"Handmade & printed art"},
+            {emoji:"📓", label:"Diaries",      desc:"Journals & planners"},
+            {emoji:"🌿", label:"Miscellaneous",desc:"Totes, candles & gifts"},
+          ].map(c => (
+            <div key={c.label} className="card-hover" style={{background:"#f5e6d0", borderRadius:16, padding:"28px 20px", border:"1px solid #e0c9a8", cursor:"pointer"}} onClick={() => setPage("shop")}>
+              <div style={{fontSize:34, marginBottom:10}}>{c.emoji}</div>
+              <p style={{fontFamily:"'Playfair Display',serif", fontSize:17, fontWeight:700, marginBottom:4}}>{c.label}</p>
+              <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#9a6e4c"}}>{c.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mystery-banner" style={{margin:"60px 48px 0", borderRadius:20, background:"linear-gradient(135deg,#2d1a3e 0%,#4a2860 60%,#2d1a3e 100%)", padding:"48px 40px", display:"flex", alignItems:"center", justifyContent:"space-between", gap:24, flexWrap:"wrap"}}>
+        <div>
+          <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.2em", color:"#c9a0e8", textTransform:"uppercase", marginBottom:10}}>Something magical</p>
+          <h2 style={{fontFamily:"'Playfair Display',serif", fontSize:30, fontWeight:800, color:"#fdf6ee", marginBottom:10}}>The Mystery Box ✨</h2>
+          <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:15, color:"#c9a0e8", maxWidth:400, lineHeight:1.65}}>Every box is a unique curation — books, bookmarks, and surprises you didn't know you needed.</p>
+        </div>
+        <button style={{background:"#c9a0e8", color:"#2d1a3e", border:"none", padding:"14px 32px", borderRadius:30, fontFamily:"'DM Sans',sans-serif", fontSize:15, fontWeight:500, cursor:"pointer", whiteSpace:"nowrap"}} onClick={() => setPage("mystery")}>Discover</button>
+      </div>
+
+      <div className="section-pad" style={{padding:"64px 48px 0", maxWidth:1100, margin:"0 auto"}}>
+        <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.15em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:8}}>Loved by readers</p>
+        <h2 className="section-title">Bestsellers</h2>
+        <div className="divider" />
+        <div className="grid-2">
+          {bestsellers.map(p => <ProductCard key={p.id} product={p} addToCart={addToCart} />)}
+        </div>
+        <div style={{textAlign:"center", marginTop:36}}>
+          <button className="btn-ghost" onClick={() => setPage("shop")}>See all products</button>
+        </div>
+      </div>
+
+      <div className="section-pad" style={{padding:"60px 48px 0", maxWidth:1100, margin:"0 auto"}}>
+        <div className="grid-4">
+          {[
+            {e:"🌿",l:"Lovingly curated",  d:"Every item handpicked"},
+            {e:"📦",l:"Careful packaging", d:"Books deserve good homes"},
+            {e:"📧",l:"Personal service",  d:"We confirm every order"},
+            {e:"🎁",l:"Gift-ready",        d:"Beautiful packaging included"},
+          ].map(b => (
+            <div key={b.l} style={{textAlign:"center", padding:"24px 12px"}}>
+              <div style={{fontSize:28, marginBottom:8}}>{b.e}</div>
+              <p style={{fontWeight:600, fontSize:15, marginBottom:4}}>{b.l}</p>
+              <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#9a6e4c"}}>{b.d}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── SHOP ──────────────────────────────────────────────────
+function ShopPage({ filtered, category, setCategory, addToCart }) {
+  return (
+    <div className="section-pad" style={{padding:"48px 48px 0", maxWidth:1200, margin:"0 auto"}}>
+      <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.15em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:8}}>Everything we love</p>
+      <h2 className="section-title">Our Collection</h2>
+      <div className="divider" />
+      <div style={{display:"flex", gap:8, flexWrap:"wrap", marginBottom:36}}>
+        {CATEGORIES.map(c => (
+          <button key={c.key} className={`cat-pill ${category===c.key?"active":""}`} onClick={() => setCategory(c.key)}>{c.label}</button>
+        ))}
+      </div>
+      <div className="grid-3">
+        {filtered.map(p => <ProductCard key={p.id} product={p} addToCart={addToCart} />)}
+      </div>
+    </div>
+  );
+}
+
+// ── MYSTERY ───────────────────────────────────────────────
+function MysteryPage({ products, addToCart }) {
+  const items = products.filter(p => p.category === "mystery");
+  return (
+    <div>
+      <div style={{background:"linear-gradient(135deg,#1a0d2e 0%,#3d1f5c 60%,#1a0d2e 100%)", padding:"80px 48px 72px", textAlign:"center"}}>
+        <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.2em", color:"#c9a0e8", textTransform:"uppercase", marginBottom:14}}>a little magic in a box</p>
+        <h1 style={{fontFamily:"'Playfair Display',serif", fontSize:"clamp(36px,6vw,56px)", fontWeight:800, color:"#fdf6ee", marginBottom:16, lineHeight:1.1}}>The Mystery Box ✨</h1>
+        <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:17, color:"#c9a0e8", maxWidth:500, margin:"0 auto", lineHeight:1.7}}>We pick the books. We pick the bookmarks. We pick the joy. Every box is uniquely ours — and then it's yours.</p>
+      </div>
+      <div style={{maxWidth:900, margin:"0 auto", padding:"60px 48px 0"}}>
+        <div className="grid-2" style={{marginBottom:56}}>
+          {items.map(p => <ProductCard key={p.id} product={p} addToCart={addToCart} />)}
+        </div>
+        <div style={{background:"#f5e6d0", borderRadius:20, padding:"40px", border:"1px solid #e0c9a8"}}>
+          <h3 style={{fontFamily:"'Playfair Display',serif", fontSize:24, fontWeight:700, marginBottom:24}}>What's inside?</h3>
+          <div className="grid-4">
+            {[["📚","1-2 Books","Curated by theme or mood"],["🌸","Bookmark(s)","Handmade or printed art"],["📓","Stationery","Washi tape, pens, surprises"],["🎁","Something extra","A little secret from us"]].map(([e,t,d]) => (
+              <div key={t} style={{textAlign:"center"}}>
+                <div style={{fontSize:28, marginBottom:6}}>{e}</div>
+                <p style={{fontWeight:600, fontSize:15, marginBottom:2}}>{t}</p>
+                <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#9a6e4c"}}>{d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── PRODUCT CARD ──────────────────────────────────────────
+function ProductCard({ product, addToCart }) {
+  const bc = BADGE_COLORS[product.badge];
+  const isMystery = product.category === "mystery";
+  return (
+    <div className="card-hover" style={{background:"#fffaf4", borderRadius:16, border:"1px solid #e0c9a8", overflow:"hidden", display:"flex", flexDirection:"column"}}>
+      <div style={{position:"relative", background: isMystery ? "linear-gradient(135deg,#2d1a3e,#4a2860)" : "#f0e4cc", width:"100%"}}>
+        <ProductImage src={product.image} alt={product.name} />
+        {product.badge && <span style={{position:"absolute", top:10, left:10, background:bc||"#7c4e2a", color:"#fdf6ee", fontSize:11, padding:"3px 10px", borderRadius:20, fontFamily:"'DM Sans',sans-serif"}}>{product.badge}</span>}
+      </div>
+      <div style={{padding:"16px 18px 20px", flex:1, display:"flex", flexDirection:"column"}}>
+        <p style={{fontFamily:"'Playfair Display',serif", fontSize:16, fontWeight:700, marginBottom:2}}>{product.name}</p>
+        {product.author && <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, color:"#9a6e4c", marginBottom:6}}>by {product.author}</p>}
+        <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#6b4a2e", lineHeight:1.55, flex:1, marginBottom:14}}>{product.desc}</p>
+        <div style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
+          <span style={{fontFamily:"'Playfair Display',serif", fontSize:18, fontWeight:700, color:"#7c4e2a"}}>Rs.{product.price.toLocaleString()}</span>
+          <button className="btn-primary" style={{padding:"8px 18px", fontSize:13}} onClick={() => addToCart(product)}>Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── CHECKOUT ──────────────────────────────────────────────
+function CartPage({ cart, cartTotal, updateQty, removeFromCart, setPage, form, setForm, handleCheckout, submitting, errors }) {
+  const field = (label, key, type="text", ph="") => (
+    <div style={{marginBottom:18}}>
+      <label style={{display:"block", fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#6b4a2e", marginBottom:6, fontWeight:500}}>{label}</label>
+      {key === "notes"
+        ? <textarea className={`input-field${errors[key]?" err":""}`} rows={3} placeholder={ph} value={form[key]} onChange={e => setForm(p => ({...p,[key]:e.target.value}))} style={{resize:"vertical"}} />
+        : <input type={type} className={`input-field${errors[key]?" err":""}`} placeholder={ph} value={form[key]} onChange={e => setForm(p => ({...p,[key]:e.target.value}))} />
+      }
+      {errors[key] && <p style={{color:"#c0392b", fontSize:12, marginTop:4, fontFamily:"'DM Sans',sans-serif"}}>{errors[key]}</p>}
+    </div>
+  );
+  if (cart.length === 0) return (
+    <div style={{textAlign:"center", padding:"100px 48px"}}>
+      <div style={{fontSize:60, marginBottom:16}}>🛒</div>
+      <h2 style={{fontFamily:"'Playfair Display',serif", fontSize:28, marginBottom:12}}>Your cart is empty</h2>
+      <button className="btn-primary" onClick={() => setPage("shop")}>Browse the Shop</button>
+    </div>
+  );
+  return (
+    <div className="section-pad" style={{padding:"48px 48px 0", maxWidth:1000, margin:"0 auto"}}>
+      <h2 className="section-title">Checkout</h2>
+      <div className="divider" />
+      <div className="checkout-grid" style={{display:"grid", gridTemplateColumns:"1fr 380px", gap:36}}>
+        <div>
+          <h3 style={{fontFamily:"'Playfair Display',serif", fontSize:20, marginBottom:16}}>Your Order</h3>
+          {cart.map(item => (
+            <div key={item.id} style={{display:"flex", gap:14, padding:"14px 0", borderBottom:"1px solid #f0dfc8", alignItems:"center"}}>
+              <div style={{width:52, height:68, borderRadius:8, overflow:"hidden", flexShrink:0}}>
+                <ProductImage src={item.image} alt={item.name} />
+              </div>
+              <div style={{flex:1}}>
+                <p style={{fontSize:15, fontWeight:600}}>{item.name}</p>
+                <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#9a6e4c"}}>Rs.{item.price.toLocaleString()} each</p>
+              </div>
+              <div style={{display:"flex", alignItems:"center", gap:8}}>
+                <button onClick={() => updateQty(item.id,-1)} style={{background:"#f0dfc8", border:"none", borderRadius:"50%", width:28, height:28, cursor:"pointer", fontSize:14}}>-</button>
+                <span style={{fontFamily:"'DM Sans',sans-serif", minWidth:20, textAlign:"center"}}>{item.qty}</span>
+                <button onClick={() => updateQty(item.id,1)}  style={{background:"#f0dfc8", border:"none", borderRadius:"50%", width:28, height:28, cursor:"pointer", fontSize:14}}>+</button>
+                <button onClick={() => removeFromCart(item.id)} style={{marginLeft:4, background:"none", border:"none", color:"#c0392b", cursor:"pointer", fontSize:12, fontFamily:"'DM Sans',sans-serif"}}>x</button>
+              </div>
+              <div style={{fontFamily:"'Playfair Display',serif", fontSize:16, minWidth:70, textAlign:"right", color:"#7c4e2a"}}>Rs.{(item.price*item.qty).toLocaleString()}</div>
+            </div>
+          ))}
+          <div style={{display:"flex", justifyContent:"space-between", padding:"20px 0 0", fontFamily:"'Playfair Display',serif", fontSize:20, fontWeight:700}}>
+            <span>Total</span><span style={{color:"#7c4e2a"}}>Rs.{cartTotal.toLocaleString()}</span>
+          </div>
+          <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#9a6e4c", marginTop:8}}>We'll contact you to confirm your order and arrange delivery.</p>
+        </div>
+        <div style={{background:"#fffaf4", borderRadius:16, border:"1px solid #e0c9a8", padding:"28px 24px", alignSelf:"start"}}>
+          <h3 style={{fontFamily:"'Playfair Display',serif", fontSize:20, marginBottom:20}}>Your Details</h3>
+          {field("Full Name *",             "name",    "text",  "Jane Austen")}
+          {field("Email Address *",         "email",   "email", "you@email.com")}
+          {field("Phone Number *",          "phone",   "tel",   "+91 98765 43210")}
+          {field("Delivery Address *",      "address", "text",  "House no., street, city, pincode")}
+          {field("Notes / Special Requests","notes",   "text",  "e.g. Gift wrap, anything else...")}
+          <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, color:"#9a6e4c", marginBottom:20, lineHeight:1.6}}>Order details will be sent to your email. We'll reach out to confirm.</p>
+          <button className="btn-primary" style={{width:"100%", fontSize:16, padding:14}} onClick={handleCheckout} disabled={submitting}>
+            {submitting ? "Placing Order..." : "Place Order"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── CONFIRMATION ──────────────────────────────────────────
+function ConfirmationPage({ order, setPage }) {
+  if (!order) return null;
+  return (
+    <div style={{textAlign:"center", padding:"80px 48px", maxWidth:600, margin:"0 auto"}}>
+      <div style={{fontSize:68, marginBottom:20}}>🌿</div>
+      <h2 style={{fontFamily:"'Playfair Display',serif", fontSize:36, fontWeight:800, marginBottom:8}}>Order Placed!</h2>
+      <p style={{fontFamily:"'DM Sans',sans-serif", color:"#9a6e4c", marginBottom:8}}>Order ID: <strong style={{color:"#7c4e2a"}}>{order.id}</strong></p>
+      <p style={{fontSize:17, color:"#6b4a2e", lineHeight:1.7, marginBottom:8}}>Thank you, <strong>{order.name}</strong>! Your order worth <strong>Rs.{order.total.toLocaleString()}</strong> has been placed.</p>
+      <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:14, color:"#9a6e4c", marginBottom:8}}>A confirmation email has been sent to you, and we've been notified too.</p>
+      <div style={{background:"#f5e6d0", borderRadius:14, padding:"20px", margin:"24px 0", textAlign:"left"}}>
+        {order.items.map(i => (
+          <div key={i.id} style={{display:"flex", justifyContent:"space-between", padding:"6px 0", borderBottom:"1px solid #e0c9a8", fontFamily:"'DM Sans',sans-serif", fontSize:14}}>
+            <span>{i.name} x{i.qty}</span>
+            <span style={{color:"#7c4e2a"}}>Rs.{(i.price*i.qty).toLocaleString()}</span>
+          </div>
+        ))}
+        <div style={{display:"flex", justifyContent:"space-between", paddingTop:10, fontFamily:"'Playfair Display',serif", fontWeight:700, fontSize:16}}>
+          <span>Total</span><span style={{color:"#7c4e2a"}}>Rs.{order.total.toLocaleString()}</span>
+        </div>
+      </div>
+      <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#9a6e4c", marginBottom:32}}>We'll contact you shortly to confirm and arrange delivery. Happy reading!</p>
+      <button className="btn-primary" onClick={() => setPage("home")}>Back to Home</button>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
