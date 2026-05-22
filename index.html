@@ -86,15 +86,15 @@ const CATEGORIES = [
 ];
 
 // ── PRODUCT IMAGE HELPER ──────────────────────────────────
-function ProductImage({ src, alt, height="100%", style={} }) {
+function ProductImage({ src, alt, style={} }) {
   const [errored, setErrored] = useState(false);
   if (errored) return (
-    <div style={{ width:"100%", height:"100%", display:"flex", alignItems:"center", justifyContent:"center", background:"#f5e6d0", fontSize:52, ...style }}>📚</div>
+    <div style={{ width:"100%", height:160, display:"flex", alignItems:"center", justifyContent:"center", background:"#f5e6d0", fontSize:52 }}>📚</div>
   );
   return (
     <img src={src} alt={alt}
       onError={() => setErrored(true)}
-      style={{ width:"100%", height:"100%", objectFit:"contain", objectPosition:"center", display:"block", ...style }}
+      style={{ width:"100%", height:"auto", display:"block", ...style }}
     />
   );
 }
@@ -444,11 +444,11 @@ function ProductCard({ product, addToCart }) {
   const isMystery = product.category === "mystery";
   return (
     <div className="card-hover" style={{background:"#fffaf4", borderRadius:16, border:"1px solid #e0c9a8", overflow:"hidden", display:"flex", flexDirection:"column"}}>
-      <div style={{background: isMystery ? "linear-gradient(135deg,#2d1a3e,#4a2860)" : "#f0e4cc", aspectRatio:"2/3", overflow:"hidden", width:"100%", display:"flex", alignItems:"center", justifyContent:"center"}}>
-        <ProductImage src={product.image} alt={product.name} height="100%" />
+      <div style={{position:"relative", background: isMystery ? "linear-gradient(135deg,#2d1a3e,#4a2860)" : "#f0e4cc", width:"100%"}}>
+        <ProductImage src={product.image} alt={product.name} />
+        {product.badge && <span style={{position:"absolute", top:10, left:10, background:bc||"#7c4e2a", color:"#fdf6ee", fontSize:11, padding:"3px 10px", borderRadius:20, fontFamily:"'DM Sans',sans-serif"}}>{product.badge}</span>}
       </div>
       <div style={{padding:"16px 18px 20px", flex:1, display:"flex", flexDirection:"column"}}>
-        {product.badge && <span style={{display:"inline-block", background:bc||"#7c4e2a", color:"#fdf6ee", fontSize:11, padding:"3px 10px", borderRadius:20, fontFamily:"'DM Sans',sans-serif", marginBottom:8, alignSelf:"flex-start"}}>{product.badge}</span>}
         <p style={{fontFamily:"'Playfair Display',serif", fontSize:16, fontWeight:700, marginBottom:2}}>{product.name}</p>
         {product.author && <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, color:"#9a6e4c", marginBottom:6}}>by {product.author}</p>}
         <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#6b4a2e", lineHeight:1.55, flex:1, marginBottom:14}}>{product.desc}</p>
