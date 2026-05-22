@@ -10,7 +10,7 @@
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script>emailjs.init("3Ole7EM2jrabWdzz9");</script>
+<script>emailjs.init("J7eCJErFp1sj9gxEa");</script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
@@ -176,8 +176,8 @@ function App() {
     const ownerMsg = `New order!\n\nOrder ID: ${orderId}\nName: ${form.name}\nPhone: ${form.phone}\nEmail: ${form.email}\nAddress: ${form.address}\nNotes: ${form.notes||"-"}\n\nItems:\n${lines}\n\nTotal: Rs.${cartTotal.toLocaleString()}`;
     const custMsg  = `Dear ${form.name},\n\nThank you for your order!\n\nOrder ID: ${orderId}\n\nItems:\n${lines}\n\nTotal: Rs.${cartTotal.toLocaleString()}\n\nWe will contact you on ${form.phone} to confirm and arrange delivery.\n\nWith love,\nSpines and Scribbles`;
     try {
-      await emailjs.send("service_s2nh9xe", "template_m8jmy23", { to_name:"Spines and Scribbles", to_email:OWNER_EMAIL, from_name:form.name, from_email:form.email, reply_to:form.email, subject:`New Order ${orderId} from ${form.name}`, message:ownerMsg });
-      await emailjs.send("service_s2nh9xe", "template_m8jmy23", { to_name:form.name, to_email:form.email, from_name:"Spines and Scribbles", from_email:OWNER_EMAIL, reply_to:OWNER_EMAIL, subject:`Your Order Confirmation - Spines and Scribbles`, message:custMsg });
+      await emailjs.send("service_knwomjq", "template_rol1gs8", { to_name:"Spines and Scribbles", to_email:OWNER_EMAIL, from_name:form.name, from_email:form.email, reply_to:form.email, subject:`New Order ${orderId} from ${form.name}`, message:ownerMsg });
+      await emailjs.send("service_knwomjq", "template_rol1gs8", { to_name:form.name, to_email:form.email, from_name:"Spines and Scribbles", from_email:OWNER_EMAIL, reply_to:OWNER_EMAIL, subject:`Your Order Confirmation - Spines and Scribbles`, message:custMsg });
       setOrder({ id:orderId, name:form.name, total:cartTotal, items:[...cart] });
       setCart([]);
       setForm({ name:"", email:"", phone:"", address:"", notes:"" });
