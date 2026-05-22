@@ -42,8 +42,8 @@
   @keyframes toastIn { from { opacity:0; transform:translateX(-50%) translateY(12px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
   .section-title { font-family: 'Playfair Display', serif; font-size: clamp(26px,4vw,36px); font-weight: 700; color: #3d2b1f; line-height: 1.2; }
   .divider { width: 48px; height: 3px; background: #c9a07a; border-radius: 2px; margin: 8px 0 24px; }
-  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-  .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
   .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
   .spinner { width:40px; height:40px; border:3px solid #e0c9a8; border-top-color:#7c4e2a; border-radius:50%; animation:spin 0.8s linear infinite; margin:80px auto; }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -64,7 +64,7 @@
 const { useState, useEffect } = React;
 
 // ── CONFIG ────────────────────────────────────────────────
-const OWNER_EMAIL = "spinesnscribbles@gmail.com";
+const OWNER_EMAIL = "spinesnscribbles@gmail.com"; // change this
 
 const BADGE_COLORS = {
   "Bestseller":   "#7c5c3e",
@@ -86,15 +86,15 @@ const CATEGORIES = [
 ];
 
 // ── PRODUCT IMAGE HELPER ──────────────────────────────────
-function ProductImage({ src, alt, height=200, style={} }) {
+function ProductImage({ src, alt, height="100%", style={} }) {
   const [errored, setErrored] = useState(false);
   if (errored) return (
-    <div style={{ height, display:"flex", alignItems:"center", justifyContent:"center", background:"#f5e6d0", fontSize:52, ...style }}>📚</div>
+    <div style={{ width:"100%", height:"100%", display:"flex", alignItems:"center", justifyContent:"center", background:"#f5e6d0", fontSize:52, ...style }}>📚</div>
   );
   return (
     <img src={src} alt={alt}
       onError={() => setErrored(true)}
-      style={{ width:"100%", height, objectFit:"cover", objectPosition:"center", display:"block", ...style }}
+      style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"top", display:"block", ...style }}
     />
   );
 }
@@ -114,7 +114,9 @@ function App() {
   const [toast, setToast]           = useState(null);
   const [heroIn, setHeroIn]         = useState(false);
 
-  // Load products from JSON files
+  // Load products from JSON files; falls back to embedded data when running locally (file://)
+  const EMBEDDED_PRODUCTS = [{"id": 1, "name": "The Midnight Library", "author": "Matt Haig", "price": 349, "image": "images/1.jpg", "desc": "A dazzling novel about all the lives we could have lived.", "badge": "Bestseller", "category": "books"}, {"id": 2, "name": "Lessons in Chemistry", "author": "Bonnie Garmus", "price": 399, "image": "images/2.jpg", "desc": "A woman chemist in the 1960s becomes an unlikely cooking show host.", "badge": "Staff Pick", "category": "books"}, {"id": 3, "name": "The Atlas Six", "author": "Olivie Blake", "price": 449, "image": "images/3.jpg", "desc": "Dark academia fantasy with six magical scholars and deadly stakes.", "badge": "New Arrival", "category": "books"}, {"id": 4, "name": "Tomorrow & Tomorrow", "author": "Gabriel Zevin", "price": 379, "image": "images/4.jpg", "desc": "A sweeping love story set in the world of video games.", "badge": "", "category": "books"}, {"id": 5, "name": "Piranesi", "author": "Susanna Clarke", "price": 299, "image": "images/5.jpg", "desc": "A mysterious man living in a house with infinite halls and tides.", "badge": "Award Winner", "category": "books"}, {"id": 6, "name": "Sea of Tranquility", "author": "Emily St. John Mandel", "price": 349, "image": "images/6.jpg", "desc": "Time travel across centuries connects five extraordinary lives.", "badge": "", "category": "books"}, {"id": 7, "name": "Pressed Flower Bookmark", "price": 89, "image": "images/7.jpg", "desc": "Handcrafted with real dried flowers preserved under clear resin.", "badge": "Handmade", "category": "bookmarks", "author": ""}, {"id": 8, "name": "Leather Tassel Bookmark", "price": 129, "image": "images/8.jpg", "desc": "Genuine leather with a gold tassel. Rich aged caramel tone.", "badge": "Bestseller", "category": "bookmarks", "author": ""}, {"id": 9, "name": "Watercolour Set of 3", "price": 149, "image": "images/9.jpg", "desc": "Three bookmarks printed with original watercolour artwork.", "badge": "", "category": "bookmarks", "author": ""}, {"id": 10, "name": "Brass Clip Bookmark", "price": 99, "image": "images/10.jpg", "desc": "Elegant brass page clip with a delicate leaf detail.", "badge": "New", "category": "bookmarks", "author": ""}, {"id": 11, "name": "The Muted Sage Diary", "price": 499, "image": "images/11.jpg", "desc": "A5 dotted journal, 200 cream pages, sage green linen cover.", "badge": "New Arrival", "category": "diaries", "author": ""}, {"id": 12, "name": "Vintage Leather Journal", "price": 699, "image": "images/12.jpg", "desc": "Genuine leather-bound and refillable, with 192 ruled pages.", "badge": "Staff Pick", "category": "diaries", "author": ""}, {"id": 13, "name": "Floral Weekly Planner", "price": 399, "image": "images/13.jpg", "desc": "Undated weekly planner with original botanical illustrations.", "badge": "", "category": "diaries", "author": ""}, {"id": 14, "name": "Moonchild Night Journal", "price": 549, "image": "images/14.jpg", "desc": "Celestial art cover, cream pages, and a satin ribbon marker.", "badge": "Bestseller", "category": "diaries", "author": ""}, {"id": 15, "name": "Bookish Washi Tape Set", "price": 199, "image": "images/15.jpg", "desc": "Set of 5 literary-themed washi tapes for journaling & crafts.", "badge": "", "category": "misc", "author": ""}, {"id": 16, "name": "Reader's Tote Bag", "price": 449, "image": "images/16.jpg", "desc": "Cotton canvas tote with 'One more chapter' screen print.", "badge": "Bestseller", "category": "misc", "author": ""}, {"id": 17, "name": "Book Lovers Candle", "price": 299, "image": "images/17.jpg", "desc": "Soy wax candle scented with old books, vanilla & sandalwood.", "badge": "New", "category": "misc", "author": ""}, {"id": 18, "name": "Quill & Ink Pen Set", "price": 349, "image": "images/18.jpg", "desc": "Dip pen with three nibs and a pot of rich walnut ink.", "badge": "Staff Pick", "category": "misc", "author": ""}, {"id": 19, "name": "The Wanderer's Mystery Box", "price": 999, "image": "images/19.jpg", "desc": "A curated mystery box for the avid reader. Every box is unique \u2014 books, bookmarks, stationery, and surprises!", "badge": "\u2728 Mystery", "category": "mystery", "author": ""}, {"id": 20, "name": "Mini Mystery Parcel", "price": 599, "image": "images/20.jpg", "desc": "A smaller mystery parcel \u2014 perfect as a gift or self-treat. 2\u20133 mystery items curated with love.", "badge": "\u2728 Mystery", "category": "mystery", "author": ""}];
+
   useEffect(() => {
     const sources = [
       { file:"books.json",     category:"books"     },
@@ -123,15 +125,22 @@ function App() {
       { file:"misc.json",      category:"misc"      },
       { file:"mystery.json",   category:"mystery"   },
     ];
+    // file:// protocol blocks fetch — detect and use embedded data instead
+    if (window.location.protocol === "file:") {
+      setProducts(EMBEDDED_PRODUCTS);
+      setLoading(false);
+      return;
+    }
     Promise.all(
       sources.map(s =>
         fetch(s.file)
-          .then(r => r.json())
+          .then(r => { if (!r.ok) throw new Error(); return r.json(); })
           .then(items => items.map(item => ({ ...item, author: item.author || "", category: s.category })))
           .catch(() => [])
       )
     ).then(results => {
-      setProducts(results.flat());
+      const loaded = results.flat();
+      setProducts(loaded.length > 0 ? loaded : EMBEDDED_PRODUCTS);
       setLoading(false);
     });
   }, []);
@@ -242,8 +251,8 @@ function App() {
                 </div>
               ) : cart.map(item => (
                 <div key={item.id} style={{display:"flex", gap:12, padding:"14px 0", borderBottom:"1px solid #f0dfc8"}}>
-                  <div style={{width:48, height:48, borderRadius:8, overflow:"hidden", flexShrink:0}}>
-                    <ProductImage src={item.image} alt={item.name} height={48} />
+                  <div style={{width:48, height:64, borderRadius:8, overflow:"hidden", flexShrink:0}}>
+                    <ProductImage src={item.image} alt={item.name} />
                   </div>
                   <div style={{flex:1}}>
                     <p style={{fontSize:15, fontWeight:600}}>{item.name}</p>
@@ -435,8 +444,8 @@ function ProductCard({ product, addToCart }) {
   const isMystery = product.category === "mystery";
   return (
     <div className="card-hover" style={{background:"#fffaf4", borderRadius:16, border:"1px solid #e0c9a8", overflow:"hidden", display:"flex", flexDirection:"column"}}>
-      <div style={{background: isMystery ? "linear-gradient(135deg,#2d1a3e,#4a2860)" : "#f5e6d0", height:200, overflow:"hidden"}}>
-        <ProductImage src={product.image} alt={product.name} height={200} />
+      <div style={{background: isMystery ? "linear-gradient(135deg,#2d1a3e,#4a2860)" : "#f5e6d0", aspectRatio:"3/4", overflow:"hidden", width:"100%"}}>
+        <ProductImage src={product.image} alt={product.name} height="100%" />
       </div>
       <div style={{padding:"16px 18px 20px", flex:1, display:"flex", flexDirection:"column"}}>
         {product.badge && <span style={{display:"inline-block", background:bc||"#7c4e2a", color:"#fdf6ee", fontSize:11, padding:"3px 10px", borderRadius:20, fontFamily:"'DM Sans',sans-serif", marginBottom:8, alignSelf:"flex-start"}}>{product.badge}</span>}
@@ -480,8 +489,8 @@ function CartPage({ cart, cartTotal, updateQty, removeFromCart, setPage, form, s
           <h3 style={{fontFamily:"'Playfair Display',serif", fontSize:20, marginBottom:16}}>Your Order</h3>
           {cart.map(item => (
             <div key={item.id} style={{display:"flex", gap:14, padding:"14px 0", borderBottom:"1px solid #f0dfc8", alignItems:"center"}}>
-              <div style={{width:52, height:52, borderRadius:8, overflow:"hidden", flexShrink:0}}>
-                <ProductImage src={item.image} alt={item.name} height={52} />
+              <div style={{width:52, height:68, borderRadius:8, overflow:"hidden", flexShrink:0}}>
+                <ProductImage src={item.image} alt={item.name} />
               </div>
               <div style={{flex:1}}>
                 <p style={{fontSize:15, fontWeight:600}}>{item.name}</p>
