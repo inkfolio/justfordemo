@@ -1,0 +1,18 @@
+[
+  {
+    "id": 19,
+    "name": "The Wanderer's Mystery Box",
+    "price": 999,
+    "image": "images/19.jpg",
+    "desc": "A curated mystery box for the avid reader. Every box is unique — books, bookmarks, stationery, and surprises!",
+    "badge": "✨ Mystery"
+  },
+  {
+    "id": 20,
+    "name": "Mini Mystery Parcel",
+    "price": 599,
+    "image": "images/20.jpg",
+    "desc": "A smaller mystery parcel — perfect as a gift or self-treat. 2–3 mystery items curated with love.",
+    "badge": "✨ Mystery"
+  }
+]

@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "name": "The Midnight Library",
+    "author": "Matt Haig",
+    "price": 349,
+    "image": "images/1.jpg",
+    "desc": "A dazzling novel about all the lives we could have lived.",
+    "badge": "Bestseller"
+  },
+  {
+    "id": 2,
+    "name": "Lessons in Chemistry",
+    "author": "Bonnie Garmus",
+    "price": 399,
+    "image": "images/2.jpg",
+    "desc": "A woman chemist in the 1960s becomes an unlikely cooking show host.",
+    "badge": "Staff Pick"
+  },
+  {
+    "id": 3,
+    "name": "The Atlas Six",
+    "author": "Olivie Blake",
+    "price": 449,
+    "image": "images/3.jpg",
+    "desc": "Dark academia fantasy with six magical scholars and deadly stakes.",
+    "badge": "New Arrival"
+  },
+  {
+    "id": 4,
+    "name": "Tomorrow & Tomorrow",
+    "author": "Gabriel Zevin",
+    "price": 379,
+    "image": "images/4.jpg",
+    "desc": "A sweeping love story set in the world of video games.",
+    "badge": ""
+  },
+  {
+    "id": 5,
+    "name": "Piranesi",
+    "author": "Susanna Clarke",
+    "price": 299,
+    "image": "images/5.jpg",
+    "desc": "A mysterious man living in a house with infinite halls and tides.",
+    "badge": "Award Winner"
+  },
+  {
+    "id": 6,
+    "name": "Sea of Tranquility",
+    "author": "Emily St. John Mandel",
+    "price": 349,
+    "image": "images/6.jpg",
+    "desc": "Time travel across centuries connects five extraordinary lives.",
+    "badge": ""
+  }
+]

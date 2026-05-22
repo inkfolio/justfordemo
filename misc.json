@@ -1,0 +1,34 @@
+[
+  {
+    "id": 15,
+    "name": "Bookish Washi Tape Set",
+    "price": 199,
+    "image": "images/15.jpg",
+    "desc": "Set of 5 literary-themed washi tapes for journaling & crafts.",
+    "badge": ""
+  },
+  {
+    "id": 16,
+    "name": "Reader's Tote Bag",
+    "price": 449,
+    "image": "images/16.jpg",
+    "desc": "Cotton canvas tote with 'One more chapter' screen print.",
+    "badge": "Bestseller"
+  },
+  {
+    "id": 17,
+    "name": "Book Lovers Candle",
+    "price": 299,
+    "image": "images/17.jpg",
+    "desc": "Soy wax candle scented with old books, vanilla & sandalwood.",
+    "badge": "New"
+  },
+  {
+    "id": 18,
+    "name": "Quill & Ink Pen Set",
+    "price": 349,
+    "image": "images/18.jpg",
+    "desc": "Dip pen with three nibs and a pot of rich walnut ink.",
+    "badge": "Staff Pick"
+  }
+]

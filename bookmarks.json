@@ -1,0 +1,34 @@
+[
+  {
+    "id": 7,
+    "name": "Pressed Flower Bookmark",
+    "price": 89,
+    "image": "images/7.jpg",
+    "desc": "Handcrafted with real dried flowers preserved under clear resin.",
+    "badge": "Handmade"
+  },
+  {
+    "id": 8,
+    "name": "Leather Tassel Bookmark",
+    "price": 129,
+    "image": "images/8.jpg",
+    "desc": "Genuine leather with a gold tassel. Rich aged caramel tone.",
+    "badge": "Bestseller"
+  },
+  {
+    "id": 9,
+    "name": "Watercolour Set of 3",
+    "price": 149,
+    "image": "images/9.jpg",
+    "desc": "Three bookmarks printed with original watercolour artwork.",
+    "badge": ""
+  },
+  {
+    "id": 10,
+    "name": "Brass Clip Bookmark",
+    "price": 99,
+    "image": "images/10.jpg",
+    "desc": "Elegant brass page clip with a delicate leaf detail.",
+    "badge": "New"
+  }
+]

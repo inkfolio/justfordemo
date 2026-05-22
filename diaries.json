@@ -1,0 +1,34 @@
+[
+  {
+    "id": 11,
+    "name": "The Muted Sage Diary",
+    "price": 499,
+    "image": "images/11.jpg",
+    "desc": "A5 dotted journal, 200 cream pages, sage green linen cover.",
+    "badge": "New Arrival"
+  },
+  {
+    "id": 12,
+    "name": "Vintage Leather Journal",
+    "price": 699,
+    "image": "images/12.jpg",
+    "desc": "Genuine leather-bound and refillable, with 192 ruled pages.",
+    "badge": "Staff Pick"
+  },
+  {
+    "id": 13,
+    "name": "Floral Weekly Planner",
+    "price": 399,
+    "image": "images/13.jpg",
+    "desc": "Undated weekly planner with original botanical illustrations.",
+    "badge": ""
+  },
+  {
+    "id": 14,
+    "name": "Moonchild Night Journal",
+    "price": 549,
+    "image": "images/14.jpg",
+    "desc": "Celestial art cover, cream pages, and a satin ribbon marker.",
+    "badge": "Bestseller"
+  }
+]
