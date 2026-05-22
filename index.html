@@ -10,7 +10,7 @@
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script>emailjs.init("3Ole7EM2jrabWdzz9");</script>
+<script>emailjs.init("J7eCJErFp1sj9gxEa");</script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
@@ -194,7 +194,7 @@ function App() {
 
     try {
       // Send to owner
-      await emailjs.send("service_s2nh9xe", "template_m8jmy23", {
+      await emailjs.send("service_knwomjq", "template_rol1gs8", {
         ...sharedParams,
         to_email: OWNER_EMAIL,
         to_name:  "Spines & Scribbles",
@@ -203,7 +203,7 @@ function App() {
       });
 
       // Send acknowledgement to customer
-      await emailjs.send("service_s2nh9xe", "template_m8jmy23", {
+      await emailjs.send("service_knwomjq", "template_rol1gs8", {
         ...sharedParams,
         to_email: form.email,
         to_name:  form.name,
