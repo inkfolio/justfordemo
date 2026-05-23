@@ -218,7 +218,7 @@ function App() {
         </div>
         <div className="nav-links" style={{display:"flex", alignItems:"center", gap:4}}>
           <button className="nav-link" onClick={() => navTo("home")}>Home</button>
-          <button className="nav-link" onClick={() => navTo("shop")}>Shop</button>
+          <button className="nav-link" onClick={() => { setCategory("all"); navTo("shop"); }}>Shop</button>
           <button className="nav-link" onClick={() => navTo("mystery")}>Mystery Box ✨</button>
           <button className="btn-ghost" style={{marginLeft:8, position:"relative"}} onClick={() => setCartOpen(true)}>
             Cart
@@ -228,8 +228,8 @@ function App() {
       </nav>
 
       {/* PAGES */}
-      {page === "home"         && <HomePage         products={products} setPage={navTo} heroIn={heroIn} addToCart={addToCart} />}
-      {page === "shop"         && <ShopPage         filtered={filtered} category={category} setCategory={setCategory} addToCart={addToCart} />}
+      {page === "home"         && <HomePage         products={products} setPage={navTo} heroIn={heroIn} addToCart={addToCart} setCategory={setCategory} />}
+      {page === "shop"         && <ShopPage         filtered={filtered} category={category} setCategory={setCategory} addToCart={addToCart} setPage={navTo} />}
       {page === "mystery"      && <MysteryPage      products={products} addToCart={addToCart} />}
       {page === "cart"         && <CartPage         cart={cart} cartTotal={cartTotal} updateQty={updateQty} removeFromCart={removeFromCart} setPage={navTo} form={form} setForm={setForm} handleCheckout={handleCheckout} submitting={submitting} errors={errors} />}
       {page === "confirmation" && <ConfirmationPage order={order} setPage={navTo} />}
@@ -307,8 +307,8 @@ function App() {
 }
 
 // ── HOME ──────────────────────────────────────────────────
-function HomePage({ products, setPage, heroIn, addToCart }) {
-  const bestsellers = products.filter(p => p.badge === "Bestseller").slice(0,3);
+function HomePage({ products, setPage, heroIn, addToCart, setCategory }) {
+  const bestsellers = products.filter(p => p.badge === "Bestseller").slice(0,4);
   return (
     <div>
       <div className="hero-pad" style={{background:"linear-gradient(135deg,#f0dfc8 0%,#e8d0b0 60%,#f5e6d0 100%)", padding:"84px 48px 72px", textAlign:"center", position:"relative", overflow:"hidden"}}>
@@ -333,12 +333,12 @@ function HomePage({ products, setPage, heroIn, addToCart }) {
         <div className="divider" />
         <div className="grid-4">
           {[
-            {emoji:"📚", label:"Books",        desc:"Fiction, non-fiction & more"},
-            {emoji:"🌸", label:"Bookmarks",    desc:"Handmade & printed art"},
-            {emoji:"📓", label:"Diaries",      desc:"Journals & planners"},
-            {emoji:"🌿", label:"Miscellaneous",desc:"Totes, candles & gifts"},
+            {emoji:"📚", label:"Books",        desc:"Fiction, non-fiction & more", key:"books"},
+            {emoji:"🌸", label:"Bookmarks",    desc:"Handmade & printed art",       key:"bookmarks"},
+            {emoji:"📓", label:"Diaries",      desc:"Journals & planners",          key:"diaries"},
+            {emoji:"🌿", label:"Miscellaneous",desc:"Totes, candles & gifts",       key:"misc"},
           ].map(c => (
-            <div key={c.label} className="card-hover" style={{background:"#f5e6d0", borderRadius:16, padding:"28px 20px", border:"1px solid #e0c9a8", cursor:"pointer"}} onClick={() => setPage("shop")}>
+            <div key={c.label} className="card-hover" style={{background:"#f5e6d0", borderRadius:16, padding:"28px 20px", border:"1px solid #e0c9a8", cursor:"pointer"}} onClick={() => { setCategory(c.key); setPage("shop"); }}>
               <div style={{fontSize:34, marginBottom:10}}>{c.emoji}</div>
               <p style={{fontFamily:"'Playfair Display',serif", fontSize:17, fontWeight:700, marginBottom:4}}>{c.label}</p>
               <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#9a6e4c"}}>{c.desc}</p>
@@ -389,19 +389,41 @@ function HomePage({ products, setPage, heroIn, addToCart }) {
 }
 
 // ── SHOP ──────────────────────────────────────────────────
-function ShopPage({ filtered, category, setCategory, addToCart }) {
+function ShopPage({ filtered, category, setCategory, addToCart, setPage }) {
+  const [search, setSearch] = React.useState("");
+  const searchFiltered = search.trim()
+    ? filtered.filter(p => p.name.toLowerCase().includes(search.toLowerCase()))
+    : filtered;
   return (
     <div className="section-pad" style={{padding:"48px 48px 0", maxWidth:1200, margin:"0 auto"}}>
       <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.15em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:8}}>Everything we love</p>
       <h2 className="section-title">Our Collection</h2>
       <div className="divider" />
-      <div style={{display:"flex", gap:8, flexWrap:"wrap", marginBottom:36}}>
+      <div style={{display:"flex", gap:8, flexWrap:"wrap", marginBottom:16}}>
         {CATEGORIES.map(c => (
-          <button key={c.key} className={`cat-pill ${category===c.key?"active":""}`} onClick={() => setCategory(c.key)}>{c.label}</button>
+          <button key={c.key} className={`cat-pill ${category===c.key?"active":""}`}
+            onClick={() => c.key === "mystery" ? setPage("mystery") : setCategory(c.key)}>
+            {c.label}
+          </button>
         ))}
       </div>
+      <div style={{position:"relative", marginBottom:28}}>
+        <span style={{position:"absolute", left:14, top:"50%", transform:"translateY(-50%)", fontSize:16, color:"#b08060"}}>🔍</span>
+        <input
+          type="text"
+          className="input-field"
+          placeholder="Search products..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          style={{paddingLeft:40}}
+        />
+        {search && <button onClick={() => setSearch("")} style={{position:"absolute", right:14, top:"50%", transform:"translateY(-50%)", background:"none", border:"none", fontSize:16, cursor:"pointer", color:"#b08060"}}>✕</button>}
+      </div>
       <div className="grid-3">
-        {filtered.map(p => <ProductCard key={p.id} product={p} addToCart={addToCart} />)}
+        {searchFiltered.length > 0
+          ? searchFiltered.map(p => <ProductCard key={p.id} product={p} addToCart={addToCart} setPage={setPage} />)
+          : <p style={{fontFamily:"'DM Sans',sans-serif", color:"#9a6e4c", padding:"40px 0"}}>No products found for "{search}"</p>
+        }
       </div>
     </div>
   );
