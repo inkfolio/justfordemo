@@ -102,6 +102,7 @@ function ProductImage({ src, alt, style={} }) {
 // ── ROOT APP ──────────────────────────────────────────────
 function App() {
   const [products, setProducts]     = useState([]);
+  const [coupons, setCoupons]       = useState({});
   const [loading, setLoading]       = useState(true);
   const [page, setPage]             = useState("home");
   const [category, setCategory]     = useState("all");
@@ -131,16 +132,22 @@ function App() {
       setLoading(false);
       return;
     }
-    Promise.all(
+    const productsPromise = Promise.all(
       sources.map(s =>
         fetch(s.file)
           .then(r => { if (!r.ok) throw new Error(); return r.json(); })
           .then(items => items.map(item => ({ ...item, author: item.author || "", category: s.category })))
           .catch(() => [])
       )
-    ).then(results => {
+    );
+    const couponsPromise = fetch("coupons.json")
+      .then(r => r.json())
+      .then(list => Object.fromEntries(list.map(c => [c.code.toLowerCase(), c.discount])))
+      .catch(() => ({}));
+    Promise.all([productsPromise, couponsPromise]).then(([results, loadedCoupons]) => {
       const loaded = results.flat();
       setProducts(loaded.length > 0 ? loaded : EMBEDDED_PRODUCTS);
+      setCoupons(Object.keys(loadedCoupons).length > 0 ? loadedCoupons : { "bookslover5": 5 });
       setLoading(false);
     });
   }, []);
@@ -177,17 +184,18 @@ function App() {
     return Object.keys(e).length === 0;
   };
 
-  const handleCheckout = async () => {
+  const handleCheckout = async (finalTotal, appliedCoupon) => {
     if (!validate() || cart.length === 0) return;
     setSubmitting(true);
-    const orderId  = "SS" + Date.now().toString().slice(-6);
-    const lines    = cart.map(i => `${i.name} x${i.qty}  -  Rs.${(i.price*i.qty).toLocaleString()}`).join("\n");
-    const ownerMsg = `New order!\n\nOrder ID: ${orderId}\nName: ${form.name}\nPhone: ${form.phone}\nEmail: ${form.email}\nAddress: ${form.address}\nNotes: ${form.notes||"-"}\n\nItems:\n${lines}\n\nTotal: Rs.${cartTotal.toLocaleString()}`;
-    const custMsg  = `Dear ${form.name},\n\nThank you for your order!\n\nOrder ID: ${orderId}\n\nItems:\n${lines}\n\nTotal: Rs.${cartTotal.toLocaleString()}\n\nWe will contact you on ${form.phone} to confirm and arrange delivery.\n\nWith love,\nSpines and Scribbles`;
+    const orderId    = "SS" + Date.now().toString().slice(-6);
+    const lines      = cart.map(i => `${i.name} x${i.qty}  -  Rs.${(i.price*i.qty).toLocaleString()}`).join("\n");
+    const couponLine = appliedCoupon ? `\nCoupon: ${appliedCoupon.code} (${appliedCoupon.discount}% off)\nDiscount: - Rs.${(cartTotal - finalTotal).toLocaleString()}` : "";
+    const ownerMsg = `New order!\n\nOrder ID: ${orderId}\nName: ${form.name}\nPhone: ${form.phone}\nEmail: ${form.email}\nAddress: ${form.address}\nNotes: ${form.notes||"-"}\n\nItems:\n${lines}${couponLine}\n\nTotal: Rs.${finalTotal.toLocaleString()}`;
+    const custMsg  = `Dear ${form.name},\n\nThank you for your order!\n\nOrder ID: ${orderId}\n\nItems:\n${lines}${couponLine}\n\nTotal: Rs.${finalTotal.toLocaleString()}\n\nWe will contact you on ${form.phone} to confirm and arrange delivery.\n\nWith love,\nSpines and Scribbles`;
     try {
       await emailjs.send("service_knwomjq", "template_rol1gs8", { to_name:"Spines and Scribbles", to_email:OWNER_EMAIL, from_name:form.name, from_email:form.email, reply_to:form.email, subject:`New Order ${orderId} from ${form.name}`, message:ownerMsg });
       await emailjs.send("service_knwomjq", "template_rol1gs8", { to_name:form.name, to_email:form.email, from_name:"Spines and Scribbles", from_email:OWNER_EMAIL, reply_to:OWNER_EMAIL, subject:`Your Order Confirmation - Spines and Scribbles`, message:custMsg });
-      setOrder({ id:orderId, name:form.name, total:cartTotal, items:[...cart] });
+      setOrder({ id:orderId, name:form.name, total:finalTotal, items:[...cart], coupon:appliedCoupon });
       setCart([]);
       setForm({ name:"", email:"", phone:"", address:"", notes:"" });
       navTo("confirmation");
@@ -231,7 +239,7 @@ function App() {
       {page === "home"         && <HomePage         products={products} setPage={navTo} heroIn={heroIn} addToCart={addToCart} setCategory={setCategory} />}
       {page === "shop"         && <ShopPage         filtered={filtered} category={category} setCategory={setCategory} addToCart={addToCart} setPage={navTo} />}
       {page === "mystery"      && <MysteryPage      products={products} addToCart={addToCart} />}
-      {page === "cart"         && <CartPage         cart={cart} cartTotal={cartTotal} updateQty={updateQty} removeFromCart={removeFromCart} setPage={navTo} form={form} setForm={setForm} handleCheckout={handleCheckout} submitting={submitting} errors={errors} />}
+      {page === "cart"         && <CartPage         cart={cart} cartTotal={cartTotal} updateQty={updateQty} removeFromCart={removeFromCart} setPage={navTo} form={form} setForm={setForm} handleCheckout={handleCheckout} submitting={submitting} errors={errors} coupons={coupons} />}
       {page === "confirmation" && <ConfirmationPage order={order} setPage={navTo} />}
 
       {/* CART SIDEBAR */}
@@ -487,7 +495,31 @@ function ProductCard({ product, addToCart }) {
 }
 
 // ── CHECKOUT ──────────────────────────────────────────────
-function CartPage({ cart, cartTotal, updateQty, removeFromCart, setPage, form, setForm, handleCheckout, submitting, errors }) {
+function CartPage({ cart, cartTotal, updateQty, removeFromCart, setPage, form, setForm, handleCheckout, submitting, errors, coupons }) {
+  const [couponInput, setCouponInput] = React.useState("");
+  const [appliedCoupon, setAppliedCoupon] = React.useState(null);
+  const [couponError, setCouponError] = React.useState("");
+
+  const applyCoupon = () => {
+    const code = couponInput.trim().toLowerCase();
+    if (coupons[code] !== undefined) {
+      setAppliedCoupon({ code: couponInput.trim(), discount: coupons[code] });
+      setCouponError("");
+    } else {
+      setAppliedCoupon(null);
+      setCouponError("Invalid coupon code. Please try again.");
+    }
+  };
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponInput("");
+    setCouponError("");
+  };
+
+  const discount    = appliedCoupon ? Math.round(cartTotal * appliedCoupon.discount / 100) : 0;
+  const finalTotal  = cartTotal - discount;
+
   const field = (label, key, type="text", ph="") => (
     <div style={{marginBottom:18}}>
       <label style={{display:"block", fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#6b4a2e", marginBottom:6, fontWeight:500}}>{label}</label>
@@ -530,10 +562,47 @@ function CartPage({ cart, cartTotal, updateQty, removeFromCart, setPage, form, s
               <div style={{fontFamily:"'Playfair Display',serif", fontSize:16, minWidth:70, textAlign:"right", color:"#7c4e2a"}}>Rs.{(item.price*item.qty).toLocaleString()}</div>
             </div>
           ))}
-          <div style={{display:"flex", justifyContent:"space-between", padding:"20px 0 0", fontFamily:"'Playfair Display',serif", fontSize:20, fontWeight:700}}>
-            <span>Total</span><span style={{color:"#7c4e2a"}}>Rs.{cartTotal.toLocaleString()}</span>
+          <div style={{borderTop:"1px solid #f0dfc8", paddingTop:16, marginTop:4}}>
+            <div style={{display:"flex", justifyContent:"space-between", fontFamily:"'Playfair Display',serif", fontSize:17, marginBottom:6}}>
+              <span>Subtotal</span><span>Rs.{cartTotal.toLocaleString()}</span>
+            </div>
+            {appliedCoupon && (
+              <div style={{display:"flex", justifyContent:"space-between", fontFamily:"'DM Sans',sans-serif", fontSize:14, color:"#3e7c3e", marginBottom:6}}>
+                <span>Discount ({appliedCoupon.discount}% off — {appliedCoupon.code})</span>
+                <span>- Rs.{discount.toLocaleString()}</span>
+              </div>
+            )}
+            <div style={{display:"flex", justifyContent:"space-between", fontFamily:"'Playfair Display',serif", fontSize:20, fontWeight:700, marginTop:8}}>
+              <span>Total</span><span style={{color:"#7c4e2a"}}>Rs.{finalTotal.toLocaleString()}</span>
+            </div>
           </div>
-          <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#9a6e4c", marginTop:8}}>We'll contact you to confirm your order and arrange delivery.</p>
+
+          {/* Coupon Section */}
+          <div style={{marginTop:20, background:"#f5e6d0", borderRadius:12, padding:"16px"}}>
+            <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, fontWeight:500, color:"#6b4a2e", marginBottom:10}}>🎟️ Have a coupon code?</p>
+            {appliedCoupon ? (
+              <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", background:"#e8f5e8", borderRadius:8, padding:"10px 14px"}}>
+                <span style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#3e7c3e", fontWeight:500}}>✓ "{appliedCoupon.code}" applied — {appliedCoupon.discount}% off!</span>
+                <button onClick={removeCoupon} style={{background:"none", border:"none", color:"#c0392b", cursor:"pointer", fontSize:12, fontFamily:"'DM Sans',sans-serif"}}>Remove</button>
+              </div>
+            ) : (
+              <div style={{display:"flex", gap:8}}>
+                <input
+                  type="text"
+                  className="input-field"
+                  placeholder="Enter coupon code"
+                  value={couponInput}
+                  onChange={e => { setCouponInput(e.target.value); setCouponError(""); }}
+                  onKeyDown={e => e.key === "Enter" && applyCoupon()}
+                  style={{flex:1, fontSize:14, padding:"10px 14px"}}
+                />
+                <button className="btn-primary" style={{padding:"10px 18px", fontSize:13, borderRadius:10, whiteSpace:"nowrap"}} onClick={applyCoupon}>Apply</button>
+              </div>
+            )}
+            {couponError && <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, color:"#c0392b", marginTop:6}}>{couponError}</p>}
+          </div>
+
+          <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#9a6e4c", marginTop:12}}>We'll contact you to confirm your order and arrange delivery.</p>
         </div>
         <div style={{background:"#fffaf4", borderRadius:16, border:"1px solid #e0c9a8", padding:"28px 24px", alignSelf:"start"}}>
           <h3 style={{fontFamily:"'Playfair Display',serif", fontSize:20, marginBottom:20}}>Your Details</h3>
@@ -543,7 +612,7 @@ function CartPage({ cart, cartTotal, updateQty, removeFromCart, setPage, form, s
           {field("Delivery Address *",      "address", "text",  "House no., street, city, pincode")}
           {field("Notes / Special Requests","notes",   "text",  "e.g. Gift wrap, anything else...")}
           <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, color:"#9a6e4c", marginBottom:20, lineHeight:1.6}}>Order details will be sent to your email. We'll reach out to confirm.</p>
-          <button className="btn-primary" style={{width:"100%", fontSize:16, padding:14}} onClick={handleCheckout} disabled={submitting}>
+          <button className="btn-primary" style={{width:"100%", fontSize:16, padding:14}} onClick={() => handleCheckout(finalTotal, appliedCoupon)} disabled={submitting}>
             {submitting ? "Placing Order..." : "Place Order"}
           </button>
         </div>
