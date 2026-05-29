@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "Priya Sharma",
+    "rating": 5,
+    "date": "2025-04-12",
+    "review": "I ordered the Vintage Leather Journal and it is absolutely gorgeous. The quality is so much better than I expected — the leather feels rich and the pages are thick and smooth. Packaging was also beautifully done, felt like opening a gift. Will definitely be ordering again!",
+    "item": "Vintage Leather Journal"
+  },
+  {
+    "id": 2,
+    "name": "Arjun Mehta",
+    "rating": 5,
+    "date": "2025-04-18",
+    "review": "Got the Wanderer's Mystery Box as a birthday treat to myself and I was blown away. Two books I hadn't read, a pressed flower bookmark, and some washi tape — such a thoughtful curation. The whole unboxing experience was magical. 10/10.",
+    "item": "The Wanderer's Mystery Box"
+  },
+  {
+    "id": 3,
+    "name": "Sneha Iyer",
+    "rating": 5,
+    "date": "2025-05-02",
+    "review": "Piranesi arrived so quickly and the packaging was so pretty — wrapped in brown paper with a little note. I've already recommended Spines & Scribbles to all my reader friends. This is exactly the kind of bookshop experience I didn't know I needed online.",
+    "item": "Piranesi"
+  },
+  {
+    "id": 4,
+    "name": "Rohan Kapoor",
+    "rating": 4,
+    "date": "2025-05-08",
+    "review": "Ordered the Leather Tassel Bookmark and the Quill & Ink Pen Set together. Both arrived in perfect condition. The pen set is stunning and the ink quality is lovely. Really happy with the purchase — the whole shop has such a cosy, personal feel to it.",
+    "item": "Quill & Ink Pen Set"
+  },
+  {
+    "id": 5,
+    "name": "Ananya Bose",
+    "rating": 5,
+    "date": "2025-05-15",
+    "review": "The Moonchild Night Journal is exactly as described — the cover art is beautiful and the satin ribbon is such a nice touch. I love journaling at night and this feels so fitting. Delivery was smooth and the team was very responsive over email.",
+    "item": "Moonchild Night Journal"
+  },
+  {
+    "id": 6,
+    "name": "Vikram Nair",
+    "rating": 5,
+    "date": "2025-05-20",
+    "review": "Bought The Midnight Library as a gift for my sister and she absolutely loved it. Came wrapped beautifully. Spines & Scribbles really nails the whole gifting experience — it feels personal and curated, not like any other online store.",
+    "item": "The Midnight Library"
+  }
+]
