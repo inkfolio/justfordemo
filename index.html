@@ -51,6 +51,18 @@
   .review-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(100,60,20,0.11); }
   .stars { color: #c9882a; font-size: 15px; letter-spacing: 2px; }
   .grid-reviews { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+  .thumb { width: 72px; height: 96px; border-radius: 10px; overflow: hidden; border: 2px solid transparent; cursor: pointer; flex-shrink: 0; transition: border-color 0.15s, transform 0.15s; background: #f0e4cc; }
+  .thumb:hover { transform: scale(1.04); }
+  .thumb.active { border-color: #7c4e2a; }
+  .pdp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+  .pdp-detail-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0dfc8; font-family: 'DM Sans', sans-serif; font-size: 14px; }
+  .pdp-detail-row:last-child { border-bottom: none; }
+  .breadcrumb { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #9a6e4c; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .breadcrumb span { cursor: pointer; transition: color 0.15s; }
+  .breadcrumb span:hover { color: #7c4e2a; text-decoration: underline; }
+  @media (max-width: 800px) {
+    .pdp-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+  }
   @media (max-width: 700px) {
     .cart-panel { width: 100%; }
     .checkout-grid { grid-template-columns: 1fr !important; }
@@ -111,6 +123,7 @@ function App() {
   const [loading, setLoading]       = useState(true);
   const [page, setPage]             = useState("home");
   const [category, setCategory]     = useState("all");
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [cart, setCart]             = useState([]);
   const [cartOpen, setCartOpen]     = useState(false);
   const [order, setOrder]           = useState(null);
@@ -219,7 +232,7 @@ function App() {
     }
   };
 
-  const navTo = p => { setPage(p); window.scrollTo(0,0); };
+  const navTo = (p, product) => { setPage(p); if (product) setSelectedProduct(product); window.scrollTo(0,0); };
 
   if (loading) return (
     <div style={{minHeight:"100vh", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", background:"#fdf6ee"}}>
@@ -251,8 +264,9 @@ function App() {
       {/* PAGES */}
       {page === "home"         && <HomePage         products={products} reviews={reviews} setPage={navTo} heroIn={heroIn} addToCart={addToCart} setCategory={setCategory} />}
       {page === "shop"         && <ShopPage         filtered={filtered} category={category} setCategory={setCategory} addToCart={addToCart} setPage={navTo} products={products} />}
-      {page === "mystery"      && <MysteryPage      products={products} addToCart={addToCart} />}
+      {page === "mystery"      && <MysteryPage      products={products} addToCart={addToCart} setPage={navTo} />}
       {page === "reviews"      && <ReviewsPage      reviews={reviews} setPage={navTo} />}
+      {page === "product"      && <ProductDetailPage product={selectedProduct} products={products} reviews={reviews} addToCart={addToCart} setPage={navTo} setCategory={setCategory} />}
       {page === "cart"         && <CartPage         cart={cart} cartTotal={cartTotal} updateQty={updateQty} removeFromCart={removeFromCart} setPage={navTo} form={form} setForm={setForm} handleCheckout={handleCheckout} submitting={submitting} errors={errors} coupons={coupons} />}
       {page === "confirmation" && <ConfirmationPage order={order} setPage={navTo} />}
 
@@ -388,7 +402,7 @@ function HomePage({ products, reviews, setPage, heroIn, addToCart, setCategory }
         <h2 className="section-title">Bestsellers</h2>
         <div className="divider" />
         <div className="grid-2">
-          {bestsellers.map(p => <ProductCard key={p.id} product={p} addToCart={addToCart} />)}
+          {bestsellers.map(p => <ProductCard key={p.id} product={p} addToCart={addToCart} setPage={setPage} />)}
         </div>
         <div style={{textAlign:"center", marginTop:36}}>
           <button className="btn-ghost" onClick={() => setPage("shop")}>See all products</button>
@@ -590,7 +604,7 @@ function ShopPage({ filtered, category, setCategory, addToCart, setPage, product
 }
 
 // ── MYSTERY ───────────────────────────────────────────────
-function MysteryPage({ products, addToCart }) {
+function MysteryPage({ products, addToCart, setPage }) {
   const items = products.filter(p => p.category === "mystery");
   return (
     <div>
@@ -601,7 +615,7 @@ function MysteryPage({ products, addToCart }) {
       </div>
       <div style={{maxWidth:900, margin:"0 auto", padding:"60px 48px 0"}}>
         <div className="grid-2" style={{marginBottom:56}}>
-          {items.map(p => <ProductCard key={p.id} product={p} addToCart={addToCart} />)}
+          {items.map(p => <ProductCard key={p.id} product={p} addToCart={addToCart} setPage={setPage} />)}
         </div>
         <div style={{background:"#f5e6d0", borderRadius:20, padding:"40px", border:"1px solid #e0c9a8"}}>
           <h3 style={{fontFamily:"'Playfair Display',serif", fontSize:24, fontWeight:700, marginBottom:24}}>What's inside?</h3>
@@ -621,12 +635,15 @@ function MysteryPage({ products, addToCart }) {
 }
 
 // ── PRODUCT CARD ──────────────────────────────────────────
-function ProductCard({ product, addToCart }) {
+function ProductCard({ product, addToCart, setPage }) {
   const bc = BADGE_COLORS[product.badge];
   const isMystery = product.category === "mystery";
   return (
     <div className="card-hover" style={{background:"#fffaf4", borderRadius:16, border:"1px solid #e0c9a8", overflow:"hidden", display:"flex", flexDirection:"column"}}>
-      <div style={{position:"relative", background: isMystery ? "linear-gradient(135deg,#2d1a3e,#4a2860)" : "#f0e4cc", aspectRatio:"2/3", overflow:"hidden", width:"100%"}}>
+      <div
+        onClick={() => setPage && setPage("product", product)}
+        style={{position:"relative", background: isMystery ? "linear-gradient(135deg,#2d1a3e,#4a2860)" : "#f0e4cc", aspectRatio:"2/3", overflow:"hidden", width:"100%", cursor: setPage ? "pointer" : "default"}}
+      >
         <img src={product.image} alt={product.name}
           style={{width:"100%", height:"100%", objectFit:"contain", objectPosition:"center", display:"block"}}
           onError={e => { e.target.style.display="none"; }}
@@ -634,13 +651,248 @@ function ProductCard({ product, addToCart }) {
         {product.badge && <span style={{position:"absolute", top:10, left:10, background:bc||"#7c4e2a", color:"#fdf6ee", fontSize:11, padding:"4px 12px", borderRadius:20, fontFamily:"'DM Sans',sans-serif", fontWeight:500, boxShadow:"0 2px 8px rgba(0,0,0,0.25)"}}>{product.badge}</span>}
       </div>
       <div style={{padding:"16px 18px 20px", flex:1, display:"flex", flexDirection:"column"}}>
-        <p style={{fontFamily:"'Playfair Display',serif", fontSize:16, fontWeight:700, marginBottom:2}}>{product.name}</p>
+        <p
+          onClick={() => setPage && setPage("product", product)}
+          style={{fontFamily:"'Playfair Display',serif", fontSize:16, fontWeight:700, marginBottom:2, cursor: setPage ? "pointer" : "default"}}
+        >{product.name}</p>
         {product.author && <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, color:"#9a6e4c", marginBottom:6}}>by {product.author}</p>}
         <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#6b4a2e", lineHeight:1.55, flex:1, marginBottom:14}}>{product.desc}</p>
         <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", gap:12}}>
           <span style={{fontFamily:"'Playfair Display',serif", fontSize:18, fontWeight:700, color:"#7c4e2a", flexShrink:0}}>Rs.{product.price.toLocaleString()}</span>
           <button className="btn-primary" style={{padding:"7px 14px", fontSize:12}} onClick={() => addToCart(product)}>Add to Cart</button>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ── PRODUCT DETAIL PAGE ───────────────────────────────────
+function ProductDetailPage({ product, products, reviews, addToCart, setPage, setCategory }) {
+  const [activeImg, setActiveImg] = React.useState(0);
+  const [qty, setQty]             = React.useState(1);
+  const [addedAnim, setAddedAnim] = React.useState(false);
+
+  if (!product) return null;
+
+  const isMystery = product.category === "mystery";
+  const bc = BADGE_COLORS[product.badge];
+  const catLabel = CATEGORIES.find(c => c.key === product.category)?.label || product.category;
+
+  // Build image list: primary + numbered alternates (img_2, img_3) based on naming convention
+  const baseImg = product.image; // e.g. "images/3.jpg"
+  const ext = baseImg.substring(baseImg.lastIndexOf('.'));
+  const stem = baseImg.substring(0, baseImg.lastIndexOf('.'));
+  const images = [baseImg, `${stem}_2${ext}`, `${stem}_3${ext}`, `${stem}_4${ext}`];
+
+  // Product-specific details based on category
+  const detailRows = (() => {
+    const rows = [];
+    if (product.author)   rows.push({ label: "Author",    value: product.author });
+    if (product.genre)    rows.push({ label: "Genre",     value: product.genre });
+    rows.push({ label: "Category", value: catLabel });
+    if (product.category === "books") {
+      rows.push({ label: "Format",    value: "Paperback" });
+      rows.push({ label: "Language",  value: "English" });
+    }
+    if (product.category === "diaries") {
+      rows.push({ label: "Type",      value: "Handbound Journal" });
+      rows.push({ label: "Ships in",  value: "3–5 business days" });
+    }
+    if (product.category === "bookmarks") {
+      rows.push({ label: "Material",  value: "Artisan crafted" });
+    }
+    rows.push({ label: "Packaging",  value: "Gift-ready wrapping included" });
+    rows.push({ label: "Delivery",   value: "Confirmed via call/email" });
+    return rows;
+  })();
+
+  // Related products (same category, excluding self, max 4)
+  const related = products
+    .filter(p => p.category === product.category && p.id !== product.id)
+    .slice(0, 4);
+
+  // Reviews for this product
+  const productReviews = reviews.filter(r =>
+    r.item && r.item.toLowerCase() === product.name.toLowerCase()
+  );
+
+  const handleAdd = () => {
+    for (let i = 0; i < qty; i++) addToCart(product);
+    setAddedAnim(true);
+    setTimeout(() => setAddedAnim(false), 1800);
+  };
+
+  return (
+    <div style={{paddingBottom: 80}}>
+      {/* Breadcrumb */}
+      <div style={{background:"#f5e6d0", borderBottom:"1px solid #e8d5b8", padding:"12px 48px"}}>
+        <div className="breadcrumb">
+          <span onClick={() => setPage("home")}>Home</span>
+          <span style={{color:"#c9a07a", cursor:"default"}}>›</span>
+          <span onClick={() => { setCategory(product.category); setPage("shop"); }}>{catLabel}</span>
+          <span style={{color:"#c9a07a", cursor:"default"}}>›</span>
+          <span style={{color:"#3d2b1f", fontWeight:500, cursor:"default"}}>{product.name}</span>
+        </div>
+      </div>
+
+      {/* Main PDP grid */}
+      <div style={{maxWidth:1100, margin:"0 auto", padding:"48px 48px 0"}}>
+        <div className="pdp-grid">
+
+          {/* ── LEFT: image gallery ── */}
+          <div>
+            {/* Main image */}
+            <div style={{
+              borderRadius: 20,
+              overflow: "hidden",
+              background: isMystery ? "linear-gradient(135deg,#2d1a3e,#4a2860)" : "#f0e4cc",
+              aspectRatio: "3/4",
+              position: "relative",
+              marginBottom: 16,
+              border: "1px solid #e0c9a8",
+            }}>
+              <img
+                src={images[activeImg]}
+                alt={product.name}
+                style={{width:"100%", height:"100%", objectFit:"contain", objectPosition:"center", display:"block", transition:"opacity 0.2s"}}
+                onError={e => { e.target.style.display = "none"; }}
+              />
+              {product.badge && (
+                <span style={{position:"absolute", top:16, left:16, background:bc||"#7c4e2a", color:"#fdf6ee", fontSize:12, padding:"5px 14px", borderRadius:20, fontFamily:"'DM Sans',sans-serif", fontWeight:500, boxShadow:"0 2px 8px rgba(0,0,0,0.25)"}}>
+                  {product.badge}
+                </span>
+              )}
+            </div>
+            {/* Thumbnails */}
+            <div style={{display:"flex", gap:10, flexWrap:"wrap"}}>
+              {images.map((img, i) => (
+                <div
+                  key={i}
+                  className={`thumb ${activeImg === i ? "active" : ""}`}
+                  onClick={() => setActiveImg(i)}
+                >
+                  <img
+                    src={img}
+                    alt={`${product.name} view ${i+1}`}
+                    style={{width:"100%", height:"100%", objectFit:"contain", objectPosition:"center", display:"block"}}
+                    onError={e => { e.target.parentElement.style.display = "none"; }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── RIGHT: product info ── */}
+          <div style={{paddingTop: 8}}>
+            {/* Category tag */}
+            <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.14em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:10}}>{catLabel}</p>
+
+            {/* Name */}
+            <h1 style={{fontFamily:"'Playfair Display',serif", fontSize:"clamp(24px,3.5vw,38px)", fontWeight:800, color:"#3d2b1f", lineHeight:1.15, marginBottom: product.author ? 8 : 16}}>
+              {product.name}
+            </h1>
+            {product.author && (
+              <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:16, color:"#7c5a38", marginBottom:16}}>by <em>{product.author}</em></p>
+            )}
+
+            {/* Rating snapshot */}
+            {productReviews.length > 0 && (() => {
+              const avg = (productReviews.reduce((s,r) => s+r.rating,0)/productReviews.length).toFixed(1);
+              return (
+                <div style={{display:"flex", alignItems:"center", gap:8, marginBottom:16}}>
+                  <span className="stars">{"★".repeat(Math.round(avg))}</span>
+                  <span style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#9a6e4c"}}>{avg} ({productReviews.length} review{productReviews.length>1?"s":""})</span>
+                </div>
+              );
+            })()}
+
+            {/* Price */}
+            <div style={{display:"flex", alignItems:"baseline", gap:10, marginBottom:20}}>
+              <span style={{fontFamily:"'Playfair Display',serif", fontSize:34, fontWeight:800, color:"#7c4e2a"}}>
+                Rs.{product.price.toLocaleString()}
+              </span>
+              <span style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#9a6e4c"}}>incl. taxes</span>
+            </div>
+
+            {/* Description */}
+            <p style={{fontSize:17, color:"#4a3020", lineHeight:1.75, marginBottom:28}}>
+              {product.desc}
+            </p>
+
+            {/* Quantity + Add to Cart */}
+            <div style={{display:"flex", alignItems:"center", gap:14, marginBottom:16, flexWrap:"wrap"}}>
+              <div style={{display:"flex", alignItems:"center", gap:0, background:"#f0dfc8", borderRadius:30, overflow:"hidden", border:"1px solid #d4b896"}}>
+                <button
+                  onClick={() => setQty(q => Math.max(1, q-1))}
+                  style={{background:"none", border:"none", width:40, height:44, cursor:"pointer", fontSize:18, color:"#7c4e2a", fontWeight:700}}
+                >−</button>
+                <span style={{fontFamily:"'DM Sans',sans-serif", fontSize:15, fontWeight:500, minWidth:28, textAlign:"center"}}>{qty}</span>
+                <button
+                  onClick={() => setQty(q => q+1)}
+                  style={{background:"none", border:"none", width:40, height:44, cursor:"pointer", fontSize:18, color:"#7c4e2a", fontWeight:700}}
+                >+</button>
+              </div>
+              <button
+                className="btn-primary"
+                onClick={handleAdd}
+                style={{flex:1, minWidth:160, fontSize:15, padding:"12px 28px", transition:"all 0.18s", background: addedAnim ? "#3e6b3e" : "#7c4e2a"}}
+              >
+                {addedAnim ? "✓ Added to Cart!" : "Add to Cart"}
+              </button>
+            </div>
+
+            {/* Trust badges */}
+            <div style={{display:"flex", gap:16, flexWrap:"wrap", marginBottom:28}}>
+              {[["🎁","Gift wrapping included"],["📦","Careful packaging"],["📧","Order confirmed by email"]].map(([e,t]) => (
+                <div key={t} style={{display:"flex", alignItems:"center", gap:6, fontFamily:"'DM Sans',sans-serif", fontSize:12, color:"#6b4a2e", background:"#f5e6d0", borderRadius:20, padding:"5px 12px"}}>
+                  <span>{e}</span><span>{t}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Details table */}
+            <div style={{background:"#fffaf4", borderRadius:14, border:"1px solid #e0c9a8", padding:"8px 20px", marginBottom:0}}>
+              {detailRows.map(row => (
+                <div key={row.label} className="pdp-detail-row">
+                  <span style={{color:"#9a6e4c", fontWeight:500}}>{row.label}</span>
+                  <span style={{color:"#3d2b1f", fontWeight:500, textAlign:"right"}}>{row.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Reviews for this product ── */}
+        {productReviews.length > 0 && (
+          <div style={{marginTop:64}}>
+            <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.15em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:8}}>What readers say</p>
+            <h2 className="section-title">Reviews for this item</h2>
+            <div className="divider"/>
+            <div className="grid-reviews">
+              {productReviews.map(r => <ReviewCard key={r.id} review={r} />)}
+            </div>
+            <div style={{textAlign:"center", marginTop:28}}>
+              <button className="btn-ghost" style={{fontSize:13}} onClick={() => setPage("reviews")}>See all reviews →</button>
+            </div>
+          </div>
+        )}
+
+        {/* ── Related products ── */}
+        {related.length > 0 && (
+          <div style={{marginTop:64}}>
+            <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.15em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:8}}>You might also like</p>
+            <h2 className="section-title">More from {catLabel}</h2>
+            <div className="divider"/>
+            <div className="grid-3">
+              {related.map(p => <ProductCard key={p.id} product={p} addToCart={addToCart} setPage={setPage} />)}
+            </div>
+            <div style={{textAlign:"center", marginTop:32}}>
+              <button className="btn-ghost" onClick={() => { setCategory(product.category); setPage("shop"); }}>
+                Browse all {catLabel} →
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
