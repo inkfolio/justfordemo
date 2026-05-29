@@ -116,7 +116,7 @@ function App() {
   const [heroIn, setHeroIn]         = useState(false);
 
   // Load products from JSON files; falls back to embedded data when running locally (file://)
-  const EMBEDDED_PRODUCTS = [{"id": 1, "name": "The Midnight Library", "author": "Matt Haig", "price": 349, "image": "images/1.jpg", "desc": "A dazzling novel about all the lives we could have lived.", "badge": "Bestseller", "category": "books"}, {"id": 2, "name": "Lessons in Chemistry", "author": "Bonnie Garmus", "price": 399, "image": "images/2.jpg", "desc": "A woman chemist in the 1960s becomes an unlikely cooking show host.", "badge": "Staff Pick", "category": "books"}, {"id": 3, "name": "The Atlas Six", "author": "Olivie Blake", "price": 449, "image": "images/3.jpg", "desc": "Dark academia fantasy with six magical scholars and deadly stakes.", "badge": "New Arrival", "category": "books"}, {"id": 4, "name": "Tomorrow & Tomorrow", "author": "Gabriel Zevin", "price": 379, "image": "images/4.jpg", "desc": "A sweeping love story set in the world of video games.", "badge": "", "category": "books"}, {"id": 5, "name": "Piranesi", "author": "Susanna Clarke", "price": 299, "image": "images/5.jpg", "desc": "A mysterious man living in a house with infinite halls and tides.", "badge": "Award Winner", "category": "books"}, {"id": 6, "name": "Sea of Tranquility", "author": "Emily St. John Mandel", "price": 349, "image": "images/6.jpg", "desc": "Time travel across centuries connects five extraordinary lives.", "badge": "", "category": "books"}, {"id": 7, "name": "Pressed Flower Bookmark", "price": 89, "image": "images/7.jpg", "desc": "Handcrafted with real dried flowers preserved under clear resin.", "badge": "Handmade", "category": "bookmarks", "author": ""}, {"id": 8, "name": "Leather Tassel Bookmark", "price": 129, "image": "images/8.jpg", "desc": "Genuine leather with a gold tassel. Rich aged caramel tone.", "badge": "Bestseller", "category": "bookmarks", "author": ""}, {"id": 9, "name": "Watercolour Set of 3", "price": 149, "image": "images/9.jpg", "desc": "Three bookmarks printed with original watercolour artwork.", "badge": "", "category": "bookmarks", "author": ""}, {"id": 10, "name": "Brass Clip Bookmark", "price": 99, "image": "images/10.jpg", "desc": "Elegant brass page clip with a delicate leaf detail.", "badge": "New", "category": "bookmarks", "author": ""}, {"id": 11, "name": "The Muted Sage Diary", "price": 499, "image": "images/11.jpg", "desc": "A5 dotted journal, 200 cream pages, sage green linen cover.", "badge": "New Arrival", "category": "diaries", "author": ""}, {"id": 12, "name": "Vintage Leather Journal", "price": 699, "image": "images/12.jpg", "desc": "Genuine leather-bound and refillable, with 192 ruled pages.", "badge": "Staff Pick", "category": "diaries", "author": ""}, {"id": 13, "name": "Floral Weekly Planner", "price": 399, "image": "images/13.jpg", "desc": "Undated weekly planner with original botanical illustrations.", "badge": "", "category": "diaries", "author": ""}, {"id": 14, "name": "Moonchild Night Journal", "price": 549, "image": "images/14.jpg", "desc": "Celestial art cover, cream pages, and a satin ribbon marker.", "badge": "Bestseller", "category": "diaries", "author": ""}, {"id": 15, "name": "Bookish Washi Tape Set", "price": 199, "image": "images/15.jpg", "desc": "Set of 5 literary-themed washi tapes for journaling & crafts.", "badge": "", "category": "misc", "author": ""}, {"id": 16, "name": "Reader's Tote Bag", "price": 449, "image": "images/16.jpg", "desc": "Cotton canvas tote with 'One more chapter' screen print.", "badge": "Bestseller", "category": "misc", "author": ""}, {"id": 17, "name": "Book Lovers Candle", "price": 299, "image": "images/17.jpg", "desc": "Soy wax candle scented with old books, vanilla & sandalwood.", "badge": "New", "category": "misc", "author": ""}, {"id": 18, "name": "Quill & Ink Pen Set", "price": 349, "image": "images/18.jpg", "desc": "Dip pen with three nibs and a pot of rich walnut ink.", "badge": "Staff Pick", "category": "misc", "author": ""}, {"id": 19, "name": "The Wanderer's Mystery Box", "price": 999, "image": "images/19.jpg", "desc": "A curated mystery box for the avid reader. Every box is unique \u2014 books, bookmarks, stationery, and surprises!", "badge": "\u2728 Mystery", "category": "mystery", "author": ""}, {"id": 20, "name": "Mini Mystery Parcel", "price": 599, "image": "images/20.jpg", "desc": "A smaller mystery parcel \u2014 perfect as a gift or self-treat. 2\u20133 mystery items curated with love.", "badge": "\u2728 Mystery", "category": "mystery", "author": ""}];
+  const EMBEDDED_PRODUCTS = [{"id": 1, "name": "The Midnight Library", "author": "Matt Haig", "price": 349, "image": "images/1.jpg", "desc": "A dazzling novel about all the lives we could have lived.", "badge": "Bestseller", "category": "books", "genre": "Self Help"}, {"id": 2, "name": "Lessons in Chemistry", "author": "Bonnie Garmus", "price": 399, "image": "images/2.jpg", "desc": "A woman chemist in the 1960s becomes an unlikely cooking show host.", "badge": "Staff Pick", "category": "books", "genre": "Romance"}, {"id": 3, "name": "The Atlas Six", "author": "Olivie Blake", "price": 449, "image": "images/3.jpg", "desc": "Dark academia fantasy with six magical scholars and deadly stakes.", "badge": "New Arrival", "category": "books", "genre": "Fantasy"}, {"id": 4, "name": "Tomorrow & Tomorrow", "author": "Gabriel Zevin", "price": 379, "image": "images/4.jpg", "desc": "A sweeping love story set in the world of video games.", "badge": "", "category": "books", "genre": "Romance"}, {"id": 5, "name": "Piranesi", "author": "Susanna Clarke", "price": 299, "image": "images/5.jpg", "desc": "A mysterious man living in a house with infinite halls and tides.", "badge": "Award Winner", "category": "books", "genre": "Mystery"}, {"id": 6, "name": "Sea of Tranquility", "author": "Emily St. John Mandel", "price": 349, "image": "images/6.jpg", "desc": "Time travel across centuries connects five extraordinary lives.", "badge": "", "category": "books", "genre": "Thriller"}, {"id": 7, "name": "Pressed Flower Bookmark", "price": 89, "image": "images/7.jpg", "desc": "Handcrafted with real dried flowers preserved under clear resin.", "badge": "Handmade", "category": "bookmarks", "author": ""}, {"id": 8, "name": "Leather Tassel Bookmark", "price": 129, "image": "images/8.jpg", "desc": "Genuine leather with a gold tassel. Rich aged caramel tone.", "badge": "Bestseller", "category": "bookmarks", "author": ""}, {"id": 9, "name": "Watercolour Set of 3", "price": 149, "image": "images/9.jpg", "desc": "Three bookmarks printed with original watercolour artwork.", "badge": "", "category": "bookmarks", "author": ""}, {"id": 10, "name": "Brass Clip Bookmark", "price": 99, "image": "images/10.jpg", "desc": "Elegant brass page clip with a delicate leaf detail.", "badge": "New", "category": "bookmarks", "author": ""}, {"id": 11, "name": "The Muted Sage Diary", "price": 499, "image": "images/11.jpg", "desc": "A5 dotted journal, 200 cream pages, sage green linen cover.", "badge": "New Arrival", "category": "diaries", "author": ""}, {"id": 12, "name": "Vintage Leather Journal", "price": 699, "image": "images/12.jpg", "desc": "Genuine leather-bound and refillable, with 192 ruled pages.", "badge": "Staff Pick", "category": "diaries", "author": ""}, {"id": 13, "name": "Floral Weekly Planner", "price": 399, "image": "images/13.jpg", "desc": "Undated weekly planner with original botanical illustrations.", "badge": "", "category": "diaries", "author": ""}, {"id": 14, "name": "Moonchild Night Journal", "price": 549, "image": "images/14.jpg", "desc": "Celestial art cover, cream pages, and a satin ribbon marker.", "badge": "Bestseller", "category": "diaries", "author": ""}, {"id": 15, "name": "Bookish Washi Tape Set", "price": 199, "image": "images/15.jpg", "desc": "Set of 5 literary-themed washi tapes for journaling & crafts.", "badge": "", "category": "misc", "author": ""}, {"id": 16, "name": "Reader's Tote Bag", "price": 449, "image": "images/16.jpg", "desc": "Cotton canvas tote with 'One more chapter' screen print.", "badge": "Bestseller", "category": "misc", "author": ""}, {"id": 17, "name": "Book Lovers Candle", "price": 299, "image": "images/17.jpg", "desc": "Soy wax candle scented with old books, vanilla & sandalwood.", "badge": "New", "category": "misc", "author": ""}, {"id": 18, "name": "Quill & Ink Pen Set", "price": 349, "image": "images/18.jpg", "desc": "Dip pen with three nibs and a pot of rich walnut ink.", "badge": "Staff Pick", "category": "misc", "author": ""}, {"id": 19, "name": "The Wanderer's Mystery Box", "price": 999, "image": "images/19.jpg", "desc": "A curated mystery box for the avid reader. Every box is unique \u2014 books, bookmarks, stationery, and surprises!", "badge": "\u2728 Mystery", "category": "mystery", "author": ""}, {"id": 20, "name": "Mini Mystery Parcel", "price": 599, "image": "images/20.jpg", "desc": "A smaller mystery parcel \u2014 perfect as a gift or self-treat. 2\u20133 mystery items curated with love.", "badge": "\u2728 Mystery", "category": "mystery", "author": ""}];
 
   useEffect(() => {
     const sources = [
@@ -136,7 +136,7 @@ function App() {
       sources.map(s =>
         fetch(s.file)
           .then(r => { if (!r.ok) throw new Error(); return r.json(); })
-          .then(items => items.map(item => ({ ...item, author: item.author || "", category: s.category })))
+          .then(items => items.map(item => ({ ...item, author: item.author || "", genre: item.genre || "", category: s.category })))
           .catch(() => [])
       )
     );
@@ -237,7 +237,7 @@ function App() {
 
       {/* PAGES */}
       {page === "home"         && <HomePage         products={products} setPage={navTo} heroIn={heroIn} addToCart={addToCart} setCategory={setCategory} />}
-      {page === "shop"         && <ShopPage         filtered={filtered} category={category} setCategory={setCategory} addToCart={addToCart} setPage={navTo} />}
+      {page === "shop"         && <ShopPage         filtered={filtered} category={category} setCategory={setCategory} addToCart={addToCart} setPage={navTo} products={products} />}
       {page === "mystery"      && <MysteryPage      products={products} addToCart={addToCart} />}
       {page === "cart"         && <CartPage         cart={cart} cartTotal={cartTotal} updateQty={updateQty} removeFromCart={removeFromCart} setPage={navTo} form={form} setForm={setForm} handleCheckout={handleCheckout} submitting={submitting} errors={errors} coupons={coupons} />}
       {page === "confirmation" && <ConfirmationPage order={order} setPage={navTo} />}
@@ -397,11 +397,32 @@ function HomePage({ products, setPage, heroIn, addToCart, setCategory }) {
 }
 
 // ── SHOP ──────────────────────────────────────────────────
-function ShopPage({ filtered, category, setCategory, addToCart, setPage }) {
-  const [search, setSearch] = React.useState("");
+function ShopPage({ filtered, category, setCategory, addToCart, setPage, products }) {
+  const [search, setSearch]       = React.useState("");
+  const [activeGenre, setActiveGenre] = React.useState("all");
+
+  // Reset genre filter whenever the category changes
+  React.useEffect(() => { setActiveGenre("all"); }, [category]);
+
+  // Derive unique genres dynamically from all books in the products list
+  const bookGenres = React.useMemo(() => {
+    const genres = products
+      .filter(p => p.category === "books" && p.genre)
+      .map(p => p.genre);
+    return [...new Set(genres)].sort();
+  }, [products]);
+
+  const showGenreFilter = category === "books" || category === "all";
+
+  // Apply genre filter on top of the already category-filtered list
+  const genreFiltered = (activeGenre === "all" || !showGenreFilter)
+    ? filtered
+    : filtered.filter(p => p.category !== "books" || p.genre === activeGenre);
+
   const searchFiltered = search.trim()
-    ? filtered.filter(p => p.name.toLowerCase().includes(search.toLowerCase()))
-    : filtered;
+    ? genreFiltered.filter(p => p.name.toLowerCase().includes(search.toLowerCase()))
+    : genreFiltered;
+
   return (
     <div className="section-pad" style={{padding:"48px 48px 0", maxWidth:1200, margin:"0 auto"}}>
       <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.15em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:8}}>Everything we love</p>
@@ -410,11 +431,38 @@ function ShopPage({ filtered, category, setCategory, addToCart, setPage }) {
       <div style={{display:"flex", gap:8, flexWrap:"wrap", marginBottom:16}}>
         {CATEGORIES.map(c => (
           <button key={c.key} className={`cat-pill ${category===c.key?"active":""}`}
-            onClick={() => c.key === "mystery" ? setPage("mystery") : setCategory(c.key)}>
+            onClick={() => { if (c.key === "mystery") { setPage("mystery"); } else { setCategory(c.key); } }}>
             {c.label}
           </button>
         ))}
       </div>
+
+      {/* Genre filter — only visible when Books (or All) is active and genres exist */}
+      {showGenreFilter && bookGenres.length > 0 && (
+        <div style={{marginBottom:20}}>
+          <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.12em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:10}}>
+            📖 Filter by Genre
+          </p>
+          <div style={{display:"flex", gap:8, flexWrap:"wrap"}}>
+            <button
+              className={`cat-pill ${activeGenre === "all" ? "active" : ""}`}
+              style={{fontSize:12, padding:"6px 16px"}}
+              onClick={() => setActiveGenre("all")}>
+              All Genres
+            </button>
+            {bookGenres.map(genre => (
+              <button
+                key={genre}
+                className={`cat-pill ${activeGenre === genre ? "active" : ""}`}
+                style={{fontSize:12, padding:"6px 16px"}}
+                onClick={() => setActiveGenre(genre)}>
+                {genre}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div style={{position:"relative", marginBottom:28}}>
         <span style={{position:"absolute", left:14, top:"50%", transform:"translateY(-50%)", fontSize:16, color:"#b08060"}}>🔍</span>
         <input
@@ -430,7 +478,7 @@ function ShopPage({ filtered, category, setCategory, addToCart, setPage }) {
       <div className="grid-3">
         {searchFiltered.length > 0
           ? searchFiltered.map(p => <ProductCard key={p.id} product={p} addToCart={addToCart} setPage={setPage} />)
-          : <p style={{fontFamily:"'DM Sans',sans-serif", color:"#9a6e4c", padding:"40px 0"}}>No products found for "{search}"</p>
+          : <p style={{fontFamily:"'DM Sans',sans-serif", color:"#9a6e4c", padding:"40px 0"}}>No products found{search ? ` for "${search}"` : ""}</p>
         }
       </div>
     </div>
