@@ -6,7 +6,8 @@
     "price": 349,
     "image": "images/1.jpg",
     "desc": "A dazzling novel about all the lives we could have lived.",
-    "badge": "Bestseller"
+    "badge": "Bestseller",
+    "genre": "Self Help"
   },
   {
     "id": 2,
@@ -15,7 +16,8 @@
     "price": 399,
     "image": "images/2.jpg",
     "desc": "A woman chemist in the 1960s becomes an unlikely cooking show host.",
-    "badge": "Staff Pick"
+    "badge": "Staff Pick",
+    "genre": "Romance"
   },
   {
     "id": 3,
@@ -24,7 +26,8 @@
     "price": 449,
     "image": "images/3.jpg",
     "desc": "Dark academia fantasy with six magical scholars and deadly stakes.",
-    "badge": "New Arrival"
+    "badge": "New Arrival",
+    "genre": "Fantasy"
   },
   {
     "id": 4,
@@ -33,7 +36,8 @@
     "price": 379,
     "image": "images/4.jpg",
     "desc": "A sweeping love story set in the world of video games.",
-    "badge": ""
+    "badge": "",
+    "genre": "Romance"
   },
   {
     "id": 5,
@@ -42,7 +46,8 @@
     "price": 299,
     "image": "images/5.jpg",
     "desc": "A mysterious man living in a house with infinite halls and tides.",
-    "badge": "Award Winner"
+    "badge": "Award Winner",
+    "genre": "Mystery"
   },
   {
     "id": 6,
@@ -51,6 +56,7 @@
     "price": 349,
     "image": "images/6.jpg",
     "desc": "Time travel across centuries connects five extraordinary lives.",
-    "badge": ""
+    "badge": "",
+    "genre": "Thriller"
   }
 ]
