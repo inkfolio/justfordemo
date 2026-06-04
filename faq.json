@@ -1,0 +1,80 @@
+[
+  {
+    "id": 1,
+    "category": "Orders & Shipping",
+    "question": "How do I place an order?",
+    "answer": "Simply browse our shop, add items to your cart, and proceed to checkout. Fill in your name, contact number, and address — we'll confirm your order via a call or email before dispatching."
+  },
+  {
+    "id": 2,
+    "category": "Orders & Shipping",
+    "question": "How long does delivery take?",
+    "answer": "Most orders are dispatched within 2–3 business days. Delivery typically takes 4–7 business days depending on your location. We'll keep you updated every step of the way."
+  },
+  {
+    "id": 3,
+    "category": "Orders & Shipping",
+    "question": "Do you ship across India?",
+    "answer": "Yes! We ship to all major cities and towns across India. If you're unsure whether we deliver to your pin code, just reach out to us and we'll check for you."
+  },
+  {
+    "id": 4,
+    "category": "Orders & Shipping",
+    "question": "Can I track my order?",
+    "answer": "Once your order is dispatched, we'll send you the tracking details via email or WhatsApp. You can use the tracking number on our courier partner's website to follow your package."
+  },
+  {
+    "id": 5,
+    "category": "Payments",
+    "question": "What payment methods do you accept?",
+    "answer": "We accept UPI, bank transfers, and cash on delivery (COD) for most locations. We'll share payment details when we confirm your order."
+  },
+  {
+    "id": 6,
+    "category": "Payments",
+    "question": "Is it safe to pay online?",
+    "answer": "Absolutely. We use standard UPI and bank transfer methods — no card details are ever stored by us. If you have any concerns, you can always opt for cash on delivery."
+  },
+  {
+    "id": 7,
+    "category": "Products",
+    "question": "Are the bookmarks really handmade?",
+    "answer": "Yes! Our handmade bookmarks are crafted with care — from pressed flowers preserved under resin to hand-stamped leather pieces. Each one is unique and made in small batches."
+  },
+  {
+    "id": 8,
+    "category": "Products",
+    "question": "What's inside the Mystery Box?",
+    "answer": "Every Mystery Box is a surprise! It typically includes 1–2 curated books, one or more bookmarks, some stationery, and a little something extra from us. No two boxes are exactly alike."
+  },
+  {
+    "id": 9,
+    "category": "Products",
+    "question": "Are the books new or used?",
+    "answer": "All books sold on Spines & Scribbles are brand new unless explicitly stated otherwise. We source them from reputable publishers and distributors."
+  },
+  {
+    "id": 10,
+    "category": "Returns & Exchanges",
+    "question": "What if I receive a damaged item?",
+    "answer": "We're so sorry if that happens! Please take a photo of the damaged item and email or WhatsApp us within 48 hours of delivery. We'll arrange a replacement or refund promptly."
+  },
+  {
+    "id": 11,
+    "category": "Returns & Exchanges",
+    "question": "Can I return or exchange a product?",
+    "answer": "We accept returns or exchanges within 7 days of delivery for items that are unused and in their original condition. Mystery boxes and personalised items are non-returnable. Reach out to us and we'll sort it out."
+  },
+  {
+    "id": 12,
+    "category": "Gifting",
+    "question": "Do you offer gift wrapping?",
+    "answer": "Yes! All our orders come beautifully packaged by default — wrapped in brown paper with a little note. It's already gift-ready. If you'd like a personalised message included, just mention it in the order notes."
+  },
+  {
+    "id": 13,
+    "category": "Gifting",
+    "question": "Can I send an order directly to someone as a gift?",
+    "answer": "Of course! Just enter the recipient's address at checkout and add a gift message in the notes. We'll make sure it arrives looking lovely."
+  }
+]
