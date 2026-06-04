@@ -51,7 +51,12 @@
   .review-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(100,60,20,0.11); }
   .stars { color: #c9882a; font-size: 15px; letter-spacing: 2px; }
   .grid-reviews { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-  .thumb { width: 72px; height: 96px; border-radius: 10px; overflow: hidden; border: 2px solid transparent; cursor: pointer; flex-shrink: 0; transition: border-color 0.15s, transform 0.15s; background: #f0e4cc; }
+  .faq-item { border: 1px solid #e0c9a8; border-radius: 14px; overflow: hidden; background: #fffaf4; transition: box-shadow 0.2s; }
+  .faq-item:hover { box-shadow: 0 4px 16px rgba(100,60,20,0.09); }
+  .faq-question { width: 100%; background: none; border: none; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; text-align: left; gap: 16px; }
+  .faq-answer { padding: 0 24px 20px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: #4a3020; line-height: 1.75; }
+  .faq-cat-pill { padding: 6px 16px; border-radius: 20px; border: 1.5px solid #d4b896; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; color: #6b4226; transition: all 0.18s; }
+  .faq-cat-pill.active { background: #7c4e2a; color: #fdf6ee; border-color: #7c4e2a; } border-radius: 10px; overflow: hidden; border: 2px solid transparent; cursor: pointer; flex-shrink: 0; transition: border-color 0.15s, transform 0.15s; background: #f0e4cc; }
   .thumb:hover { transform: scale(1.04); }
   .thumb.active { border-color: #7c4e2a; }
   .pdp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
@@ -132,6 +137,7 @@ function ProductImage({ src, alt, style={} }) {
 function App() {
   const [products, setProducts]     = useState([]);
   const [reviews, setReviews]       = useState([]);
+  const [faqs, setFaqs]             = useState([]);
   const [coupons, setCoupons]       = useState({});
   const [loading, setLoading]       = useState(true);
   const [page, setPage]             = useState("home");
@@ -150,7 +156,7 @@ function App() {
   // Load products from JSON files; falls back to embedded data when running locally (file://)
   const EMBEDDED_PRODUCTS = [{"id": 1, "name": "The Midnight Library", "author": "Matt Haig", "price": 349, "image": "images/1.jpg", "desc": "A dazzling novel about all the lives we could have lived.", "badge": "Bestseller", "category": "books", "genre": "Self Help"}, {"id": 2, "name": "Lessons in Chemistry", "author": "Bonnie Garmus", "price": 399, "image": "images/2.jpg", "desc": "A woman chemist in the 1960s becomes an unlikely cooking show host.", "badge": "Staff Pick", "category": "books", "genre": "Romance"}, {"id": 3, "name": "The Atlas Six", "author": "Olivie Blake", "price": 449, "image": "images/3.jpg", "desc": "Dark academia fantasy with six magical scholars and deadly stakes.", "badge": "New Arrival", "category": "books", "genre": "Fantasy"}, {"id": 4, "name": "Tomorrow & Tomorrow", "author": "Gabriel Zevin", "price": 379, "image": "images/4.jpg", "desc": "A sweeping love story set in the world of video games.", "badge": "", "category": "books", "genre": "Romance"}, {"id": 5, "name": "Piranesi", "author": "Susanna Clarke", "price": 299, "image": "images/5.jpg", "desc": "A mysterious man living in a house with infinite halls and tides.", "badge": "Award Winner", "category": "books", "genre": "Mystery"}, {"id": 6, "name": "Sea of Tranquility", "author": "Emily St. John Mandel", "price": 349, "image": "images/6.jpg", "desc": "Time travel across centuries connects five extraordinary lives.", "badge": "", "category": "books", "genre": "Thriller"}, {"id": 7, "name": "Pressed Flower Bookmark", "price": 89, "image": "images/7.jpg", "desc": "Handcrafted with real dried flowers preserved under clear resin.", "badge": "Handmade", "category": "bookmarks", "author": ""}, {"id": 8, "name": "Leather Tassel Bookmark", "price": 129, "image": "images/8.jpg", "desc": "Genuine leather with a gold tassel. Rich aged caramel tone.", "badge": "Bestseller", "category": "bookmarks", "author": ""}, {"id": 9, "name": "Watercolour Set of 3", "price": 149, "image": "images/9.jpg", "desc": "Three bookmarks printed with original watercolour artwork.", "badge": "", "category": "bookmarks", "author": ""}, {"id": 10, "name": "Brass Clip Bookmark", "price": 99, "image": "images/10.jpg", "desc": "Elegant brass page clip with a delicate leaf detail.", "badge": "New", "category": "bookmarks", "author": ""}, {"id": 11, "name": "The Muted Sage Diary", "price": 499, "image": "images/11.jpg", "desc": "A5 dotted journal, 200 cream pages, sage green linen cover.", "badge": "New Arrival", "category": "diaries", "author": ""}, {"id": 12, "name": "Vintage Leather Journal", "price": 699, "image": "images/12.jpg", "desc": "Genuine leather-bound and refillable, with 192 ruled pages.", "badge": "Staff Pick", "category": "diaries", "author": ""}, {"id": 13, "name": "Floral Weekly Planner", "price": 399, "image": "images/13.jpg", "desc": "Undated weekly planner with original botanical illustrations.", "badge": "", "category": "diaries", "author": ""}, {"id": 14, "name": "Moonchild Night Journal", "price": 549, "image": "images/14.jpg", "desc": "Celestial art cover, cream pages, and a satin ribbon marker.", "badge": "Bestseller", "category": "diaries", "author": ""}, {"id": 15, "name": "Bookish Washi Tape Set", "price": 199, "image": "images/15.jpg", "desc": "Set of 5 literary-themed washi tapes for journaling & crafts.", "badge": "", "category": "misc", "author": ""}, {"id": 16, "name": "Reader's Tote Bag", "price": 449, "image": "images/16.jpg", "desc": "Cotton canvas tote with 'One more chapter' screen print.", "badge": "Bestseller", "category": "misc", "author": ""}, {"id": 17, "name": "Book Lovers Candle", "price": 299, "image": "images/17.jpg", "desc": "Soy wax candle scented with old books, vanilla & sandalwood.", "badge": "New", "category": "misc", "author": ""}, {"id": 18, "name": "Quill & Ink Pen Set", "price": 349, "image": "images/18.jpg", "desc": "Dip pen with three nibs and a pot of rich walnut ink.", "badge": "Staff Pick", "category": "misc", "author": ""}, {"id": 19, "name": "The Wanderer's Mystery Box", "price": 999, "image": "images/19.jpg", "desc": "A curated mystery box for the avid reader. Every box is unique \u2014 books, bookmarks, stationery, and surprises!", "badge": "\u2728 Mystery", "category": "mystery", "author": ""}, {"id": 20, "name": "Mini Mystery Parcel", "price": 599, "image": "images/20.jpg", "desc": "A smaller mystery parcel \u2014 perfect as a gift or self-treat. 2\u20133 mystery items curated with love.", "badge": "\u2728 Mystery", "category": "mystery", "author": ""}];
 
-  const EMBEDDED_REVIEWS = [{"id":1,"name":"Priya Sharma","rating":5,"date":"2025-04-12","review":"I ordered the Vintage Leather Journal and it is absolutely gorgeous. The quality is so much better than I expected — the leather feels rich and the pages are thick and smooth. Packaging was also beautifully done, felt like opening a gift. Will definitely be ordering again!","item":"Vintage Leather Journal"},{"id":2,"name":"Arjun Mehta","rating":5,"date":"2025-04-18","review":"Got the Wanderer's Mystery Box as a birthday treat to myself and I was blown away. Two books I hadn't read, a pressed flower bookmark, and some washi tape — such a thoughtful curation. The whole unboxing experience was magical. 10/10.","item":"The Wanderer's Mystery Box"},{"id":3,"name":"Sneha Iyer","rating":5,"date":"2025-05-02","review":"Piranesi arrived so quickly and the packaging was so pretty — wrapped in brown paper with a little note. I've already recommended Spines & Scribbles to all my reader friends. This is exactly the kind of bookshop experience I didn't know I needed online.","item":"Piranesi"},{"id":4,"name":"Rohan Kapoor","rating":4,"date":"2025-05-08","review":"Ordered the Leather Tassel Bookmark and the Quill & Ink Pen Set together. Both arrived in perfect condition. The pen set is stunning and the ink quality is lovely. Really happy with the purchase — the whole shop has such a cosy, personal feel to it.","item":"Quill & Ink Pen Set"},{"id":5,"name":"Ananya Bose","rating":5,"date":"2025-05-15","review":"The Moonchild Night Journal is exactly as described — the cover art is beautiful and the satin ribbon is such a nice touch. I love journaling at night and this feels so fitting. Delivery was smooth and the team was very responsive over email.","item":"Moonchild Night Journal"},{"id":6,"name":"Vikram Nair","rating":5,"date":"2025-05-20","review":"Bought The Midnight Library as a gift for my sister and she absolutely loved it. Came wrapped beautifully. Spines & Scribbles really nails the whole gifting experience — it feels personal and curated, not like any other online store.","item":"The Midnight Library"}];
+  const EMBEDDED_FAQS = [{"id":1,"category":"Orders & Shipping","question":"How do I place an order?","answer":"Simply browse our shop, add items to your cart, and proceed to checkout. Fill in your name, contact number, and address — we'll confirm your order via a call or email before dispatching."},{"id":2,"category":"Orders & Shipping","question":"How long does delivery take?","answer":"Most orders are dispatched within 2–3 business days. Delivery typically takes 4–7 business days depending on your location. We'll keep you updated every step of the way."},{"id":3,"category":"Orders & Shipping","question":"Do you ship across India?","answer":"Yes! We ship to all major cities and towns across India. If you're unsure whether we deliver to your pin code, just reach out to us and we'll check for you."},{"id":4,"category":"Orders & Shipping","question":"Can I track my order?","answer":"Once your order is dispatched, we'll send you the tracking details via email or WhatsApp. You can use the tracking number on our courier partner's website to follow your package."},{"id":5,"category":"Payments","question":"What payment methods do you accept?","answer":"We accept UPI, bank transfers, and cash on delivery (COD) for most locations. We'll share payment details when we confirm your order."},{"id":6,"category":"Payments","question":"Is it safe to pay online?","answer":"Absolutely. We use standard UPI and bank transfer methods — no card details are ever stored by us. If you have any concerns, you can always opt for cash on delivery."},{"id":7,"category":"Products","question":"Are the bookmarks really handmade?","answer":"Yes! Our handmade bookmarks are crafted with care — from pressed flowers preserved under resin to hand-stamped leather pieces. Each one is unique and made in small batches."},{"id":8,"category":"Products","question":"What's inside the Mystery Box?","answer":"Every Mystery Box is a surprise! It typically includes 1–2 curated books, one or more bookmarks, some stationery, and a little something extra from us. No two boxes are exactly alike."},{"id":9,"category":"Products","question":"Are the books new or used?","answer":"All books sold on Spines & Scribbles are brand new unless explicitly stated otherwise. We source them from reputable publishers and distributors."},{"id":10,"category":"Returns & Exchanges","question":"What if I receive a damaged item?","answer":"We're so sorry if that happens! Please take a photo of the damaged item and email or WhatsApp us within 48 hours of delivery. We'll arrange a replacement or refund promptly."},{"id":11,"category":"Returns & Exchanges","question":"Can I return or exchange a product?","answer":"We accept returns or exchanges within 7 days of delivery for items that are unused and in their original condition. Mystery boxes and personalised items are non-returnable. Reach out to us and we'll sort it out."},{"id":12,"category":"Gifting","question":"Do you offer gift wrapping?","answer":"Yes! All our orders come beautifully packaged by default — wrapped in brown paper with a little note. It's already gift-ready. If you'd like a personalised message included, just mention it in the order notes."},{"id":13,"category":"Gifting","question":"Can I send an order directly to someone as a gift?","answer":"Of course! Just enter the recipient's address at checkout and add a gift message in the notes. We'll make sure it arrives looking lovely."}];[{"id":1,"name":"Priya Sharma","rating":5,"date":"2025-04-12","review":"I ordered the Vintage Leather Journal and it is absolutely gorgeous. The quality is so much better than I expected — the leather feels rich and the pages are thick and smooth. Packaging was also beautifully done, felt like opening a gift. Will definitely be ordering again!","item":"Vintage Leather Journal"},{"id":2,"name":"Arjun Mehta","rating":5,"date":"2025-04-18","review":"Got the Wanderer's Mystery Box as a birthday treat to myself and I was blown away. Two books I hadn't read, a pressed flower bookmark, and some washi tape — such a thoughtful curation. The whole unboxing experience was magical. 10/10.","item":"The Wanderer's Mystery Box"},{"id":3,"name":"Sneha Iyer","rating":5,"date":"2025-05-02","review":"Piranesi arrived so quickly and the packaging was so pretty — wrapped in brown paper with a little note. I've already recommended Spines & Scribbles to all my reader friends. This is exactly the kind of bookshop experience I didn't know I needed online.","item":"Piranesi"},{"id":4,"name":"Rohan Kapoor","rating":4,"date":"2025-05-08","review":"Ordered the Leather Tassel Bookmark and the Quill & Ink Pen Set together. Both arrived in perfect condition. The pen set is stunning and the ink quality is lovely. Really happy with the purchase — the whole shop has such a cosy, personal feel to it.","item":"Quill & Ink Pen Set"},{"id":5,"name":"Ananya Bose","rating":5,"date":"2025-05-15","review":"The Moonchild Night Journal is exactly as described — the cover art is beautiful and the satin ribbon is such a nice touch. I love journaling at night and this feels so fitting. Delivery was smooth and the team was very responsive over email.","item":"Moonchild Night Journal"},{"id":6,"name":"Vikram Nair","rating":5,"date":"2025-05-20","review":"Bought The Midnight Library as a gift for my sister and she absolutely loved it. Came wrapped beautifully. Spines & Scribbles really nails the whole gifting experience — it feels personal and curated, not like any other online store.","item":"The Midnight Library"}];
 
   useEffect(() => {
     const sources = [
@@ -164,6 +170,7 @@ function App() {
     if (window.location.protocol === "file:") {
       setProducts(EMBEDDED_PRODUCTS);
       setReviews(EMBEDDED_REVIEWS);
+      setFaqs(EMBEDDED_FAQS);
       setLoading(false);
       return;
     }
@@ -182,11 +189,15 @@ function App() {
     const reviewsPromise = fetch("reviews.json")
       .then(r => r.json())
       .catch(() => []);
-    Promise.all([productsPromise, couponsPromise, reviewsPromise]).then(([results, loadedCoupons, loadedReviews]) => {
+    const faqsPromise = fetch("faq.json")
+      .then(r => r.json())
+      .catch(() => []);
+    Promise.all([productsPromise, couponsPromise, reviewsPromise, faqsPromise]).then(([results, loadedCoupons, loadedReviews, loadedFaqs]) => {
       const loaded = results.flat();
       setProducts(loaded.length > 0 ? loaded : EMBEDDED_PRODUCTS);
       setCoupons(Object.keys(loadedCoupons).length > 0 ? loadedCoupons : { "bookslover5": 5 });
       setReviews(loadedReviews.length > 0 ? loadedReviews : EMBEDDED_REVIEWS);
+      setFaqs(loadedFaqs.length > 0 ? loadedFaqs : EMBEDDED_FAQS);
       setLoading(false);
     });
   }, []);
@@ -267,8 +278,9 @@ function App() {
         <div className="nav-links" style={{display:"flex", alignItems:"center", gap:4}}>
           <button className="nav-link" onClick={() => navTo("home")}>Home</button>
           <button className="nav-link" onClick={() => { setCategory("all"); navTo("shop"); }}>Shop</button>
-          <button className="nav-link" onClick={() => navTo("mystery")}>Mystery Box ✨</button>
+          <button className="nav-link" onClick={() => navTo("mystery")}>Mystery Box</button>
           <button className="nav-link" onClick={() => navTo("reviews")}>Reviews</button>
+          <button className="nav-link" onClick={() => navTo("faq")}>FAQs</button>
           <button className="btn-ghost" style={{marginLeft:8, position:"relative"}} onClick={() => setCartOpen(true)}>
             Cart
             {cartCount > 0 && <span style={{position:"absolute", top:-6, right:-6, background:"#7c4e2a", color:"#fff", borderRadius:"50%", fontSize:11, padding:"2px 6px", lineHeight:1}}>{cartCount}</span>}
@@ -299,6 +311,7 @@ function App() {
             <button className="mobile-nav-link" onClick={() => { setCategory("all"); navTo("shop"); }}>📚 Shop</button>
             <button className="mobile-nav-link" onClick={() => navTo("mystery")}>✨ Mystery Box</button>
             <button className="mobile-nav-link" onClick={() => navTo("reviews")}>⭐ Reviews</button>
+            <button className="mobile-nav-link" onClick={() => navTo("faq")}>❓ FAQs</button>
             <button className="mobile-nav-link" style={{borderBottom:"none"}} onClick={() => { setMobileMenuOpen(false); setCartOpen(true); }}>
               🛒 Cart {cartCount > 0 && <span style={{background:"#7c4e2a", color:"#fff", borderRadius:10, fontSize:11, padding:"1px 7px", marginLeft:6}}>{cartCount}</span>}
             </button>
@@ -311,6 +324,7 @@ function App() {
       {page === "shop"         && <ShopPage         filtered={filtered} category={category} setCategory={setCategory} addToCart={addToCart} setPage={navTo} products={products} />}
       {page === "mystery"      && <MysteryPage      products={products} addToCart={addToCart} setPage={navTo} />}
       {page === "reviews"      && <ReviewsPage      reviews={reviews} setPage={navTo} />}
+      {page === "faq"          && <FAQPage          faqs={faqs} setPage={navTo} />}
       {page === "product"      && <ProductDetailPage product={selectedProduct} products={products} reviews={reviews} addToCart={addToCart} setPage={navTo} setCategory={setCategory} />}
       {page === "cart"         && <CartPage         cart={cart} cartTotal={cartTotal} updateQty={updateQty} removeFromCart={removeFromCart} setPage={navTo} form={form} setForm={setForm} handleCheckout={handleCheckout} submitting={submitting} errors={errors} coupons={coupons} />}
       {page === "confirmation" && <ConfirmationPage order={order} setPage={navTo} />}
@@ -367,7 +381,7 @@ function App() {
         <div className="footer-inner" style={{display:"flex", justifyContent:"space-between", flexWrap:"wrap", gap:32, marginBottom:32}}>
           <div>
             <div style={{fontFamily:"'Playfair Display',serif", fontSize:20, fontWeight:800, color:"#fdf6ee", marginBottom:8}}>📚 Spines &amp; Scribbles</div>
-            <p style={{fontSize:14, fontFamily:"'DM Sans',sans-serif", maxWidth:240, lineHeight:1.7, opacity:0.8}}>For readers, dreamers, and collectors of beautiful things.</p>
+            <p style={{fontSize:14, fontFamily:"'DM Sans',sans-serif", maxWidth:240, lineHeight:1.7, opacity:0.8}}>For readers, writers, and everything in between.</p>
           </div>
           <div style={{fontFamily:"'DM Sans',sans-serif", fontSize:14}}>
             <p style={{color:"#fdf6ee", fontWeight:500, marginBottom:10}}>Shop</p>
@@ -399,6 +413,14 @@ function App() {
                 onMouseLeave={e => e.target.style.opacity=0.7}
               >Customer Reviews ⭐</span>
             </p>
+            <p style={{marginBottom:6}}>
+              <span
+                onClick={() => navTo("faq")}
+                style={{opacity:0.7, cursor:"pointer", transition:"opacity 0.15s"}}
+                onMouseEnter={e => e.target.style.opacity=1}
+                onMouseLeave={e => e.target.style.opacity=0.7}
+              >FAQs</span>
+            </p>
           </div>
           <div style={{fontFamily:"'DM Sans',sans-serif", fontSize:14}}>
             <p style={{color:"#fdf6ee", fontWeight:500, marginBottom:10}}>Contact</p>
@@ -407,7 +429,7 @@ function App() {
           </div>
         </div>
         <div style={{borderTop:"1px solid rgba(212,184,150,0.2)", paddingTop:20, textAlign:"center", fontSize:13, fontFamily:"'DM Sans',sans-serif", opacity:0.6}}>
-          2025 Spines &amp; Scribbles - Made with love &amp; good books
+          2026 Spines &amp; Scribbles - Made with love &amp; good books
         </div>
       </footer>
     </div>
@@ -576,6 +598,87 @@ function ReviewsPage({ reviews, setPage }) {
         )}
         <div style={{textAlign:"center", marginTop:48}}>
           <button className="btn-ghost" onClick={() => setPage("shop")}>Shop Now</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── FAQ PAGE ──────────────────────────────────────────────
+function FAQPage({ faqs, setPage }) {
+  const [openId, setOpenId]         = React.useState(null);
+  const [activecat, setActiveCat]   = React.useState("All");
+
+  const categories = ["All", ...([...new Set(faqs.map(f => f.category))])];
+  const visible = activecat === "All" ? faqs : faqs.filter(f => f.category === activecat);
+
+  const toggle = id => setOpenId(prev => prev === id ? null : id);
+
+  const catIcons = {
+    "Orders & Shipping": "📦",
+    "Payments":          "💳",
+    "Products":          "📚",
+    "Returns & Exchanges":"↩️",
+    "Gifting":           "🎁",
+  };
+
+  return (
+    <div style={{paddingBottom:80}}>
+      {/* Hero banner */}
+      <div style={{background:"linear-gradient(135deg,#f0dfc8 0%,#e8d0b0 60%,#f5e6d0 100%)", padding:"64px clamp(16px,5vw,48px) 56px", textAlign:"center"}}>
+        <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.16em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:12}}>Got questions?</p>
+        <h1 style={{fontFamily:"'Playfair Display',serif", fontSize:"clamp(32px,5vw,52px)", fontWeight:800, color:"#3d2b1f", marginBottom:16, lineHeight:1.1}}>Frequently Asked Questions</h1>
+        <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:16, color:"#6b4a2e", maxWidth:480, margin:"0 auto", lineHeight:1.7}}>Everything you need to know about ordering, shipping, and our products. Can't find an answer? Just email us.</p>
+      </div>
+
+      <div style={{maxWidth:800, margin:"0 auto", padding:"52px clamp(16px,5vw,48px) 0"}}>
+
+        {/* Category filter pills */}
+        <div style={{display:"flex", gap:8, flexWrap:"wrap", marginBottom:36}}>
+          {categories.map(cat => (
+            <button
+              key={cat}
+              className={`faq-cat-pill ${activecat === cat ? "active" : ""}`}
+              onClick={() => { setActiveCat(cat); setOpenId(null); }}
+            >
+              {catIcons[cat] ? `${catIcons[cat]} ` : ""}{cat}
+            </button>
+          ))}
+        </div>
+
+        {/* Accordion */}
+        <div style={{display:"flex", flexDirection:"column", gap:12}}>
+          {visible.map(faq => {
+            const isOpen = openId === faq.id;
+            return (
+              <div key={faq.id} className="faq-item">
+                <button className="faq-question" onClick={() => toggle(faq.id)}>
+                  <span style={{fontFamily:"'Playfair Display',serif", fontSize:17, fontWeight:700, color:"#3d2b1f", lineHeight:1.35}}>{faq.question}</span>
+                  <span style={{fontSize:18, color:"#9a6e4c", flexShrink:0, transition:"transform 0.2s", display:"inline-block", transform: isOpen ? "rotate(45deg)" : "rotate(0deg)"}}>+</span>
+                </button>
+                {isOpen && (
+                  <div className="faq-answer">{faq.answer}</div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Contact nudge */}
+        <div style={{marginTop:56, background:"#f5e6d0", borderRadius:20, border:"1px solid #e0c9a8", padding:"36px 32px", textAlign:"center"}}>
+          <div style={{fontSize:32, marginBottom:12}}>💬</div>
+          <h3 style={{fontFamily:"'Playfair Display',serif", fontSize:22, fontWeight:700, marginBottom:8}}>Still have a question?</h3>
+          <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:15, color:"#6b4a2e", marginBottom:20, lineHeight:1.6}}>We're happy to help. Drop us an email and we'll get back to you as soon as possible.</p>
+          <a
+            href={`mailto:${typeof OWNER_EMAIL !== "undefined" ? OWNER_EMAIL : "spinesnscribbles@gmail.com"}`}
+            style={{display:"inline-block", background:"#7c4e2a", color:"#fdf6ee", padding:"12px 28px", borderRadius:30, fontFamily:"'DM Sans',sans-serif", fontSize:14, fontWeight:500, textDecoration:"none"}}
+          >
+            Email Us
+          </a>
+        </div>
+
+        <div style={{textAlign:"center", marginTop:40}}>
+          <button className="btn-ghost" onClick={() => setPage("shop")}>Back to Shop</button>
         </div>
       </div>
     </div>
