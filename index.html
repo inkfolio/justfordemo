@@ -66,12 +66,25 @@
   @media (max-width: 700px) {
     .cart-panel { width: 100%; }
     .checkout-grid { grid-template-columns: 1fr !important; }
-    .nav-links { display: none; }
-    .hero-pad { padding: 56px 20px 48px !important; }
-    .section-pad { padding: 40px 20px 0 !important; }
-    .mystery-banner { margin: 40px 20px 0 !important; padding: 36px 24px !important; flex-direction: column !important; }
-    .footer-inner { flex-direction: column !important; gap: 24px !important; }
+    .nav-links { display: none !important; }
+    .nav-hamburger { display: flex !important; }
+    .hero-pad { padding: 48px 16px 40px !important; }
+    .section-pad { padding: 36px 16px 0 !important; }
+    .mystery-banner { margin: 32px 16px 0 !important; padding: 28px 20px !important; flex-direction: column !important; }
+    .footer-inner { flex-direction: column !important; gap: 24px !important; padding: 32px 16px 20px !important; }
+    .grid-2 { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important; }
+    .grid-3 { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important; }
+    .grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+    .grid-reviews { grid-template-columns: 1fr !important; }
+    .mobile-px { padding-left: 16px !important; padding-right: 16px !important; }
+    .mobile-full-w { max-width: 100% !important; padding-left: 16px !important; padding-right: 16px !important; }
   }
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 8px; border-radius: 8px; }
+  .nav-hamburger span { display: block; width: 22px; height: 2px; background: #7c4e2a; border-radius: 2px; transition: all 0.2s; }
+  .mobile-menu { position: fixed; inset: 0; background: rgba(30,15,5,0.5); z-index: 150; backdrop-filter: blur(2px); }
+  .mobile-menu-panel { position: fixed; top: 0; right: 0; bottom: 0; width: 72vw; max-width: 280px; background: #fdf6ee; z-index: 151; box-shadow: -8px 0 32px rgba(80,40,10,0.2); display: flex; flex-direction: column; padding: 24px 0 32px; }
+  .mobile-nav-link { font-family: 'DM Sans', sans-serif; font-size: 16px; color: #3d2b1f; padding: 14px 28px; border: none; background: none; cursor: pointer; text-align: left; width: 100%; border-bottom: 1px solid #f0dfc8; transition: background 0.15s; }
+  .mobile-nav-link:hover { background: #f5e6d0; }
 </style>
 </head>
 <body>
@@ -132,6 +145,7 @@ function App() {
   const [submitting, setSubmitting] = useState(false);
   const [toast, setToast]           = useState(null);
   const [heroIn, setHeroIn]         = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Load products from JSON files; falls back to embedded data when running locally (file://)
   const EMBEDDED_PRODUCTS = [{"id": 1, "name": "The Midnight Library", "author": "Matt Haig", "price": 349, "image": "images/1.jpg", "desc": "A dazzling novel about all the lives we could have lived.", "badge": "Bestseller", "category": "books", "genre": "Self Help"}, {"id": 2, "name": "Lessons in Chemistry", "author": "Bonnie Garmus", "price": 399, "image": "images/2.jpg", "desc": "A woman chemist in the 1960s becomes an unlikely cooking show host.", "badge": "Staff Pick", "category": "books", "genre": "Romance"}, {"id": 3, "name": "The Atlas Six", "author": "Olivie Blake", "price": 449, "image": "images/3.jpg", "desc": "Dark academia fantasy with six magical scholars and deadly stakes.", "badge": "New Arrival", "category": "books", "genre": "Fantasy"}, {"id": 4, "name": "Tomorrow & Tomorrow", "author": "Gabriel Zevin", "price": 379, "image": "images/4.jpg", "desc": "A sweeping love story set in the world of video games.", "badge": "", "category": "books", "genre": "Romance"}, {"id": 5, "name": "Piranesi", "author": "Susanna Clarke", "price": 299, "image": "images/5.jpg", "desc": "A mysterious man living in a house with infinite halls and tides.", "badge": "Award Winner", "category": "books", "genre": "Mystery"}, {"id": 6, "name": "Sea of Tranquility", "author": "Emily St. John Mandel", "price": 349, "image": "images/6.jpg", "desc": "Time travel across centuries connects five extraordinary lives.", "badge": "", "category": "books", "genre": "Thriller"}, {"id": 7, "name": "Pressed Flower Bookmark", "price": 89, "image": "images/7.jpg", "desc": "Handcrafted with real dried flowers preserved under clear resin.", "badge": "Handmade", "category": "bookmarks", "author": ""}, {"id": 8, "name": "Leather Tassel Bookmark", "price": 129, "image": "images/8.jpg", "desc": "Genuine leather with a gold tassel. Rich aged caramel tone.", "badge": "Bestseller", "category": "bookmarks", "author": ""}, {"id": 9, "name": "Watercolour Set of 3", "price": 149, "image": "images/9.jpg", "desc": "Three bookmarks printed with original watercolour artwork.", "badge": "", "category": "bookmarks", "author": ""}, {"id": 10, "name": "Brass Clip Bookmark", "price": 99, "image": "images/10.jpg", "desc": "Elegant brass page clip with a delicate leaf detail.", "badge": "New", "category": "bookmarks", "author": ""}, {"id": 11, "name": "The Muted Sage Diary", "price": 499, "image": "images/11.jpg", "desc": "A5 dotted journal, 200 cream pages, sage green linen cover.", "badge": "New Arrival", "category": "diaries", "author": ""}, {"id": 12, "name": "Vintage Leather Journal", "price": 699, "image": "images/12.jpg", "desc": "Genuine leather-bound and refillable, with 192 ruled pages.", "badge": "Staff Pick", "category": "diaries", "author": ""}, {"id": 13, "name": "Floral Weekly Planner", "price": 399, "image": "images/13.jpg", "desc": "Undated weekly planner with original botanical illustrations.", "badge": "", "category": "diaries", "author": ""}, {"id": 14, "name": "Moonchild Night Journal", "price": 549, "image": "images/14.jpg", "desc": "Celestial art cover, cream pages, and a satin ribbon marker.", "badge": "Bestseller", "category": "diaries", "author": ""}, {"id": 15, "name": "Bookish Washi Tape Set", "price": 199, "image": "images/15.jpg", "desc": "Set of 5 literary-themed washi tapes for journaling & crafts.", "badge": "", "category": "misc", "author": ""}, {"id": 16, "name": "Reader's Tote Bag", "price": 449, "image": "images/16.jpg", "desc": "Cotton canvas tote with 'One more chapter' screen print.", "badge": "Bestseller", "category": "misc", "author": ""}, {"id": 17, "name": "Book Lovers Candle", "price": 299, "image": "images/17.jpg", "desc": "Soy wax candle scented with old books, vanilla & sandalwood.", "badge": "New", "category": "misc", "author": ""}, {"id": 18, "name": "Quill & Ink Pen Set", "price": 349, "image": "images/18.jpg", "desc": "Dip pen with three nibs and a pot of rich walnut ink.", "badge": "Staff Pick", "category": "misc", "author": ""}, {"id": 19, "name": "The Wanderer's Mystery Box", "price": 999, "image": "images/19.jpg", "desc": "A curated mystery box for the avid reader. Every box is unique \u2014 books, bookmarks, stationery, and surprises!", "badge": "\u2728 Mystery", "category": "mystery", "author": ""}, {"id": 20, "name": "Mini Mystery Parcel", "price": 599, "image": "images/20.jpg", "desc": "A smaller mystery parcel \u2014 perfect as a gift or self-treat. 2\u20133 mystery items curated with love.", "badge": "\u2728 Mystery", "category": "mystery", "author": ""}];
@@ -232,7 +246,7 @@ function App() {
     }
   };
 
-  const navTo = (p, product) => { setPage(p); if (product) setSelectedProduct(product); window.scrollTo(0,0); };
+  const navTo = (p, product) => { setPage(p); if (product) setSelectedProduct(product); setMobileMenuOpen(false); window.scrollTo(0,0); };
 
   if (loading) return (
     <div style={{minHeight:"100vh", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", background:"#fdf6ee"}}>
@@ -244,11 +258,12 @@ function App() {
   return (
     <div>
       {/* NAV */}
-      <nav style={{background:"#f5e6d0", borderBottom:"1px solid #e0c9a8", padding:"0 32px", display:"flex", alignItems:"center", justifyContent:"space-between", height:64, position:"sticky", top:0, zIndex:50}}>
-        <div style={{display:"flex", alignItems:"center", gap:10, cursor:"pointer"}} onClick={() => navTo("home")}>
-          <span style={{fontSize:22}}>📚</span>
-          <span style={{fontFamily:"'Playfair Display',serif", fontSize:20, fontWeight:800, color:"#3d2b1f", letterSpacing:"-0.02em"}}>Spines &amp; Scribbles</span>
+      <nav style={{background:"#f5e6d0", borderBottom:"1px solid #e0c9a8", padding:"0 20px 0 16px", display:"flex", alignItems:"center", justifyContent:"space-between", height:60, position:"sticky", top:0, zIndex:50}}>
+        <div style={{display:"flex", alignItems:"center", gap:8, cursor:"pointer", flexShrink:0}} onClick={() => navTo("home")}>
+          <span style={{fontSize:20}}>📚</span>
+          <span style={{fontFamily:"'Playfair Display',serif", fontSize:18, fontWeight:800, color:"#3d2b1f", letterSpacing:"-0.02em", lineHeight:1.1}}>Spines &amp; Scribbles</span>
         </div>
+        {/* Desktop links */}
         <div className="nav-links" style={{display:"flex", alignItems:"center", gap:4}}>
           <button className="nav-link" onClick={() => navTo("home")}>Home</button>
           <button className="nav-link" onClick={() => { setCategory("all"); navTo("shop"); }}>Shop</button>
@@ -259,7 +274,37 @@ function App() {
             {cartCount > 0 && <span style={{position:"absolute", top:-6, right:-6, background:"#7c4e2a", color:"#fff", borderRadius:"50%", fontSize:11, padding:"2px 6px", lineHeight:1}}>{cartCount}</span>}
           </button>
         </div>
+        {/* Mobile right: cart icon + hamburger */}
+        <div className="nav-hamburger" style={{display:"none", alignItems:"center", gap:4}}>
+          <button style={{background:"none", border:"none", cursor:"pointer", padding:"6px 10px", position:"relative", fontSize:20}} onClick={() => setCartOpen(true)}>
+            🛒
+            {cartCount > 0 && <span style={{position:"absolute", top:0, right:0, background:"#7c4e2a", color:"#fff", borderRadius:"50%", fontSize:10, padding:"1px 5px", lineHeight:1.4}}>{cartCount}</span>}
+          </button>
+          <button className="nav-hamburger" style={{display:"flex"}} onClick={() => setMobileMenuOpen(true)} aria-label="Open menu">
+            <span /><span /><span />
+          </button>
+        </div>
       </nav>
+
+      {/* Mobile slide-out menu */}
+      {mobileMenuOpen && (
+        <>
+          <div className="mobile-menu" onClick={() => setMobileMenuOpen(false)} />
+          <div className="mobile-menu-panel">
+            <div style={{display:"flex", justifyContent:"space-between", alignItems:"center", padding:"0 24px 20px", borderBottom:"1px solid #e0c9a8", marginBottom:8}}>
+              <span style={{fontFamily:"'Playfair Display',serif", fontSize:17, fontWeight:800, color:"#3d2b1f"}}>Menu</span>
+              <button style={{background:"none", border:"none", fontSize:20, cursor:"pointer", color:"#7c4e2a", lineHeight:1}} onClick={() => setMobileMenuOpen(false)}>✕</button>
+            </div>
+            <button className="mobile-nav-link" onClick={() => navTo("home")}>🏠 Home</button>
+            <button className="mobile-nav-link" onClick={() => { setCategory("all"); navTo("shop"); }}>📚 Shop</button>
+            <button className="mobile-nav-link" onClick={() => navTo("mystery")}>✨ Mystery Box</button>
+            <button className="mobile-nav-link" onClick={() => navTo("reviews")}>⭐ Reviews</button>
+            <button className="mobile-nav-link" style={{borderBottom:"none"}} onClick={() => { setMobileMenuOpen(false); setCartOpen(true); }}>
+              🛒 Cart {cartCount > 0 && <span style={{background:"#7c4e2a", color:"#fff", borderRadius:10, fontSize:11, padding:"1px 7px", marginLeft:6}}>{cartCount}</span>}
+            </button>
+          </div>
+        </>
+      )}
 
       {/* PAGES */}
       {page === "home"         && <HomePage         products={products} reviews={reviews} setPage={navTo} heroIn={heroIn} addToCart={addToCart} setCategory={setCategory} />}
@@ -318,7 +363,7 @@ function App() {
       {toast && <div className="toast">{toast}</div>}
 
       {/* FOOTER */}
-      <footer style={{background:"#3d2b1f", color:"#d4b896", padding:"44px 48px 24px", marginTop:80}}>
+      <footer style={{background:"#3d2b1f", color:"#d4b896", padding:"44px clamp(16px,5vw,48px) 24px", marginTop:80}}>
         <div className="footer-inner" style={{display:"flex", justifyContent:"space-between", flexWrap:"wrap", gap:32, marginBottom:32}}>
           <div>
             <div style={{fontFamily:"'Playfair Display',serif", fontSize:20, fontWeight:800, color:"#fdf6ee", marginBottom:8}}>📚 Spines &amp; Scribbles</div>
@@ -352,15 +397,15 @@ function HomePage({ products, reviews, setPage, heroIn, addToCart, setCategory }
   const previewReviews = reviews.slice(0, 3);
   return (
     <div>
-      <div className="hero-pad" style={{background:"linear-gradient(135deg,#f0dfc8 0%,#e8d0b0 60%,#f5e6d0 100%)", padding:"84px 48px 72px", textAlign:"center", position:"relative", overflow:"hidden"}}>
+      <div className="hero-pad" style={{background:"linear-gradient(135deg,#f0dfc8 0%,#e8d0b0 60%,#f5e6d0 100%)", padding:"84px clamp(16px,5vw,48px) 72px", textAlign:"center", position:"relative", overflow:"hidden"}}>
         <div style={{position:"absolute", top:16, left:"4%", fontSize:56, opacity:0.07, transform:"rotate(-15deg)", pointerEvents:"none"}}>📚</div>
         <div style={{position:"absolute", bottom:16, right:"7%", fontSize:44, opacity:0.07, transform:"rotate(10deg)", pointerEvents:"none"}}>✒️</div>
         <div className={`hero-fade ${heroIn ? "in" : ""}`} style={{position:"relative", zIndex:1}}>
           <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.16em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:16}}>a little shop for book lovers</p>
-          <h1 style={{fontFamily:"'Playfair Display',serif", fontSize:"clamp(38px,7vw,70px)", fontWeight:800, color:"#3d2b1f", lineHeight:1.1, marginBottom:20}}>
+          <h1 style={{fontFamily:"'Playfair Display',serif", fontSize:"clamp(34px,7vw,70px)", fontWeight:800, color:"#3d2b1f", lineHeight:1.1, marginBottom:20}}>
             Books &amp; Beautiful<br/><em style={{color:"#7c4e2a"}}>little things.</em>
           </h1>
-          <p style={{fontSize:18, color:"#6b4a2e", maxWidth:480, margin:"0 auto 36px", lineHeight:1.7}}>Handpicked books, handmade bookmarks, thoughtful diaries &amp; mystery boxes full of bookish joy.</p>
+          <p style={{fontSize:"clamp(15px,2.5vw,18px)", color:"#6b4a2e", maxWidth:480, margin:"0 auto 36px", lineHeight:1.7}}>Handpicked books, handmade bookmarks, thoughtful diaries &amp; mystery boxes full of bookish joy.</p>
           <div style={{display:"flex", gap:14, justifyContent:"center", flexWrap:"wrap"}}>
             <button className="btn-primary" style={{fontSize:16, padding:"14px 36px"}} onClick={() => setPage("shop")}>Browse the Shop</button>
             <button className="btn-ghost"   style={{fontSize:16, padding:"14px 36px"}} onClick={() => setPage("mystery")}>Mystery Box ✨</button>
@@ -368,7 +413,7 @@ function HomePage({ products, reviews, setPage, heroIn, addToCart, setCategory }
         </div>
       </div>
 
-      <div className="section-pad" style={{padding:"64px 48px 0", maxWidth:1100, margin:"0 auto"}}>
+      <div className="section-pad" style={{padding:"64px clamp(16px,5vw,48px) 0", maxWidth:1100, margin:"0 auto"}}>
         <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.15em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:8}}>What we carry</p>
         <h2 className="section-title">Shop by Category</h2>
         <div className="divider" />
@@ -388,7 +433,7 @@ function HomePage({ products, reviews, setPage, heroIn, addToCart, setCategory }
         </div>
       </div>
 
-      <div className="mystery-banner" style={{margin:"60px 48px 0", borderRadius:20, background:"linear-gradient(135deg,#2d1a3e 0%,#4a2860 60%,#2d1a3e 100%)", padding:"48px 40px", display:"flex", alignItems:"center", justifyContent:"space-between", gap:24, flexWrap:"wrap"}}>
+      <div className="mystery-banner" style={{margin:"60px clamp(16px,5vw,48px) 0", borderRadius:20, background:"linear-gradient(135deg,#2d1a3e 0%,#4a2860 60%,#2d1a3e 100%)", padding:"40px clamp(20px,4vw,40px)", display:"flex", alignItems:"center", justifyContent:"space-between", gap:24, flexWrap:"wrap"}}>
         <div>
           <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.2em", color:"#c9a0e8", textTransform:"uppercase", marginBottom:10}}>Something magical</p>
           <h2 style={{fontFamily:"'Playfair Display',serif", fontSize:30, fontWeight:800, color:"#fdf6ee", marginBottom:10}}>The Mystery Box ✨</h2>
@@ -397,7 +442,7 @@ function HomePage({ products, reviews, setPage, heroIn, addToCart, setCategory }
         <button style={{background:"#c9a0e8", color:"#2d1a3e", border:"none", padding:"14px 32px", borderRadius:30, fontFamily:"'DM Sans',sans-serif", fontSize:15, fontWeight:500, cursor:"pointer", whiteSpace:"nowrap"}} onClick={() => setPage("mystery")}>Discover</button>
       </div>
 
-      <div className="section-pad" style={{padding:"64px 48px 0", maxWidth:1100, margin:"0 auto"}}>
+      <div className="section-pad" style={{padding:"64px clamp(16px,5vw,48px) 0", maxWidth:1100, margin:"0 auto"}}>
         <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.15em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:8}}>Loved by readers</p>
         <h2 className="section-title">Bestsellers</h2>
         <div className="divider" />
@@ -411,7 +456,7 @@ function HomePage({ products, reviews, setPage, heroIn, addToCart, setCategory }
 
       {/* ── REVIEWS PREVIEW ── */}
       {previewReviews.length > 0 && (
-        <div className="section-pad" style={{padding:"64px 48px 0", maxWidth:1100, margin:"0 auto"}}>
+        <div className="section-pad" style={{padding:"64px clamp(16px,5vw,48px) 0", maxWidth:1100, margin:"0 auto"}}>
           <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.15em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:8}}>Happy readers</p>
           <h2 className="section-title">What our customers say</h2>
           <div className="divider" />
@@ -424,7 +469,7 @@ function HomePage({ products, reviews, setPage, heroIn, addToCart, setCategory }
         </div>
       )}
 
-      <div className="section-pad" style={{padding:"60px 48px 0", maxWidth:1100, margin:"0 auto"}}>
+      <div className="section-pad" style={{padding:"60px clamp(16px,5vw,48px) 0", maxWidth:1100, margin:"0 auto"}}>
         <div className="grid-4">
           {[
             {e:"🌿",l:"Lovingly curated",  d:"Every item handpicked"},
@@ -476,7 +521,7 @@ function ReviewsPage({ reviews, setPage }) {
   return (
     <div>
       {/* Header banner */}
-      <div style={{background:"linear-gradient(135deg,#f0dfc8 0%,#e8d0b0 60%,#f5e6d0 100%)", padding:"64px 48px 56px", textAlign:"center"}}>
+      <div style={{background:"linear-gradient(135deg,#f0dfc8 0%,#e8d0b0 60%,#f5e6d0 100%)", padding:"64px clamp(16px,5vw,48px) 56px", textAlign:"center"}}>
         <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.16em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:12}}>straight from our readers</p>
         <h1 style={{fontFamily:"'Playfair Display',serif", fontSize:"clamp(32px,5vw,52px)", fontWeight:800, color:"#3d2b1f", marginBottom:16, lineHeight:1.1}}>Customer Reviews</h1>
         {reviews.length > 0 && (
@@ -495,7 +540,7 @@ function ReviewsPage({ reviews, setPage }) {
         )}
       </div>
 
-      <div style={{maxWidth:1100, margin:"0 auto", padding:"52px 48px 80px"}}>
+      <div style={{maxWidth:1100, margin:"0 auto", padding:"52px clamp(16px,5vw,48px) 80px"}}>
         {reviews.length === 0 ? (
           <div style={{textAlign:"center", padding:"60px 0"}}>
             <div style={{fontSize:52, marginBottom:16}}>📭</div>
@@ -542,7 +587,7 @@ function ShopPage({ filtered, category, setCategory, addToCart, setPage, product
     : genreFiltered;
 
   return (
-    <div className="section-pad" style={{padding:"48px 48px 0", maxWidth:1200, margin:"0 auto"}}>
+    <div className="section-pad" style={{padding:"48px clamp(16px,5vw,48px) 0", maxWidth:1200, margin:"0 auto"}}>
       <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.15em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:8}}>Everything we love</p>
       <h2 className="section-title">Our Collection</h2>
       <div className="divider" />
@@ -608,12 +653,12 @@ function MysteryPage({ products, addToCart, setPage }) {
   const items = products.filter(p => p.category === "mystery");
   return (
     <div>
-      <div style={{background:"linear-gradient(135deg,#1a0d2e 0%,#3d1f5c 60%,#1a0d2e 100%)", padding:"80px 48px 72px", textAlign:"center"}}>
+      <div style={{background:"linear-gradient(135deg,#1a0d2e 0%,#3d1f5c 60%,#1a0d2e 100%)", padding:"80px clamp(16px,5vw,48px) 72px", textAlign:"center"}}>
         <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.2em", color:"#c9a0e8", textTransform:"uppercase", marginBottom:14}}>a little magic in a box</p>
         <h1 style={{fontFamily:"'Playfair Display',serif", fontSize:"clamp(36px,6vw,56px)", fontWeight:800, color:"#fdf6ee", marginBottom:16, lineHeight:1.1}}>The Mystery Box ✨</h1>
         <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:17, color:"#c9a0e8", maxWidth:500, margin:"0 auto", lineHeight:1.7}}>We pick the books. We pick the bookmarks. We pick the joy. Every box is uniquely ours — and then it's yours.</p>
       </div>
-      <div style={{maxWidth:900, margin:"0 auto", padding:"60px 48px 0"}}>
+      <div style={{maxWidth:900, margin:"0 auto", padding:"60px clamp(16px,5vw,48px) 0"}}>
         <div className="grid-2" style={{marginBottom:56}}>
           {items.map(p => <ProductCard key={p.id} product={p} addToCart={addToCart} setPage={setPage} />)}
         </div>
@@ -725,7 +770,7 @@ function ProductDetailPage({ product, products, reviews, addToCart, setPage, set
   return (
     <div style={{paddingBottom: 80}}>
       {/* Breadcrumb */}
-      <div style={{background:"#f5e6d0", borderBottom:"1px solid #e8d5b8", padding:"12px 48px"}}>
+      <div style={{background:"#f5e6d0", borderBottom:"1px solid #e8d5b8", padding:"12px clamp(16px,4vw,48px)"}}>
         <div className="breadcrumb">
           <span onClick={() => setPage("home")}>Home</span>
           <span style={{color:"#c9a07a", cursor:"default"}}>›</span>
@@ -736,7 +781,7 @@ function ProductDetailPage({ product, products, reviews, addToCart, setPage, set
       </div>
 
       {/* Main PDP grid */}
-      <div style={{maxWidth:1100, margin:"0 auto", padding:"48px 48px 0"}}>
+      <div style={{maxWidth:1100, margin:"0 auto", padding:"48px clamp(16px,4vw,48px) 0"}}>
         <div className="pdp-grid">
 
           {/* ── LEFT: image gallery ── */}
@@ -935,14 +980,14 @@ function CartPage({ cart, cartTotal, updateQty, removeFromCart, setPage, form, s
     </div>
   );
   if (cart.length === 0) return (
-    <div style={{textAlign:"center", padding:"100px 48px"}}>
+    <div style={{textAlign:"center", padding:"100px clamp(16px,5vw,48px)"}}>
       <div style={{fontSize:60, marginBottom:16}}>🛒</div>
       <h2 style={{fontFamily:"'Playfair Display',serif", fontSize:28, marginBottom:12}}>Your cart is empty</h2>
       <button className="btn-primary" onClick={() => setPage("shop")}>Browse the Shop</button>
     </div>
   );
   return (
-    <div className="section-pad" style={{padding:"48px 48px 0", maxWidth:1000, margin:"0 auto"}}>
+    <div className="section-pad" style={{padding:"48px clamp(16px,5vw,48px) 0", maxWidth:1000, margin:"0 auto"}}>
       <h2 className="section-title">Checkout</h2>
       <div className="divider" />
       <div className="checkout-grid" style={{display:"grid", gridTemplateColumns:"1fr 380px", gap:36}}>
@@ -1029,7 +1074,7 @@ function CartPage({ cart, cartTotal, updateQty, removeFromCart, setPage, form, s
 function ConfirmationPage({ order, setPage }) {
   if (!order) return null;
   return (
-    <div style={{textAlign:"center", padding:"80px 48px", maxWidth:600, margin:"0 auto"}}>
+    <div style={{textAlign:"center", padding:"80px clamp(16px,5vw,48px)", maxWidth:600, margin:"0 auto"}}>
       <div style={{fontSize:68, marginBottom:20}}>🌿</div>
       <h2 style={{fontFamily:"'Playfair Display',serif", fontSize:36, fontWeight:800, marginBottom:8}}>Order Placed!</h2>
       <p style={{fontFamily:"'DM Sans',sans-serif", color:"#9a6e4c", marginBottom:8}}>Order ID: <strong style={{color:"#7c4e2a"}}>{order.id}</strong></p>
