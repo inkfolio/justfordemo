@@ -371,11 +371,34 @@ function App() {
           </div>
           <div style={{fontFamily:"'DM Sans',sans-serif", fontSize:14}}>
             <p style={{color:"#fdf6ee", fontWeight:500, marginBottom:10}}>Shop</p>
-            {["Books","Bookmarks","Diaries","Misc","Mystery Box"].map(l => <p key={l} style={{marginBottom:6, opacity:0.7}}>{l}</p>)}
+            {[
+              {label:"All Products", cat:"all"},
+              {label:"Books",        cat:"books"},
+              {label:"Bookmarks",    cat:"bookmarks"},
+              {label:"Diaries",      cat:"diaries"},
+              {label:"Misc",         cat:"misc"},
+              {label:"Mystery Box ✨", cat:"mystery"},
+            ].map(({label, cat}) => (
+              <p key={cat} style={{marginBottom:6}}>
+                <span
+                  onClick={() => { cat === "mystery" ? navTo("mystery") : (setCategory(cat), navTo("shop")); }}
+                  style={{opacity:0.7, cursor:"pointer", transition:"opacity 0.15s"}}
+                  onMouseEnter={e => e.target.style.opacity=1}
+                  onMouseLeave={e => e.target.style.opacity=0.7}
+                >{label}</span>
+              </p>
+            ))}
           </div>
           <div style={{fontFamily:"'DM Sans',sans-serif", fontSize:14}}>
             <p style={{color:"#fdf6ee", fontWeight:500, marginBottom:10}}>More</p>
-            <p style={{marginBottom:6, opacity:0.7, cursor:"pointer"}} onClick={() => { navTo("reviews"); window.scrollTo(0,0); }}>Customer Reviews ⭐</p>
+            <p style={{marginBottom:6}}>
+              <span
+                onClick={() => navTo("reviews")}
+                style={{opacity:0.7, cursor:"pointer", transition:"opacity 0.15s"}}
+                onMouseEnter={e => e.target.style.opacity=1}
+                onMouseLeave={e => e.target.style.opacity=0.7}
+              >Customer Reviews ⭐</span>
+            </p>
           </div>
           <div style={{fontFamily:"'DM Sans',sans-serif", fontSize:14}}>
             <p style={{color:"#fdf6ee", fontWeight:500, marginBottom:10}}>Contact</p>
