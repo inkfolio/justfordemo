@@ -56,7 +56,8 @@
   .faq-question { width: 100%; background: none; border: none; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; text-align: left; gap: 16px; }
   .faq-answer { padding: 0 24px 20px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: #4a3020; line-height: 1.75; }
   .faq-cat-pill { padding: 6px 16px; border-radius: 20px; border: 1.5px solid #d4b896; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; color: #6b4226; transition: all 0.18s; }
-  .faq-cat-pill.active { background: #7c4e2a; color: #fdf6ee; border-color: #7c4e2a; } border-radius: 10px; overflow: hidden; border: 2px solid transparent; cursor: pointer; flex-shrink: 0; transition: border-color 0.15s, transform 0.15s; background: #f0e4cc; }
+  .faq-cat-pill.active { background: #7c4e2a; color: #fdf6ee; border-color: #7c4e2a; }
+  .thumb { width: 72px; height: 96px; border-radius: 10px; overflow: hidden; border: 2px solid transparent; cursor: pointer; flex-shrink: 0; transition: border-color 0.15s, transform 0.15s; background: #f0e4cc; }
   .thumb:hover { transform: scale(1.04); }
   .thumb.active { border-color: #7c4e2a; }
   .pdp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
@@ -842,12 +843,7 @@ function ProductCard({ product, addToCart, setPage }) {
           style={{fontFamily:"'Playfair Display',serif", fontSize:16, fontWeight:700, marginBottom:2, cursor: setPage ? "pointer" : "default"}}
         >{product.name}</p>
         {product.author && <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, color:"#9a6e4c", marginBottom:6}}>by {product.author}</p>}
-        <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#6b4a2e", lineHeight:1.55, flex:1, marginBottom:10}}>{product.desc}</p>
-        {/* Free bookmark badge */}
-        <div style={{display:"flex", alignItems:"center", gap:6, marginBottom:12, background:"#f5f0e8", border:"1px dashed #c9a87a", borderRadius:8, padding:"5px 10px"}}>
-          <span style={{fontSize:13}}>🌸</span>
-          <span style={{fontFamily:"'DM Sans',sans-serif", fontSize:11, color:"#7c4e2a", fontWeight:500}}>Free mystery bookmark with every order</span>
-        </div>
+        <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#6b4a2e", lineHeight:1.55, flex:1, marginBottom:14}}>{product.desc}</p>
         <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", gap:12}}>
           <span style={{fontFamily:"'Playfair Display',serif", fontSize:18, fontWeight:700, color:"#7c4e2a", flexShrink:0}}>Rs.{product.price.toLocaleString()}</span>
           <button className="btn-primary" style={{padding:"7px 14px", fontSize:12}} onClick={() => addToCart(product)}>Add to Cart</button>
@@ -1009,6 +1005,12 @@ function ProductDetailPage({ product, products, reviews, addToCart, setPage, set
             <p style={{fontSize:17, color:"#4a3020", lineHeight:1.75, marginBottom:28}}>
               {product.desc}
             </p>
+
+            {/* Free bookmark badge */}
+            <div style={{display:"flex", alignItems:"center", gap:8, marginBottom:16, background:"#f5f0e8", border:"1px dashed #c9a87a", borderRadius:10, padding:"9px 14px"}}>
+              <span style={{fontSize:16}}>🌸</span>
+              <span style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#7c4e2a", fontWeight:500}}>Free mystery bookmark included with every order</span>
+            </div>
 
             {/* Quantity + Add to Cart */}
             <div style={{display:"flex", alignItems:"center", gap:14, marginBottom:16, flexWrap:"wrap"}}>
