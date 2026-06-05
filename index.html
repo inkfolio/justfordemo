@@ -72,7 +72,7 @@
     .cart-panel { width: 100%; }
     .checkout-grid { grid-template-columns: 1fr !important; }
     .nav-links { display: none !important; }
-    .nav-hamburger { display: flex !important; }
+    .nav-hamburger { display: flex !important; flex-direction: row !important; }
     .hero-pad { padding: 48px 16px 40px !important; }
     .section-pad { padding: 36px 16px 0 !important; }
     .mystery-banner { margin: 32px 16px 0 !important; padding: 28px 20px !important; flex-direction: column !important; }
@@ -286,14 +286,16 @@ function App() {
             {cartCount > 0 && <span style={{position:"absolute", top:-6, right:-6, background:"#7c4e2a", color:"#fff", borderRadius:"50%", fontSize:11, padding:"2px 6px", lineHeight:1}}>{cartCount}</span>}
           </button>
         </div>
-        {/* Mobile right: cart icon + hamburger */}
-        <div className="nav-hamburger" style={{display:"none", alignItems:"center", gap:4}}>
-          <button style={{background:"none", border:"none", cursor:"pointer", padding:"6px 10px", position:"relative", fontSize:20}} onClick={() => setCartOpen(true)}>
+        {/* Mobile right: cart icon + hamburger — always side by side in a flex row */}
+        <div className="nav-hamburger" style={{display:"none", flexDirection:"row", alignItems:"center", gap:2}}>
+          <button style={{background:"none", border:"none", cursor:"pointer", padding:"8px 10px", position:"relative", fontSize:19, lineHeight:1, display:"flex", alignItems:"center"}} onClick={() => setCartOpen(true)} aria-label="Cart">
             🛒
-            {cartCount > 0 && <span style={{position:"absolute", top:0, right:0, background:"#7c4e2a", color:"#fff", borderRadius:"50%", fontSize:10, padding:"1px 5px", lineHeight:1.4}}>{cartCount}</span>}
+            {cartCount > 0 && <span style={{position:"absolute", top:4, right:4, background:"#7c4e2a", color:"#fff", borderRadius:"50%", fontSize:9, padding:"1px 4px", lineHeight:1.4, minWidth:16, textAlign:"center"}}>{cartCount}</span>}
           </button>
-          <button className="nav-hamburger" style={{display:"flex"}} onClick={() => setMobileMenuOpen(true)} aria-label="Open menu">
-            <span /><span /><span />
+          <button onClick={() => setMobileMenuOpen(true)} aria-label="Open menu" style={{background:"none", border:"none", cursor:"pointer", padding:"8px 10px", display:"flex", flexDirection:"column", gap:5, alignItems:"center", justifyContent:"center"}}>
+            <span style={{display:"block", width:22, height:2, background:"#7c4e2a", borderRadius:2}} />
+            <span style={{display:"block", width:22, height:2, background:"#7c4e2a", borderRadius:2}} />
+            <span style={{display:"block", width:22, height:2, background:"#7c4e2a", borderRadius:2}} />
           </button>
         </div>
       </nav>
@@ -426,6 +428,19 @@ function App() {
             <p style={{color:"#fdf6ee", fontWeight:500, marginBottom:10}}>Contact</p>
             <p style={{opacity:0.7}}>{OWNER_EMAIL}</p>
             <p style={{opacity:0.7, marginTop:6}}>Orders confirmed via email &amp; phone</p>
+            <a
+              href="https://www.instagram.com/spines.and.scribbles/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{display:"inline-flex", alignItems:"center", gap:7, marginTop:12, color:"#d4b896", textDecoration:"none", opacity:0.85, transition:"opacity 0.15s"}}
+              onMouseEnter={e => e.currentTarget.style.opacity=1}
+              onMouseLeave={e => e.currentTarget.style.opacity=0.85}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+              @spines.and.scribbles
+            </a>
           </div>
         </div>
         <div style={{borderTop:"1px solid rgba(212,184,150,0.2)", paddingTop:20, textAlign:"center", fontSize:13, fontFamily:"'DM Sans',sans-serif", opacity:0.6}}>
@@ -827,7 +842,12 @@ function ProductCard({ product, addToCart, setPage }) {
           style={{fontFamily:"'Playfair Display',serif", fontSize:16, fontWeight:700, marginBottom:2, cursor: setPage ? "pointer" : "default"}}
         >{product.name}</p>
         {product.author && <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, color:"#9a6e4c", marginBottom:6}}>by {product.author}</p>}
-        <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#6b4a2e", lineHeight:1.55, flex:1, marginBottom:14}}>{product.desc}</p>
+        <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:13, color:"#6b4a2e", lineHeight:1.55, flex:1, marginBottom:10}}>{product.desc}</p>
+        {/* Free bookmark badge */}
+        <div style={{display:"flex", alignItems:"center", gap:6, marginBottom:12, background:"#f5f0e8", border:"1px dashed #c9a87a", borderRadius:8, padding:"5px 10px"}}>
+          <span style={{fontSize:13}}>🌸</span>
+          <span style={{fontFamily:"'DM Sans',sans-serif", fontSize:11, color:"#7c4e2a", fontWeight:500}}>Free mystery bookmark with every order</span>
+        </div>
         <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", gap:12}}>
           <span style={{fontFamily:"'Playfair Display',serif", fontSize:18, fontWeight:700, color:"#7c4e2a", flexShrink:0}}>Rs.{product.price.toLocaleString()}</span>
           <button className="btn-primary" style={{padding:"7px 14px", fontSize:12}} onClick={() => addToCart(product)}>Add to Cart</button>
