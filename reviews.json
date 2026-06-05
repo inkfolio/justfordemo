@@ -5,7 +5,7 @@
     "rating": 5,
     "date": "2025-04-12",
     "review": "I ordered the Vintage Leather Journal and it is absolutely gorgeous. The quality is so much better than I expected — the leather feels rich and the pages are thick and smooth. Packaging was also beautifully done, felt like opening a gift. Will definitely be ordering again!",
-    "item": "Vintage Leather Journal"
+    "category": "diaries"
   },
   {
     "id": 2,
@@ -13,7 +13,7 @@
     "rating": 5,
     "date": "2025-04-18",
     "review": "Got the Wanderer's Mystery Box as a birthday treat to myself and I was blown away. Two books I hadn't read, a pressed flower bookmark, and some washi tape — such a thoughtful curation. The whole unboxing experience was magical. 10/10.",
-    "item": "The Wanderer's Mystery Box"
+    "category": "mystery"
   },
   {
     "id": 3,
@@ -21,15 +21,15 @@
     "rating": 5,
     "date": "2025-05-02",
     "review": "Piranesi arrived so quickly and the packaging was so pretty — wrapped in brown paper with a little note. I've already recommended Spines & Scribbles to all my reader friends. This is exactly the kind of bookshop experience I didn't know I needed online.",
-    "item": "Piranesi"
+    "category": "books"
   },
   {
     "id": 4,
     "name": "Rohan Kapoor",
     "rating": 4,
     "date": "2025-05-08",
-    "review": "Ordered the Leather Tassel Bookmark and the Quill & Ink Pen Set together. Both arrived in perfect condition. The pen set is stunning and the ink quality is lovely. Really happy with the purchase — the whole shop has such a cosy, personal feel to it.",
-    "item": "Quill & Ink Pen Set"
+    "review": "Ordered the Quill & Ink Pen Set and it arrived in perfect condition. The pen set is stunning and the ink quality is lovely. Really happy with the purchase — the whole shop has such a cosy, personal feel to it.",
+    "category": "misc"
   },
   {
     "id": 5,
@@ -37,7 +37,7 @@
     "rating": 5,
     "date": "2025-05-15",
     "review": "The Moonchild Night Journal is exactly as described — the cover art is beautiful and the satin ribbon is such a nice touch. I love journaling at night and this feels so fitting. Delivery was smooth and the team was very responsive over email.",
-    "item": "Moonchild Night Journal"
+    "category": "diaries"
   },
   {
     "id": 6,
@@ -45,6 +45,54 @@
     "rating": 5,
     "date": "2025-05-20",
     "review": "Bought The Midnight Library as a gift for my sister and she absolutely loved it. Came wrapped beautifully. Spines & Scribbles really nails the whole gifting experience — it feels personal and curated, not like any other online store.",
-    "item": "The Midnight Library"
+    "category": "books"
+  },
+  {
+    "id": 7,
+    "name": "Meera Krishnan",
+    "rating": 5,
+    "date": "2025-05-28",
+    "review": "The Pressed Flower Bookmark is even more beautiful in person! The flowers are perfectly preserved and it feels so delicate yet sturdy. I've already ordered two more as gifts. The packaging was adorable too — felt like receiving a little treasure.",
+    "category": "bookmarks"
+  },
+  {
+    "id": 8,
+    "name": "Karan Malhotra",
+    "rating": 4,
+    "date": "2025-06-03",
+    "review": "Lessons in Chemistry was on my reading list for ages and I'm so glad I ordered it here. Arrived quickly and in pristine condition. The bookmark that came with it was a lovely bonus. Will be back for more books soon!",
+    "category": "books"
+  },
+  {
+    "id": 9,
+    "name": "Divya Menon",
+    "rating": 5,
+    "date": "2025-06-10",
+    "review": "The Muted Sage Diary is hands down the most beautiful journal I own. The dotted pages are perfect for my bullet journaling and the cover colour is exactly as shown. Really fast delivery and the packaging felt like a proper gift.",
+    "category": "diaries"
+  },
+  {
+    "id": 10,
+    "name": "Siddharth Rao",
+    "rating": 5,
+    "date": "2025-06-15",
+    "review": "Bought the Reader's Tote Bag and the Book Lovers Candle together. Both are fantastic quality. The candle smells absolutely divine — exactly like old bookshops. The tote is sturdy and the print is clean. Highly recommend!",
+    "category": "misc"
+  },
+  {
+    "id": 11,
+    "name": "Pooja Agarwal",
+    "rating": 5,
+    "date": "2025-06-20",
+    "review": "The Leather Tassel Bookmark is such a gorgeous piece. The leather feels premium and the gold tassel is the perfect touch. I have it in my current read and it makes the whole experience feel more special. Great quality!",
+    "category": "bookmarks"
+  },
+  {
+    "id": 12,
+    "name": "Rishi Banerjee",
+    "rating": 5,
+    "date": "2025-07-01",
+    "review": "Ordered the Mini Mystery Parcel as a self-treat and was completely delighted. Got a beautiful book I'd never heard of, a handmade bookmark, and some washi tape. Everything felt so carefully chosen. Already planning my next order.",
+    "category": "mystery"
   }
 ]
