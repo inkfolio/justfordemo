@@ -558,22 +558,68 @@ function HomePage({ products, reviews, setPage, heroIn, addToCart, setCategory }
 }
 
 // ── REVIEW CAROUSEL ──────────────────────────────────────
+function useWindowWidth() {
+  const [width, setWidth] = React.useState(
+    typeof window !== "undefined" ? window.innerWidth : 1024
+  );
+  React.useEffect(() => {
+    const handle = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handle);
+    return () => window.removeEventListener("resize", handle);
+  }, []);
+  return width;
+}
+
 function ReviewCarousel({ reviews, setPage }) {
   const [idx, setIdx]       = React.useState(0);
   const [paused, setPaused] = React.useState(false);
-  const total = reviews.length;
+  const width               = useWindowWidth();
 
-  // Auto-advance every 4 seconds
+  // How many cards visible at once based on viewport
+  const perPage = width < 640 ? 1 : width < 960 ? 2 : 3;
+
+  // If we can show all reviews without scrolling, just render a plain grid
+  const useGrid = reviews.length <= perPage;
+
+  const total    = reviews.length;
+  const pages    = Math.ceil(total / perPage);
+  // clamp idx when perPage changes
+  const safeIdx  = Math.min(idx, Math.max(0, pages - 1));
+  React.useEffect(() => { setIdx(safeIdx); }, [safeIdx]);
+
+  // Auto-advance (only when carousel is active)
   React.useEffect(() => {
-    if (paused || total <= 1) return;
-    const t = setTimeout(() => setIdx(i => (i + 1) % total), 4000);
+    if (useGrid || paused || pages <= 1) return;
+    const t = setTimeout(() => setIdx(i => (i + 1) % pages), 4500);
     return () => clearTimeout(t);
-  }, [idx, paused, total]);
+  }, [safeIdx, paused, pages, useGrid]);
 
   if (total === 0) return null;
 
-  const prev = () => { setPaused(true); setIdx(i => (i - 1 + total) % total); };
-  const next = () => { setPaused(true); setIdx(i => (i + 1) % total); };
+  const prev = () => { setPaused(true); setIdx(i => (i - 1 + pages) % pages); };
+  const next = () => { setPaused(true); setIdx(i => (i + 1) % pages); };
+
+  // ── Plain grid (fits without scrolling) ──
+  if (useGrid) {
+    return (
+      <div>
+        <div className="grid-reviews">
+          {reviews.map(r => <ReviewCard key={r.id} review={r} />)}
+        </div>
+        <div style={{textAlign:"center", marginTop:24}}>
+          <button className="btn-ghost" style={{fontSize:13}} onClick={() => setPage("reviews")}>
+            See all reviews →
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Multi-card carousel ──
+  // Build pages: each page is a slice of `perPage` reviews
+  const pageSlices = Array.from({length: pages}, (_, p) =>
+    reviews.slice(p * perPage, p * perPage + perPage)
+  );
 
   return (
     <div
@@ -581,42 +627,46 @@ function ReviewCarousel({ reviews, setPage }) {
       onMouseLeave={() => setPaused(false)}
       onTouchStart={() => setPaused(true)}
     >
-      {/* Slide window */}
-      <div style={{overflow:"hidden", borderRadius:16, position:"relative"}}>
+      {/* Track: each "slide" contains a full row of cards */}
+      <div style={{overflow:"hidden", borderRadius:0}}>
         <div
           className="carousel-track"
-          style={{transform:`translateX(-${idx * 100}%)`}}
+          style={{transform:`translateX(-${safeIdx * 100}%)`}}
         >
-          {reviews.map(r => (
-            <div key={r.id} className="carousel-slide">
-              <ReviewCard review={r} />
+          {pageSlices.map((slice, p) => (
+            <div key={p} className="carousel-slide">
+              {/* Each page renders its cards in a grid row */}
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: `repeat(${perPage}, 1fr)`,
+                gap: 16,
+              }}>
+                {slice.map(r => <ReviewCard key={r.id} review={r} />)}
+              </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Controls row */}
-      <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginTop:18, gap:12}}>
-        {/* Prev / Next arrows */}
+      {/* Controls */}
+      <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginTop:20, gap:12, flexWrap:"wrap"}}>
         <div style={{display:"flex", gap:8}}>
-          <button className="carousel-arrow" onClick={prev} aria-label="Previous review">‹</button>
-          <button className="carousel-arrow" onClick={next} aria-label="Next review">›</button>
+          <button className="carousel-arrow" onClick={prev} aria-label="Previous">‹</button>
+          <button className="carousel-arrow" onClick={next} aria-label="Next">›</button>
         </div>
 
-        {/* Dots */}
         <div style={{display:"flex", gap:6, alignItems:"center"}}>
-          {reviews.map((_, i) => (
+          {Array.from({length: pages}).map((_, i) => (
             <button
               key={i}
-              className={`carousel-dot ${i === idx ? "active" : ""}`}
-              style={{background: i === idx ? "#7c4e2a" : "#d4b896"}}
+              className={`carousel-dot ${i === safeIdx ? "active" : ""}`}
+              style={{background: i === safeIdx ? "#7c4e2a" : "#d4b896"}}
               onClick={() => { setPaused(true); setIdx(i); }}
-              aria-label={`Review ${i + 1}`}
+              aria-label={`Page ${i + 1}`}
             />
           ))}
         </div>
 
-        {/* See all */}
         <button
           className="btn-ghost"
           style={{fontSize:12, padding:"7px 16px", whiteSpace:"nowrap"}}
