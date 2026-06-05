@@ -51,6 +51,12 @@
   .review-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(100,60,20,0.11); }
   .stars { color: #c9882a; font-size: 15px; letter-spacing: 2px; }
   .grid-reviews { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+  .carousel-track { display: flex; transition: transform 0.45s cubic-bezier(0.4,0,0.2,1); will-change: transform; }
+  .carousel-slide { flex: 0 0 100%; padding: 0 4px; box-sizing: border-box; }
+  .carousel-dot { width: 8px; height: 8px; border-radius: 50%; border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; padding: 0; }
+  .carousel-dot.active { transform: scale(1.35); }
+  .carousel-arrow { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid #d4b896; background: #fffaf4; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #7c4e2a; transition: background 0.15s, border-color 0.15s; flex-shrink: 0; }
+  .carousel-arrow:hover { background: #f0dfc8; border-color: #9a6e4c; }
   .faq-item { border: 1px solid #e0c9a8; border-radius: 14px; overflow: hidden; background: #fffaf4; transition: box-shadow 0.2s; }
   .faq-item:hover { box-shadow: 0 4px 16px rgba(100,60,20,0.09); }
   .faq-question { width: 100%; background: none; border: none; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; text-align: left; gap: 16px; }
@@ -157,8 +163,9 @@ function App() {
   // Load products from JSON files; falls back to embedded data when running locally (file://)
   const EMBEDDED_PRODUCTS = [{"id": 1, "name": "The Midnight Library", "author": "Matt Haig", "price": 349, "image": "images/1.jpg", "desc": "A dazzling novel about all the lives we could have lived.", "badge": "Bestseller", "category": "books", "genre": "Self Help"}, {"id": 2, "name": "Lessons in Chemistry", "author": "Bonnie Garmus", "price": 399, "image": "images/2.jpg", "desc": "A woman chemist in the 1960s becomes an unlikely cooking show host.", "badge": "Staff Pick", "category": "books", "genre": "Romance"}, {"id": 3, "name": "The Atlas Six", "author": "Olivie Blake", "price": 449, "image": "images/3.jpg", "desc": "Dark academia fantasy with six magical scholars and deadly stakes.", "badge": "New Arrival", "category": "books", "genre": "Fantasy"}, {"id": 4, "name": "Tomorrow & Tomorrow", "author": "Gabriel Zevin", "price": 379, "image": "images/4.jpg", "desc": "A sweeping love story set in the world of video games.", "badge": "", "category": "books", "genre": "Romance"}, {"id": 5, "name": "Piranesi", "author": "Susanna Clarke", "price": 299, "image": "images/5.jpg", "desc": "A mysterious man living in a house with infinite halls and tides.", "badge": "Award Winner", "category": "books", "genre": "Mystery"}, {"id": 6, "name": "Sea of Tranquility", "author": "Emily St. John Mandel", "price": 349, "image": "images/6.jpg", "desc": "Time travel across centuries connects five extraordinary lives.", "badge": "", "category": "books", "genre": "Thriller"}, {"id": 7, "name": "Pressed Flower Bookmark", "price": 89, "image": "images/7.jpg", "desc": "Handcrafted with real dried flowers preserved under clear resin.", "badge": "Handmade", "category": "bookmarks", "author": ""}, {"id": 8, "name": "Leather Tassel Bookmark", "price": 129, "image": "images/8.jpg", "desc": "Genuine leather with a gold tassel. Rich aged caramel tone.", "badge": "Bestseller", "category": "bookmarks", "author": ""}, {"id": 9, "name": "Watercolour Set of 3", "price": 149, "image": "images/9.jpg", "desc": "Three bookmarks printed with original watercolour artwork.", "badge": "", "category": "bookmarks", "author": ""}, {"id": 10, "name": "Brass Clip Bookmark", "price": 99, "image": "images/10.jpg", "desc": "Elegant brass page clip with a delicate leaf detail.", "badge": "New", "category": "bookmarks", "author": ""}, {"id": 11, "name": "The Muted Sage Diary", "price": 499, "image": "images/11.jpg", "desc": "A5 dotted journal, 200 cream pages, sage green linen cover.", "badge": "New Arrival", "category": "diaries", "author": ""}, {"id": 12, "name": "Vintage Leather Journal", "price": 699, "image": "images/12.jpg", "desc": "Genuine leather-bound and refillable, with 192 ruled pages.", "badge": "Staff Pick", "category": "diaries", "author": ""}, {"id": 13, "name": "Floral Weekly Planner", "price": 399, "image": "images/13.jpg", "desc": "Undated weekly planner with original botanical illustrations.", "badge": "", "category": "diaries", "author": ""}, {"id": 14, "name": "Moonchild Night Journal", "price": 549, "image": "images/14.jpg", "desc": "Celestial art cover, cream pages, and a satin ribbon marker.", "badge": "Bestseller", "category": "diaries", "author": ""}, {"id": 15, "name": "Bookish Washi Tape Set", "price": 199, "image": "images/15.jpg", "desc": "Set of 5 literary-themed washi tapes for journaling & crafts.", "badge": "", "category": "misc", "author": ""}, {"id": 16, "name": "Reader's Tote Bag", "price": 449, "image": "images/16.jpg", "desc": "Cotton canvas tote with 'One more chapter' screen print.", "badge": "Bestseller", "category": "misc", "author": ""}, {"id": 17, "name": "Book Lovers Candle", "price": 299, "image": "images/17.jpg", "desc": "Soy wax candle scented with old books, vanilla & sandalwood.", "badge": "New", "category": "misc", "author": ""}, {"id": 18, "name": "Quill & Ink Pen Set", "price": 349, "image": "images/18.jpg", "desc": "Dip pen with three nibs and a pot of rich walnut ink.", "badge": "Staff Pick", "category": "misc", "author": ""}, {"id": 19, "name": "The Wanderer's Mystery Box", "price": 999, "image": "images/19.jpg", "desc": "A curated mystery box for the avid reader. Every box is unique \u2014 books, bookmarks, stationery, and surprises!", "badge": "\u2728 Mystery", "category": "mystery", "author": ""}, {"id": 20, "name": "Mini Mystery Parcel", "price": 599, "image": "images/20.jpg", "desc": "A smaller mystery parcel \u2014 perfect as a gift or self-treat. 2\u20133 mystery items curated with love.", "badge": "\u2728 Mystery", "category": "mystery", "author": ""}];
 
-  const EMBEDDED_FAQS = [{"id":1,"category":"Orders & Shipping","question":"How do I place an order?","answer":"Simply browse our shop, add items to your cart, and proceed to checkout. Fill in your name, contact number, and address — we'll confirm your order via a call or email before dispatching."},{"id":2,"category":"Orders & Shipping","question":"How long does delivery take?","answer":"Most orders are dispatched within 2–3 business days. Delivery typically takes 4–7 business days depending on your location. We'll keep you updated every step of the way."},{"id":3,"category":"Orders & Shipping","question":"Do you ship across India?","answer":"Yes! We ship to all major cities and towns across India. If you're unsure whether we deliver to your pin code, just reach out to us and we'll check for you."},{"id":4,"category":"Orders & Shipping","question":"Can I track my order?","answer":"Once your order is dispatched, we'll send you the tracking details via email or WhatsApp. You can use the tracking number on our courier partner's website to follow your package."},{"id":5,"category":"Payments","question":"What payment methods do you accept?","answer":"We accept UPI, bank transfers, and cash on delivery (COD) for most locations. We'll share payment details when we confirm your order."},{"id":6,"category":"Payments","question":"Is it safe to pay online?","answer":"Absolutely. We use standard UPI and bank transfer methods — no card details are ever stored by us. If you have any concerns, you can always opt for cash on delivery."},{"id":7,"category":"Products","question":"Are the bookmarks really handmade?","answer":"Yes! Our handmade bookmarks are crafted with care — from pressed flowers preserved under resin to hand-stamped leather pieces. Each one is unique and made in small batches."},{"id":8,"category":"Products","question":"What's inside the Mystery Box?","answer":"Every Mystery Box is a surprise! It typically includes 1–2 curated books, one or more bookmarks, some stationery, and a little something extra from us. No two boxes are exactly alike."},{"id":9,"category":"Products","question":"Are the books new or used?","answer":"All books sold on Spines & Scribbles are brand new unless explicitly stated otherwise. We source them from reputable publishers and distributors."},{"id":10,"category":"Returns & Exchanges","question":"What if I receive a damaged item?","answer":"We're so sorry if that happens! Please take a photo of the damaged item and email or WhatsApp us within 48 hours of delivery. We'll arrange a replacement or refund promptly."},{"id":11,"category":"Returns & Exchanges","question":"Can I return or exchange a product?","answer":"We accept returns or exchanges within 7 days of delivery for items that are unused and in their original condition. Mystery boxes and personalised items are non-returnable. Reach out to us and we'll sort it out."},{"id":12,"category":"Gifting","question":"Do you offer gift wrapping?","answer":"Yes! All our orders come beautifully packaged by default — wrapped in brown paper with a little note. It's already gift-ready. If you'd like a personalised message included, just mention it in the order notes."},{"id":13,"category":"Gifting","question":"Can I send an order directly to someone as a gift?","answer":"Of course! Just enter the recipient's address at checkout and add a gift message in the notes. We'll make sure it arrives looking lovely."}];[{"id":1,"name":"Priya Sharma","rating":5,"date":"2025-04-12","review":"I ordered the Vintage Leather Journal and it is absolutely gorgeous. The quality is so much better than I expected — the leather feels rich and the pages are thick and smooth. Packaging was also beautifully done, felt like opening a gift. Will definitely be ordering again!","item":"Vintage Leather Journal"},{"id":2,"name":"Arjun Mehta","rating":5,"date":"2025-04-18","review":"Got the Wanderer's Mystery Box as a birthday treat to myself and I was blown away. Two books I hadn't read, a pressed flower bookmark, and some washi tape — such a thoughtful curation. The whole unboxing experience was magical. 10/10.","item":"The Wanderer's Mystery Box"},{"id":3,"name":"Sneha Iyer","rating":5,"date":"2025-05-02","review":"Piranesi arrived so quickly and the packaging was so pretty — wrapped in brown paper with a little note. I've already recommended Spines & Scribbles to all my reader friends. This is exactly the kind of bookshop experience I didn't know I needed online.","item":"Piranesi"},{"id":4,"name":"Rohan Kapoor","rating":4,"date":"2025-05-08","review":"Ordered the Leather Tassel Bookmark and the Quill & Ink Pen Set together. Both arrived in perfect condition. The pen set is stunning and the ink quality is lovely. Really happy with the purchase — the whole shop has such a cosy, personal feel to it.","item":"Quill & Ink Pen Set"},{"id":5,"name":"Ananya Bose","rating":5,"date":"2025-05-15","review":"The Moonchild Night Journal is exactly as described — the cover art is beautiful and the satin ribbon is such a nice touch. I love journaling at night and this feels so fitting. Delivery was smooth and the team was very responsive over email.","item":"Moonchild Night Journal"},{"id":6,"name":"Vikram Nair","rating":5,"date":"2025-05-20","review":"Bought The Midnight Library as a gift for my sister and she absolutely loved it. Came wrapped beautifully. Spines & Scribbles really nails the whole gifting experience — it feels personal and curated, not like any other online store.","item":"The Midnight Library"}];
+  const EMBEDDED_REVIEWS = [{"id":1,"name":"Priya Sharma","rating":5,"date":"2025-04-12","review":"I ordered the Vintage Leather Journal and it is absolutely gorgeous. The quality is so much better than I expected — the leather feels rich and the pages are thick and smooth. Packaging was also beautifully done, felt like opening a gift. Will definitely be ordering again!","category":"diaries"},{"id":2,"name":"Arjun Mehta","rating":5,"date":"2025-04-18","review":"Got the Wanderer's Mystery Box as a birthday treat to myself and I was blown away. Two books I hadn't read, a pressed flower bookmark, and some washi tape — such a thoughtful curation. The whole unboxing experience was magical. 10/10.","category":"mystery"},{"id":3,"name":"Sneha Iyer","rating":5,"date":"2025-05-02","review":"Piranesi arrived so quickly and the packaging was so pretty — wrapped in brown paper with a little note. I've already recommended Spines & Scribbles to all my reader friends. This is exactly the kind of bookshop experience I didn't know I needed online.","category":"books"},{"id":4,"name":"Rohan Kapoor","rating":4,"date":"2025-05-08","review":"Ordered the Quill & Ink Pen Set and it arrived in perfect condition. The pen set is stunning and the ink quality is lovely. Really happy with the purchase — the whole shop has such a cosy, personal feel to it.","category":"misc"},{"id":5,"name":"Ananya Bose","rating":5,"date":"2025-05-15","review":"The Moonchild Night Journal is exactly as described — the cover art is beautiful and the satin ribbon is such a nice touch. I love journaling at night and this feels so fitting. Delivery was smooth and the team was very responsive over email.","category":"diaries"},{"id":6,"name":"Vikram Nair","rating":5,"date":"2025-05-20","review":"Bought The Midnight Library as a gift for my sister and she absolutely loved it. Came wrapped beautifully. Spines & Scribbles really nails the whole gifting experience — it feels personal and curated, not like any other online store.","category":"books"},{"id":7,"name":"Meera Krishnan","rating":5,"date":"2025-05-28","review":"The Pressed Flower Bookmark is even more beautiful in person! The flowers are perfectly preserved and it feels so delicate yet sturdy. I've already ordered two more as gifts.","category":"bookmarks"},{"id":8,"name":"Karan Malhotra","rating":4,"date":"2025-06-03","review":"Lessons in Chemistry was on my reading list for ages and I'm so glad I ordered it here. Arrived quickly and in pristine condition. The bookmark that came with it was a lovely bonus.","category":"books"},{"id":9,"name":"Divya Menon","rating":5,"date":"2025-06-10","review":"The Muted Sage Diary is hands down the most beautiful journal I own. The dotted pages are perfect for my bullet journaling and the cover colour is exactly as shown.","category":"diaries"},{"id":10,"name":"Siddharth Rao","rating":5,"date":"2025-06-15","review":"Bought the Reader's Tote Bag and the Book Lovers Candle together. Both are fantastic quality. The candle smells divine — exactly like old bookshops.","category":"misc"},{"id":11,"name":"Pooja Agarwal","rating":5,"date":"2025-06-20","review":"The Leather Tassel Bookmark is such a gorgeous piece. The leather feels premium and the gold tassel is the perfect touch.","category":"bookmarks"},{"id":12,"name":"Rishi Banerjee","rating":5,"date":"2025-07-01","review":"Ordered the Mini Mystery Parcel as a self-treat and was completely delighted. Got a beautiful book, a handmade bookmark, and some washi tape. Everything felt so carefully chosen.","category":"mystery"}];
 
+  const EMBEDDED_FAQS = [{"id":1,"category":"Orders & Shipping","question":"How do I place an order?","answer":"Simply browse our shop, add items to your cart, and proceed to checkout. Fill in your name, contact number, and address — we'll confirm your order via a call or email before dispatching."},{"id":2,"category":"Orders & Shipping","question":"How long does delivery take?","answer":"Most orders are dispatched within 2–3 business days. Delivery typically takes 4–7 business days depending on your location. We'll keep you updated every step of the way."},{"id":3,"category":"Orders & Shipping","question":"Do you ship across India?","answer":"Yes! We ship to all major cities and towns across India. If you're unsure whether we deliver to your pin code, just reach out to us and we'll check for you."},{"id":4,"category":"Orders & Shipping","question":"Can I track my order?","answer":"Once your order is dispatched, we'll send you the tracking details via email or WhatsApp. You can use the tracking number on our courier partner's website to follow your package."},{"id":5,"category":"Payments","question":"What payment methods do you accept?","answer":"We accept UPI, bank transfers, and cash on delivery (COD) for most locations. We'll share payment details when we confirm your order."},{"id":6,"category":"Payments","question":"Is it safe to pay online?","answer":"Absolutely. We use standard UPI and bank transfer methods — no card details are ever stored by us. If you have any concerns, you can always opt for cash on delivery."},{"id":7,"category":"Products","question":"Are the bookmarks really handmade?","answer":"Yes! Our handmade bookmarks are crafted with care — from pressed flowers preserved under resin to hand-stamped leather pieces. Each one is unique and made in small batches."},{"id":8,"category":"Products","question":"What's inside the Mystery Box?","answer":"Every Mystery Box is a surprise! It typically includes 1–2 curated books, one or more bookmarks, some stationery, and a little something extra from us. No two boxes are exactly alike."},{"id":9,"category":"Products","question":"Are the books new or used?","answer":"All books sold on Spines & Scribbles are brand new unless explicitly stated otherwise. We source them from reputable publishers and distributors."},{"id":10,"category":"Returns & Exchanges","question":"What if I receive a damaged item?","answer":"We're so sorry if that happens! Please take a photo of the damaged item and email or WhatsApp us within 48 hours of delivery. We'll arrange a replacement or refund promptly."},{"id":11,"category":"Returns & Exchanges","question":"Can I return or exchange a product?","answer":"We accept returns or exchanges within 7 days of delivery for items that are unused and in their original condition. Mystery boxes and personalised items are non-returnable. Reach out to us and we'll sort it out."},{"id":12,"category":"Gifting","question":"Do you offer gift wrapping?","answer":"Yes! All our orders come beautifully packaged by default — wrapped in brown paper with a little note. It's already gift-ready. If you'd like a personalised message included, just mention it in the order notes."},{"id":13,"category":"Gifting","question":"Can I send an order directly to someone as a gift?","answer":"Of course! Just enter the recipient's address at checkout and add a gift message in the notes. We'll make sure it arrives looking lovely."}];
   useEffect(() => {
     const sources = [
       { file:"books.json",     category:"books"     },
@@ -550,10 +557,83 @@ function HomePage({ products, reviews, setPage, heroIn, addToCart, setCategory }
   );
 }
 
+// ── REVIEW CAROUSEL ──────────────────────────────────────
+function ReviewCarousel({ reviews, setPage }) {
+  const [idx, setIdx]       = React.useState(0);
+  const [paused, setPaused] = React.useState(false);
+  const total = reviews.length;
+
+  // Auto-advance every 4 seconds
+  React.useEffect(() => {
+    if (paused || total <= 1) return;
+    const t = setTimeout(() => setIdx(i => (i + 1) % total), 4000);
+    return () => clearTimeout(t);
+  }, [idx, paused, total]);
+
+  if (total === 0) return null;
+
+  const prev = () => { setPaused(true); setIdx(i => (i - 1 + total) % total); };
+  const next = () => { setPaused(true); setIdx(i => (i + 1) % total); };
+
+  return (
+    <div
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onTouchStart={() => setPaused(true)}
+    >
+      {/* Slide window */}
+      <div style={{overflow:"hidden", borderRadius:16, position:"relative"}}>
+        <div
+          className="carousel-track"
+          style={{transform:`translateX(-${idx * 100}%)`}}
+        >
+          {reviews.map(r => (
+            <div key={r.id} className="carousel-slide">
+              <ReviewCard review={r} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Controls row */}
+      <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginTop:18, gap:12}}>
+        {/* Prev / Next arrows */}
+        <div style={{display:"flex", gap:8}}>
+          <button className="carousel-arrow" onClick={prev} aria-label="Previous review">‹</button>
+          <button className="carousel-arrow" onClick={next} aria-label="Next review">›</button>
+        </div>
+
+        {/* Dots */}
+        <div style={{display:"flex", gap:6, alignItems:"center"}}>
+          {reviews.map((_, i) => (
+            <button
+              key={i}
+              className={`carousel-dot ${i === idx ? "active" : ""}`}
+              style={{background: i === idx ? "#7c4e2a" : "#d4b896"}}
+              onClick={() => { setPaused(true); setIdx(i); }}
+              aria-label={`Review ${i + 1}`}
+            />
+          ))}
+        </div>
+
+        {/* See all */}
+        <button
+          className="btn-ghost"
+          style={{fontSize:12, padding:"7px 16px", whiteSpace:"nowrap"}}
+          onClick={() => setPage("reviews")}
+        >
+          See all reviews →
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ── REVIEW CARD ───────────────────────────────────────────
 function ReviewCard({ review }) {
   const stars = "★".repeat(review.rating) + "☆".repeat(5 - review.rating);
   const dateStr = new Date(review.date).toLocaleDateString("en-IN", { day:"numeric", month:"long", year:"numeric" });
+  const catLabel = CATEGORIES.find(c => c.key === review.category)?.label || review.category;
   return (
     <div className="review-card">
       <div style={{display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:8}}>
@@ -563,9 +643,9 @@ function ReviewCard({ review }) {
         </div>
         <span className="stars">{stars}</span>
       </div>
-      {review.item && (
+      {catLabel && (
         <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, color:"#7c4e2a", background:"#f5e6d0", borderRadius:20, padding:"3px 12px", alignSelf:"flex-start"}}>
-          📦 {review.item}
+          📦 {catLabel}
         </p>
       )}
       <p style={{fontSize:15, color:"#4a3020", lineHeight:1.65, fontStyle:"italic"}}>"{review.review}"</p>
@@ -898,10 +978,8 @@ function ProductDetailPage({ product, products, reviews, addToCart, setPage, set
     .filter(p => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
-  // Reviews for this product
-  const productReviews = reviews.filter(r =>
-    r.item && r.item.toLowerCase() === product.name.toLowerCase()
-  );
+  // Reviews for this category (shared across all products in category)
+  const productReviews = reviews.filter(r => r.category === product.category);
 
   const handleAdd = () => {
     for (let i = 0; i < qty; i++) addToCart(product);
@@ -1055,18 +1133,13 @@ function ProductDetailPage({ product, products, reviews, addToCart, setPage, set
           </div>
         </div>
 
-        {/* ── Reviews for this product ── */}
+        {/* ── Reviews for this category ── */}
         {productReviews.length > 0 && (
           <div style={{marginTop:64}}>
-            <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.15em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:8}}>What readers say</p>
-            <h2 className="section-title">Reviews for this item</h2>
+            <p style={{fontFamily:"'DM Sans',sans-serif", fontSize:12, letterSpacing:"0.15em", color:"#9a6e4c", textTransform:"uppercase", marginBottom:8}}>What customers say</p>
+            <h2 className="section-title">Reviews</h2>
             <div className="divider"/>
-            <div className="grid-reviews">
-              {productReviews.map(r => <ReviewCard key={r.id} review={r} />)}
-            </div>
-            <div style={{textAlign:"center", marginTop:28}}>
-              <button className="btn-ghost" style={{fontSize:13}} onClick={() => setPage("reviews")}>See all reviews →</button>
-            </div>
+            <ReviewCarousel reviews={productReviews} setPage={setPage} />
           </div>
         )}
 
