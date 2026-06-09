@@ -1,80 +1,218 @@
 [
   {
     "id": 1,
-    "category": "Orders & Shipping",
-    "question": "How do I place an order?",
-    "answer": "Simply browse our shop, add items to your cart, and proceed to checkout. Fill in your name, contact number, and address — we'll confirm your order via a call or email before dispatching."
+    "category": "Mystery Book Bundles",
+    "question": "What is a Mystery Book Bundle?",
+    "answer": "A curated reading experience that includes a surprise book and thoughtfully selected bookish goodies. The book remains a mystery until you open your package."
   },
   {
     "id": 2,
-    "category": "Orders & Shipping",
-    "question": "How long does delivery take?",
-    "answer": "Most orders are dispatched within 2–3 business days. Delivery typically takes 4–7 business days depending on your location. We'll keep you updated every step of the way."
+    "category": "Mystery Book Bundles",
+    "question": "What is included in a Mystery Book Bundle?",
+    "answer": "Every bundle includes: 1 mystery pre-loved book, bookmarks, a reading log/book review card, a coffee sachet, a pen or highlighter, and theme-based bookish goodies. The exact goodies may vary depending on the bundle theme."
   },
   {
     "id": 3,
-    "category": "Orders & Shipping",
-    "question": "Do you ship across India?",
-    "answer": "Yes! We ship to all major cities and towns across India. If you're unsure whether we deliver to your pin code, just reach out to us and we'll check for you."
+    "category": "Mystery Book Bundles",
+    "question": "What kind of books can I expect?",
+    "answer": "We offer both fiction and non-fiction books in paperback or hardcover formats. We do not include academic or study-related books."
   },
   {
     "id": 4,
-    "category": "Orders & Shipping",
-    "question": "Can I track my order?",
-    "answer": "Once your order is dispatched, we'll send you the tracking details via email or WhatsApp. You can use the tracking number on our courier partner's website to follow your package."
+    "category": "Mystery Book Bundles",
+    "question": "Can I choose the genre, trope, or spice level?",
+    "answer": "Genre selection is available only for certain themes. We do not take requests for specific tropes, spice levels, or content preferences."
   },
   {
     "id": 5,
-    "category": "Payments",
-    "question": "What payment methods do you accept?",
-    "answer": "We accept UPI, bank transfers, and cash on delivery (COD) for most locations. We'll share payment details when we confirm your order."
+    "category": "Mystery Book Bundles",
+    "question": "Are the books new?",
+    "answer": "No, all books included in our bundles are pre-loved."
   },
   {
     "id": 6,
-    "category": "Payments",
-    "question": "Is it safe to pay online?",
-    "answer": "Absolutely. We use standard UPI and bank transfer methods — no card details are ever stored by us. If you have any concerns, you can always opt for cash on delivery."
+    "category": "Mystery Book Bundles",
+    "question": "What if I've already read the book or don't enjoy it?",
+    "answer": "Since every bundle is designed as a surprise, we cannot guarantee against duplicate titles and do not offer refunds or exchanges based on reading preferences. Mystery Book Bundles are all about discovering stories you may not have picked for yourself, and the surprise is a big part of the experience."
   },
   {
     "id": 7,
-    "category": "Products",
-    "question": "Are the bookmarks really handmade?",
-    "answer": "Yes! Our handmade bookmarks are crafted with care — from pressed flowers preserved under resin to hand-stamped leather pieces. Each one is unique and made in small batches."
+    "category": "Goodies & Products",
+    "question": "What goodies are included in the bundles?",
+    "answer": "Goodies may include bookmarks, stationery, stickers, chocolates, and other bookish surprises. Contents vary depending on the theme."
   },
   {
     "id": 8,
-    "category": "Products",
-    "question": "What's inside the Mystery Box?",
-    "answer": "Every Mystery Box is a surprise! It typically includes 1–2 curated books, one or more bookmarks, some stationery, and a little something extra from us. No two boxes are exactly alike."
+    "category": "Goodies & Products",
+    "question": "Are the bookmarks designed by you?",
+    "answer": "Yes! All bookmark designs are personally created by me. No AI-generated designs are used."
   },
   {
     "id": 9,
-    "category": "Products",
-    "question": "Are the books new or used?",
-    "answer": "All books sold on Spines & Scribbles are brand new unless explicitly stated otherwise. We source them from reputable publishers and distributors."
+    "category": "Goodies & Products",
+    "question": "Do you make any handmade products?",
+    "answer": "Yes. Depending on the bundle and theme, some orders may include handmade bookish items."
   },
   {
     "id": 10,
-    "category": "Returns & Exchanges",
-    "question": "What if I receive a damaged item?",
-    "answer": "We're so sorry if that happens! Please take a photo of the damaged item and email or WhatsApp us within 48 hours of delivery. We'll arrange a replacement or refund promptly."
+    "category": "Goodies & Products",
+    "question": "Do you only sell Mystery Book Bundles?",
+    "answer": "No. We also offer individual pre-loved books, bookmark sets, diaries, notepads, and other bookish products."
   },
   {
     "id": 11,
-    "category": "Returns & Exchanges",
-    "question": "Can I return or exchange a product?",
-    "answer": "We accept returns or exchanges within 7 days of delivery for items that are unused and in their original condition. Mystery boxes and personalised items are non-returnable. Reach out to us and we'll sort it out."
+    "category": "Goodies & Products",
+    "question": "Are the diaries and notepads handmade?",
+    "answer": "No. They are carefully sourced from trusted suppliers that align with our aesthetic and quality standards."
   },
   {
     "id": 12,
-    "category": "Gifting",
-    "question": "Do you offer gift wrapping?",
-    "answer": "Yes! All our orders come beautifully packaged by default — wrapped in brown paper with a little note. It's already gift-ready. If you'd like a personalised message included, just mention it in the order notes."
+    "category": "Goodies & Products",
+    "question": "Are your products suitable for gifting?",
+    "answer": "Absolutely! Our bundles and bookish products make wonderful gifts for readers. We can also include a handwritten note upon request."
   },
   {
     "id": 13,
-    "category": "Gifting",
-    "question": "Can I send an order directly to someone as a gift?",
-    "answer": "Of course! Just enter the recipient's address at checkout and add a gift message in the notes. We'll make sure it arrives looking lovely."
+    "category": "Goodies & Products",
+    "question": "Do you offer themed and fandom-based bundles?",
+    "answer": "Yes! We regularly launch themed and limited-edition bundles, including fandom-inspired editions such as BTS-themed bundles."
+  },
+  {
+    "id": 14,
+    "category": "Shipping & Orders",
+    "question": "Where do you ship and how long does delivery take?",
+    "answer": "We currently ship across India. Orders are usually dispatched within 3–4 business days and delivered within 5–7 business days. For certain products, such as themed Mystery Book Bundles with a scheduled dispatch date, shipping timelines may vary and will be clearly mentioned on the product page."
+  },
+  {
+    "id": 15,
+    "category": "Shipping & Orders",
+    "question": "Is shipping included?",
+    "answer": "Shipping is included in all Mystery Book Bundle prices. For individual products such as books, bookmarks, diaries, and notepads, shipping charges range from ₹60–₹120 depending on the delivery location."
+  },
+  {
+    "id": 16,
+    "category": "Shipping & Orders",
+    "question": "Will I receive tracking details?",
+    "answer": "Yes. Tracking information is shared once your order has been dispatched."
+  },
+  {
+    "id": 17,
+    "category": "Shipping & Orders",
+    "question": "Which courier partners do you use?",
+    "answer": "We primarily ship through India Post and Delhivery."
+  },
+  {
+    "id": 18,
+    "category": "Shipping & Orders",
+    "question": "Can I send a bundle directly as a gift?",
+    "answer": "Yes! We can ship directly to the recipient and include a handwritten note from you."
+  },
+  {
+    "id": 19,
+    "category": "Payments & Billing",
+    "question": "What payment methods do you accept?",
+    "answer": "We currently accept payments via UPI only."
+  },
+  {
+    "id": 20,
+    "category": "Payments & Billing",
+    "question": "Do you offer Cash on Delivery (COD)?",
+    "answer": "No, we do not offer Cash on Delivery at the moment."
+  },
+  {
+    "id": 21,
+    "category": "Payments & Billing",
+    "question": "How does the payment process work?",
+    "answer": "Simply add your desired products to the cart, fill in your details, and place your order. Once we receive your order request, we'll contact you directly with payment details. Your order will be confirmed and processed once payment is received."
+  },
+  {
+    "id": 22,
+    "category": "Payments & Billing",
+    "question": "Why can't I pay directly on the website?",
+    "answer": "We're currently a small business operating with a manual order confirmation process. Once you place an order request, we'll get in touch to confirm the details and arrange payment before proceeding with your order."
+  },
+  {
+    "id": 23,
+    "category": "Payments & Billing",
+    "question": "Can I cancel my order?",
+    "answer": "Yes. Orders can be cancelled within 24 hours of being placed. After that, we may have already started preparing your order and cancellations may not be possible."
+  },
+  {
+    "id": 24,
+    "category": "Payments & Billing",
+    "question": "Do you offer refunds?",
+    "answer": "We do not offer monetary refunds. Where applicable, issues are resolved through store credit that can be used on a future purchase."
+  },
+  {
+    "id": 25,
+    "category": "Payments & Billing",
+    "question": "Do you offer discounts?",
+    "answer": "Yes! We occasionally run special offers, discounts, and limited-time promotions. Follow us on Instagram @spines.and.scribbles to stay updated."
+  },
+  {
+    "id": 26,
+    "category": "Payments & Billing",
+    "question": "Do you provide GST invoices?",
+    "answer": "No, we do not provide GST invoices at this time."
+  },
+  {
+    "id": 27,
+    "category": "Returns & Replacements",
+    "question": "What happens if my order arrives damaged?",
+    "answer": "If your package arrives damaged, please contact us with photos. Depending on the situation, we'll either replace the damaged item or provide store credit that can be used on a future purchase."
+  },
+  {
+    "id": 28,
+    "category": "Returns & Replacements",
+    "question": "What if my book arrives damaged?",
+    "answer": "If the book is damaged during transit, we'll provide store credit for a future purchase."
+  },
+  {
+    "id": 29,
+    "category": "Returns & Replacements",
+    "question": "Do you accept returns or exchanges?",
+    "answer": "No. Due to the nature of our products, we do not offer returns or exchanges."
+  },
+  {
+    "id": 30,
+    "category": "About Spines & Scribbles",
+    "question": "What makes Spines & Scribbles different?",
+    "answer": "Every bundle is personally curated, packed, and designed by a fellow reader. From handmade bookmarks to themed packaging, every detail is created with care. We focus on creating a memorable reading experience, not just selling products."
+  },
+  {
+    "id": 31,
+    "category": "About Spines & Scribbles",
+    "question": "Is this a small business?",
+    "answer": "Yes! Spines & Scribbles is an independent small business run by a book lover, and every order is packed by me personally."
+  },
+  {
+    "id": 32,
+    "category": "About Spines & Scribbles",
+    "question": "Are you a reader yourself?",
+    "answer": "Absolutely. Spines & Scribbles was created by a reader, for readers. My favourite genres are thriller and romance."
+  },
+  {
+    "id": 33,
+    "category": "About Spines & Scribbles",
+    "question": "What is your most important brand value?",
+    "answer": "Making readers feel seen. Every bundle is curated with care to create the joy of discovering a new favourite book while making readers feel valued and appreciated."
+  },
+  {
+    "id": 34,
+    "category": "About Spines & Scribbles",
+    "question": "What do you want customers to feel when they open a Spines & Scribbles box?",
+    "answer": "We want every box to feel like a thoughtful gift from a fellow reader — filled with excitement, comfort, surprise, and little details that make the experience feel personal."
+  },
+  {
+    "id": 35,
+    "category": "About Spines & Scribbles",
+    "question": "What should I know before buying a Mystery Book Bundle?",
+    "answer": "Mystery Book Bundles are meant to be exactly that — a mystery. The less you focus on what's inside, the more enjoyable the experience becomes. Come with an open mind, trust the process, and enjoy the surprise."
+  },
+  {
+    "id": 36,
+    "category": "About Spines & Scribbles",
+    "question": "Where can I follow Spines & Scribbles?",
+    "answer": "You can find us on Instagram and Threads at @spines.and.scribbles. We love seeing your unboxings, reviews, and photos, so don't forget to tag us! 📚💜"
   }
 ]
